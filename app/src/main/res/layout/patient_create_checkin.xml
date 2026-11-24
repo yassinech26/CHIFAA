@@ -1,0 +1,12 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/patient_page" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="@color/patient_background">
+    <LinearLayout style="@style/PatientPage">
+        <TextView style="@style/PatientTitle" android:text="@string/title_create_checkin" />
+        <TextView style="@style/PatientLabel" android:labelFor="@id/date" android:text="@string/date" />
+        <EditText style="@style/PatientField" android:id="@+id/date" android:textDirection="ltr" android:digits="@string/patient_date_digits" android:singleLine="true" android:saveEnabled="false" android:inputType="date" />
+        <TextView style="@style/PatientLabel" android:labelFor="@id/effects" android:text="@string/effects" />
+        <LinearLayout style="@style/PatientGroup" android:id="@+id/effects"  />
+        <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/save" android:text="@string/save" />
+        <include layout="@layout/patient_feedback" />
+    </LinearLayout>
+</ScrollView>

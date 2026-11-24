@@ -1,0 +1,10 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/patient_page" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="@color/patient_background">
+    <LinearLayout style="@style/PatientPage">
+        <TextView style="@style/PatientTitle" android:text="@string/title_service" />
+        <TextView style="@style/PatientBody" android:id="@+id/service_notice" android:text="@string/service_notice" />
+        <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/agree" android:text="@string/agree" />
+        <com.google.android.material.button.MaterialButton style="@style/PatientSecondary" android:id="@+id/decline" android:text="@string/decline" />
+        <include layout="@layout/patient_feedback" />
+    </LinearLayout>
+</ScrollView>

@@ -48,6 +48,8 @@ adb reverse tcp:8443 tcp:8443
 .\gradlew.bat :app:installDebug
 ```
 
+Pour un dépôt synchronisé par OneDrive, si Gradle signale `AccessDeniedException` dans `app/build`, définir `chifaa.buildDir=C:/chemin/local/chifaa-android-build` dans `local.properties` et relancer. Ce réglage est propre à la machine.
+
 Ouvrir **Accéder à mon espace**. L’URL par défaut est `https://localhost:8443/api/`. Une autre adresse HTTPS se configure avec la propriété Gradle `chifaaApi`. Le téléphone Android communique uniquement avec Spring Boot.
 
 ## Contrat HTTP
@@ -93,6 +95,8 @@ Les trois écrans de consentement utilisent le texte de démonstration v1.0. Sel
 | checkin_side_effects | PK composée de checkin_id et side_effect. CASCADE. |
 | data_requests | REQ-###, demande personnelle et clôture. SET NULL à la suppression. |
 
+Pour importer le catalogue v0.5 officiel, préparer deux fichiers UTF-8 nommés `AT-007.csv` et `AT-073.csv`, avec un en-tête `code` et une valeur officielle par ligne. Depuis le dossier des CSV, exécuter `psql -X -h localhost -U chifaa_app -d chifaa -f "CHEMIN_DU_DEPOT/backend/catalog/import-v0.5.sql"`. Utiliser PostgreSQL 15+ pour la vérification de l’en-tête. L’import contrôle les longueurs, les doublons, les espaces et les cardinalités, puis alimente les deux référentiels dans une même transaction. Rejouer les mêmes fichiers est idempotent. L’encadrant doit confirmer la provenance des valeurs.
+
 Les tables d’association évitent les doublons et valident chaque valeur. Les migrations futures peuvent remplir `care_phase_catalog` avec les sept codes AT-007 et `side_effect_catalog` avec les onze codes AT-073 confirmés par l’encadrant. Les FK refusent les valeurs inconnues. Tant que le catalogue des effets est vide, la création d’un bilan affiche l’attente du catalogue et l’API renvoie 503.
 
 **E2.** Configurer `CHIFAA_LIBRARY_URL` avec l’URL HTTPS du point de lecture de la bibliothèque. Le contrat proposé utilise les paramètres topic=Fertility et language. La réponse attendue est un tableau contenant title, contentText, approvalStatus et expiryDate. L’adaptateur vérifie le statut Clinically approved et l’échéance. En attente du raccordement, l’API signale une indisponibilité.
@@ -100,6 +104,8 @@ Les tables d’association évitent les doublons et valident chaque valeur. Les 
 **E3.** Le back-office autorisé peut appeler `DataService.executeDeletion(requestId)`. Sa transaction clôt la demande et supprime le compte. La migration d’E3 pour staff devra remplacer la contrainte temporaire `pending_staff_fk` par la FK `handled_by REFERENCES staff(staff_id) ON DELETE RESTRICT`. Le service d’audit E1 émet des événements de lecture, modification et export et les journalise après commit. Le journal des accès du personnel appartient au module E3. E2 et E3 peuvent fournir un bean `PersonalExportSection` par module pour ajouter leurs données personnelles à l’export. Chaque section reçoit le UUID authentifié et déclare si elle nécessite le consentement santé.
 
 ## Vérification
+
+Le test JVM Android facultatif `LivePatientApiTest` utilise le véritable dépôt Retrofit et le serveur HTTPS. Sur une base jetable, importer les deux catalogues de test, configurer la confiance TLS du processus de test JVM, fournir un numéro fictif libre dans `CHIFAA_TEST_PHONE` et un répertoire privé dans `CHIFAA_TEST_OTP_DIR`. Exécuter `.\gradlew.bat :app:testDebugUnitTest --tests "*.LivePatientApiTest" --rerun-tasks`. Quand le terminal privé du serveur affiche le challenge et son OTP, écrire les six chiffres dans un fichier UTF-8 nommé exactement comme le challenge dans ce répertoire. Le test effectue une inscription, crée un bilan et vérifie les droits après retrait et déconnexion.
 
 Pour les tests d’intégration, pointer CHIFAA_DB_URL, CHIFAA_DB_USER et CHIFAA_DB_PASSWORD vers une **base de test dédiée** avec les deux clés de test. Définir `CHIFAA_TEST_DATABASE=true`, puis exécuter `mvn -f backend/pom.xml verify`. Ces tests écrivent des comptes fictifs, exercent la suppression et vérifient les preuves conservées.
 

@@ -1,3 +1,252 @@
 <resources>
-    <string name="app_name">chifaaAPP</string>
+    <string name="app_name">CHIFAA</string>
+    <string name="welcome_limits">CHIFAA vous accompagne dans votre parcours. L’application ne pose aucun diagnostic et ne donne aucune posologie. Pour une question médicale personnelle, adressez-vous à votre équipe soignante.</string>
+    <string name="sign_up">M’inscrire</string>
+    <string name="sign_in">Me connecter</string>
+    <string name="age_question">Avez-vous 18 ans ou plus ?</string>
+    <string name="adult_yes">Oui, j’ai 18 ans ou plus</string>
+    <string name="adult_no">J’ai moins de 18 ans</string>
+    <string name="minor">L’inscription est réservée aux adultes. Vous pouvez parler à un adulte de confiance ou à votre équipe soignante.</string>
+    <string name="service_notice">Version v1.0 · J’accepte la création d’un compte pseudonyme et l’utilisation de mon numéro chiffré pour me connecter. Cet accord est nécessaire pour utiliser le service.</string>
+    <string name="health_notice">Version v1.0 · J’autorise CHIFAA à conserver mon parcours et mes bilans pour mon suivi personnel. Je peux refuser ou retirer cet accord dans Mes données.</string>
+    <string name="survey_notice">Version v1.0 · J’accepte de participer aux enquêtes sur mes besoins et ma satisfaction. Ma participation est facultative et je peux retirer mon accord.</string>
+    <string name="agree">J’accepte</string>
+    <string name="decline">Je refuse</string>
+    <string name="required_service">Votre accord pour l’utilisation du service est nécessaire pour créer un compte.</string>
+    <string name="phone">Numéro de téléphone avec indicatif (+216…)</string>
+    <string name="age_band">Tranche d’âge</string>
+    <string name="governorate">Gouvernorat</string>
+    <string name="language">Langue préférée</string>
+    <string name="send_code">Demander le code</string>
+    <string name="otp_notice">Saisissez le code à six chiffres du SMS simulé. Il est valable cinq minutes.</string>
+    <string name="otp_code">Code de vérification</string>
+    <string name="verify">Vérifier</string>
+    <string name="edit_profile">Modifier mon profil</string>
+    <string name="language_settings">Langue de l’interface</string>
+    <string name="health_home">Mon espace santé</string>
+    <string name="my_data">Mes données</string>
+    <string name="sign_out">Me déconnecter</string>
+    <string name="save">Enregistrer</string>
+    <string name="french">Français</string>
+    <string name="arabic">العربية</string>
+    <string name="health_profile">Mon parcours</string>
+    <string name="create_checkin">Nouveau bilan</string>
+    <string name="history">Historique des bilans</string>
+    <string name="chart">Évolution des effets déclarés</string>
+    <string name="fertility">Informations sur la fertilité</string>
+    <string name="edit_health">Modifier mon parcours</string>
+    <string name="cancer">Type de cancer</string>
+    <string name="phase">Étape du parcours</string>
+    <string name="period">Ancienneté du diagnostic</string>
+    <string name="year">Année du diagnostic (facultatif)</string>
+    <string name="facility">Structure de prise en charge</string>
+    <string name="interest">Souhaitez-vous des informations sur la fertilité ?</string>
+    <string name="treatments">Traitements</string>
+    <string name="date">Date du bilan (AAAA-MM-JJ)</string>
+    <string name="effects">Effets secondaires ressentis</string>
+    <string name="manage_consents">Gérer mes consentements</string>
+    <string name="export">Exporter mes données</string>
+    <string name="delete_account">Demander la suppression</string>
+    <string name="export_notice">Choisissez le format et l’emplacement du fichier contenant vos données personnelles.</string>
+    <string name="delete_notice">Votre demande sera transmise à la personne responsable des données. Après traitement, le compte sera supprimé. Les preuves de consentement et de demande seront conservées sans lien avec votre compte.</string>
+    <string name="confirm_delete">Envoyer ma demande</string>
+    <string name="json">Enregistrer en JSON</string>
+    <string name="csv">Enregistrer en CSV</string>
+    <string name="network_error">Connexion impossible. Vérifiez le réseau et réessayez.</string>
+    <string name="invalid">Vérifiez les valeurs saisies.</string>
+    <string name="unauthorized">Code invalide ou expiré.</string>
+    <string name="limited">Un code a déjà été demandé. Réessayez dans cinq minutes.</string>
+    <string name="expired">Votre session a expiré. Reconnectez-vous.</string>
+    <string name="conflict">Ce numéro a déjà un compte. Utilisez la connexion.</string>
+    <string name="forbidden">Le consentement requis est absent.</string>
+    <string name="empty">Aucun élément à afficher.</string>
+    <string name="skip">Je préfère ne pas répondre</string>
+    <string name="choose">Sélectionner</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="unavailable">Ce service est temporairement indisponible.</string>
+    <string name="catalog_wait">Liste officielle en attente.</string>
+    <string name="saved">Fichier enregistré.</string>
+    <string name="request_received">Demande enregistrée · %1$s</string>
+    <string name="loading">Chargement…</string>
+    <string name="service_use">Utilisation du service</string>
+    <string name="health_data">Données de santé</string>
+    <string name="survey">Enquête</string>
+    <string name="withdraw">Retirer mon accord</string>
+    <string name="grant">Donner mon accord</string>
+    <string name="given">Accord donné</string>
+    <string name="withdrawn">Accord retiré</string>
+    <string name="consent_expired">Accord expiré</string>
+    <string name="inactive">Sans accord actif</string>
+    <string name="count_effects">%1$s · %2$d effets déclarés</string>
+    <string name="retry">Réessayer</string>
+    <string name="open_patient">Accéder à mon espace</string>
+    <string name="title_welcome">Bienvenue sur CHIFAA</string>
+    <string name="title_age">Vérification de l’âge</string>
+    <string name="title_service">Utilisation du service</string>
+    <string name="title_health_consent">Données de santé</string>
+    <string name="title_survey_consent">Participation à l’enquête</string>
+    <string name="title_register">Créer mon compte</string>
+    <string name="title_login">Connexion</string>
+    <string name="title_otp">Vérifier mon numéro</string>
+    <string name="title_profile">Mon profil</string>
+    <string name="title_edit_profile">Modifier mon profil</string>
+    <string name="title_language_settings">Langue de l’interface</string>
+    <string name="title_health_home">Mon espace santé</string>
+    <string name="title_health_profile">Mon parcours</string>
+    <string name="title_edit_health">Modifier mon parcours</string>
+    <string name="title_fertility">Informations sur la fertilité</string>
+    <string name="title_create_checkin">Nouveau bilan</string>
+    <string name="title_history">Historique des bilans</string>
+    <string name="title_details">Détail du bilan</string>
+    <string name="title_chart">Évolution des effets déclarés</string>
+    <string name="title_my_data">Mes données</string>
+    <string name="title_manage_consents">Mes consentements</string>
+    <string name="title_export">Exporter mes données</string>
+    <string name="title_delete_account">Demande de suppression</string>
+    <string-array name="age_band_labels">
+        <item>18–29</item>
+        <item>30–39</item>
+        <item>40–49</item>
+        <item>50–59</item>
+        <item>60+</item>
+    </string-array>
+    <string-array name="governorate_labels">
+        <item>Tunis</item>
+        <item>Ariana</item>
+        <item>Ben Arous</item>
+        <item>Manouba</item>
+        <item>Nabeul</item>
+        <item>Zaghouan</item>
+        <item>Bizerte</item>
+        <item>Béja</item>
+        <item>Jendouba</item>
+        <item>Le Kef</item>
+        <item>Siliana</item>
+        <item>Kairouan</item>
+        <item>Kasserine</item>
+        <item>Sidi Bouzid</item>
+        <item>Sousse</item>
+        <item>Monastir</item>
+        <item>Mahdia</item>
+        <item>Sfax</item>
+        <item>Gafsa</item>
+        <item>Tozeur</item>
+        <item>Kébili</item>
+        <item>Gabès</item>
+        <item>Médenine</item>
+        <item>Tataouine</item>
+    </string-array>
+    <string-array name="language_labels">
+        <item>Darija</item>
+        <item>Français</item>
+        <item>Arabe standard</item>
+        <item>Mixte</item>
+    </string-array>
+    <string-array name="cancer_labels">
+        <item>Sein</item>
+        <item>Col de l’utérus</item>
+        <item>Autre</item>
+        <item>Je préfère ne pas répondre</item>
+    </string-array>
+    <string-array name="period_labels">
+        <item>Moins d’un an</item>
+        <item>1 à 2 ans</item>
+        <item>3 à 5 ans</item>
+        <item>Plus de 5 ans</item>
+    </string-array>
+    <string-array name="facility_labels">
+        <item>Hôpital public</item>
+        <item>Clinique privée</item>
+        <item>À l’étranger</item>
+        <item>Je préfère ne pas répondre</item>
+    </string-array>
+    <string-array name="interest_labels">
+        <item>Oui</item>
+        <item>Non</item>
+    </string-array>
+    <string-array name="treatments_labels">
+        <item>Chirurgie</item>
+        <item>Reconstruction</item>
+        <item>Chimiothérapie</item>
+        <item>Radiothérapie</item>
+        <item>Hormonothérapie</item>
+        <item>Thérapie ciblée</item>
+        <item>Immunothérapie</item>
+        <item>Je préfère ne pas répondre</item>
+    </string-array>
+    <string-array name="age_band_codes">
+        <item>18–29</item>
+        <item>30–39</item>
+        <item>40–49</item>
+        <item>50–59</item>
+        <item>60+</item>
+    </string-array>
+    <string-array name="governorate_codes">
+        <item>TN-11</item>
+        <item>TN-12</item>
+        <item>TN-13</item>
+        <item>TN-14</item>
+        <item>TN-21</item>
+        <item>TN-22</item>
+        <item>TN-23</item>
+        <item>TN-31</item>
+        <item>TN-32</item>
+        <item>TN-33</item>
+        <item>TN-34</item>
+        <item>TN-41</item>
+        <item>TN-42</item>
+        <item>TN-43</item>
+        <item>TN-51</item>
+        <item>TN-52</item>
+        <item>TN-53</item>
+        <item>TN-61</item>
+        <item>TN-71</item>
+        <item>TN-72</item>
+        <item>TN-73</item>
+        <item>TN-81</item>
+        <item>TN-82</item>
+        <item>TN-83</item>
+    </string-array>
+    <string-array name="language_codes">
+        <item>Darija</item>
+        <item>French</item>
+        <item>MSA</item>
+        <item>Mixed</item>
+    </string-array>
+    <string-array name="cancer_codes">
+        <item>Breast</item>
+        <item>Cervical</item>
+        <item>Other</item>
+        <item>Prefer not to say</item>
+    </string-array>
+    <string-array name="period_codes">
+        <item>&lt;1 yr</item>
+        <item>1–2 yrs</item>
+        <item>3–5 yrs</item>
+        <item>>5 yrs</item>
+    </string-array>
+    <string-array name="facility_codes">
+        <item>Public hospital</item>
+        <item>Private clinic</item>
+        <item>Abroad</item>
+        <item>Prefer not to say</item>
+    </string-array>
+    <string-array name="interest_codes">
+        <item>true</item>
+        <item>false</item>
+    </string-array>
+    <string-array name="treatments_codes">
+        <item>Surgery</item>
+        <item>Reconstruction</item>
+        <item>Chemotherapy</item>
+        <item>Radiotherapy</item>
+        <item>Hormone therapy</item>
+        <item>Targeted therapy</item>
+        <item>Immunotherapy</item>
+        <item>Prefer not to say</item>
+    </string-array>
+    <string name="patient_digits" translatable="false">0123456789٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹</string>
+    <string name="patient_phone_digits" translatable="false">"+ 0123456789٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹"</string>
+    <string name="patient_date_digits" translatable="false">0123456789٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹-</string>
 </resources>

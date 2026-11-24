@@ -1,0 +1,178 @@
+<resources>
+    <string name="app_name">شفاء</string>
+    <string name="welcome_limits">يرافقك شفاء في مسارك الصحي. لا يقدّم التطبيق تشخيصًا أو جرعات دوائية. توجّهي إلى فريقك الطبي لطرح أسئلتك الشخصية.</string>
+    <string name="sign_up">إنشاء حساب</string>
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="age_question">هل تبلغين 18 سنة أو أكثر؟</string>
+    <string name="adult_yes">نعم، أبلغ 18 سنة أو أكثر</string>
+    <string name="adult_no">عمري أقل من 18 سنة</string>
+    <string name="minor">التسجيل مخصّص للبالغات. يمكنك التحدث إلى شخص بالغ تثقين به أو إلى فريقك الطبي.</string>
+    <string name="service_notice">الإصدار v1.0 · أوافق على إنشاء حساب بمعرّف مستعار واستخدام رقمي المشفّر لتسجيل الدخول. هذه الموافقة ضرورية لاستخدام الخدمة.</string>
+    <string name="health_notice">الإصدار v1.0 · أسمح بحفظ مساري الصحي وسجل المتابعة لاستعمالي الشخصي. يمكنني الرفض أو سحب موافقتي من صفحة بياناتي.</string>
+    <string name="survey_notice">الإصدار v1.0 · أوافق على المشاركة في استبيانات حول احتياجاتي ورضاي. المشاركة اختيارية ويمكنني سحب موافقتي.</string>
+    <string name="agree">أوافق</string>
+    <string name="decline">أرفض</string>
+    <string name="required_service">الموافقة على استخدام الخدمة ضرورية لإنشاء الحساب.</string>
+    <string name="phone">رقم الهاتف مع رمز البلد (‎+216…)</string>
+    <string name="age_band">الفئة العمرية</string>
+    <string name="governorate">الولاية</string>
+    <string name="language">اللغة المفضّلة</string>
+    <string name="send_code">طلب الرمز</string>
+    <string name="otp_notice">أدخلي الرمز المكوّن من ستة أرقام من الرسالة التجريبية. صلاحيته خمس دقائق.</string>
+    <string name="otp_code">رمز التحقق</string>
+    <string name="verify">تأكيد</string>
+    <string name="edit_profile">تعديل ملفي</string>
+    <string name="language_settings">لغة الواجهة</string>
+    <string name="health_home">فضائي الصحي</string>
+    <string name="my_data">بياناتي</string>
+    <string name="sign_out">تسجيل الخروج</string>
+    <string name="save">حفظ</string>
+    <string name="french">الفرنسية</string>
+    <string name="arabic">العربية</string>
+    <string name="health_profile">مساري الصحي</string>
+    <string name="create_checkin">متابعة جديدة</string>
+    <string name="history">سجل المتابعة</string>
+    <string name="chart">تطور الأعراض المُبلّغ عنها</string>
+    <string name="fertility">معلومات حول الخصوبة</string>
+    <string name="edit_health">تعديل مساري</string>
+    <string name="cancer">نوع السرطان</string>
+    <string name="phase">مرحلة المسار</string>
+    <string name="period">المدة منذ التشخيص</string>
+    <string name="year">سنة التشخيص (اختياري)</string>
+    <string name="facility">مؤسسة الرعاية</string>
+    <string name="interest">هل ترغبين في معلومات حول الخصوبة؟</string>
+    <string name="treatments">العلاجات</string>
+    <string name="date">تاريخ المتابعة (سنة-شهر-يوم)</string>
+    <string name="effects">الأعراض الجانبية</string>
+    <string name="manage_consents">إدارة موافقاتي</string>
+    <string name="export">تصدير بياناتي</string>
+    <string name="delete_account">طلب حذف الحساب</string>
+    <string name="export_notice">اختاري صيغة ومكان حفظ الملف الذي يحتوي على بياناتك الشخصية.</string>
+    <string name="delete_notice">سيصل طلبك إلى المسؤول عن البيانات. بعد معالجته سيُحذف حسابك وتُحفظ إثباتات الموافقة والطلب دون ربطها بحسابك.</string>
+    <string name="confirm_delete">إرسال طلبي</string>
+    <string name="json">حفظ بصيغة JSON</string>
+    <string name="csv">حفظ بصيغة CSV</string>
+    <string name="network_error">تعذّر الاتصال. تحقّقي من الشبكة وحاولي مجددًا.</string>
+    <string name="invalid">تحقّقي من القيم المُدخلة.</string>
+    <string name="unauthorized">الرمز غير صحيح أو انتهت صلاحيته.</string>
+    <string name="limited">تم طلب رمز مؤخرًا. حاولي بعد خمس دقائق.</string>
+    <string name="expired">انتهت صلاحية الجلسة. سجّلي الدخول مجددًا.</string>
+    <string name="conflict">هذا الرقم مسجّل. استخدمي تسجيل الدخول.</string>
+    <string name="forbidden">الموافقة المطلوبة غير متوفّرة.</string>
+    <string name="empty">لا توجد عناصر لعرضها.</string>
+    <string name="skip">أفضّل عدم الإجابة</string>
+    <string name="choose">اختاري</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="unavailable">هذه الخدمة غير متوفرة مؤقتًا.</string>
+    <string name="catalog_wait">في انتظار القائمة الرسمية.</string>
+    <string name="saved">تم حفظ الملف.</string>
+    <string name="request_received">تم تسجيل الطلب · %1$s</string>
+    <string name="loading">جارٍ التحميل…</string>
+    <string name="service_use">استخدام الخدمة</string>
+    <string name="health_data">البيانات الصحية</string>
+    <string name="survey">الاستبيان</string>
+    <string name="withdraw">سحب موافقتي</string>
+    <string name="grant">منح موافقتي</string>
+    <string name="given">تمّت الموافقة</string>
+    <string name="withdrawn">تمّ سحب الموافقة</string>
+    <string name="consent_expired">انتهت صلاحية الموافقة</string>
+    <string name="inactive">لا توجد موافقة سارية</string>
+    <string name="count_effects">%1$s · عدد الأعراض %2$d</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="open_patient">الدخول إلى فضائي</string>
+    <string name="title_welcome">مرحبًا بك في شفاء</string>
+    <string name="title_age">التحقق من السن</string>
+    <string name="title_service">استخدام الخدمة</string>
+    <string name="title_health_consent">البيانات الصحية</string>
+    <string name="title_survey_consent">المشاركة في الاستبيان</string>
+    <string name="title_register">إنشاء حسابي</string>
+    <string name="title_login">تسجيل الدخول</string>
+    <string name="title_otp">تأكيد رقم هاتفي</string>
+    <string name="title_profile">ملفي</string>
+    <string name="title_edit_profile">تعديل ملفي</string>
+    <string name="title_language_settings">لغة الواجهة</string>
+    <string name="title_health_home">فضائي الصحي</string>
+    <string name="title_health_profile">مساري الصحي</string>
+    <string name="title_edit_health">تعديل مساري</string>
+    <string name="title_fertility">معلومات حول الخصوبة</string>
+    <string name="title_create_checkin">متابعة جديدة</string>
+    <string name="title_history">سجل المتابعة</string>
+    <string name="title_details">تفاصيل المتابعة</string>
+    <string name="title_chart">تطور عدد الأعراض المُبلّغ عنها</string>
+    <string name="title_my_data">بياناتي</string>
+    <string name="title_manage_consents">موافقاتي</string>
+    <string name="title_export">تصدير بياناتي</string>
+    <string name="title_delete_account">طلب حذف الحساب</string>
+    <string-array name="age_band_labels">
+        <item>18–29</item>
+        <item>30–39</item>
+        <item>40–49</item>
+        <item>50–59</item>
+        <item>60+</item>
+    </string-array>
+    <string-array name="governorate_labels">
+        <item>تونس</item>
+        <item>أريانة</item>
+        <item>بن عروس</item>
+        <item>منوبة</item>
+        <item>نابل</item>
+        <item>زغوان</item>
+        <item>بنزرت</item>
+        <item>باجة</item>
+        <item>جندوبة</item>
+        <item>الكاف</item>
+        <item>سليانة</item>
+        <item>القيروان</item>
+        <item>القصرين</item>
+        <item>سيدي بوزيد</item>
+        <item>سوسة</item>
+        <item>المنستير</item>
+        <item>المهدية</item>
+        <item>صفاقس</item>
+        <item>قفصة</item>
+        <item>توزر</item>
+        <item>قبلي</item>
+        <item>قابس</item>
+        <item>مدنين</item>
+        <item>تطاوين</item>
+    </string-array>
+    <string-array name="language_labels">
+        <item>الدارجة</item>
+        <item>الفرنسية</item>
+        <item>العربية الفصحى</item>
+        <item>مزيج</item>
+    </string-array>
+    <string-array name="cancer_labels">
+        <item>الثدي</item>
+        <item>عنق الرحم</item>
+        <item>آخر</item>
+        <item>أفضّل عدم الإجابة</item>
+    </string-array>
+    <string-array name="period_labels">
+        <item>أقل من سنة</item>
+        <item>سنة إلى سنتين</item>
+        <item>3 إلى 5 سنوات</item>
+        <item>أكثر من 5 سنوات</item>
+    </string-array>
+    <string-array name="facility_labels">
+        <item>مستشفى عمومي</item>
+        <item>مصحة خاصة</item>
+        <item>خارج البلاد</item>
+        <item>أفضّل عدم الإجابة</item>
+    </string-array>
+    <string-array name="interest_labels">
+        <item>نعم</item>
+        <item>لا</item>
+    </string-array>
+    <string-array name="treatments_labels">
+        <item>جراحة</item>
+        <item>جراحة ترميمية</item>
+        <item>علاج كيميائي</item>
+        <item>علاج إشعاعي</item>
+        <item>علاج هرموني</item>
+        <item>علاج موجّه</item>
+        <item>علاج مناعي</item>
+        <item>أفضّل عدم الإجابة</item>
+    </string-array>
+</resources>

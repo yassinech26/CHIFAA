@@ -1,0 +1,46 @@
+<resources>
+    <style name="PatientTheme" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/patient_primary</item>
+        <item name="colorOnPrimary">@color/patient_surface</item>
+        <item name="colorSurface">@color/patient_background</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+    <style name="PatientGroup">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="PatientPage" parent="PatientGroup">
+        <item name="android:paddingStart">@dimen/patient_margin</item>
+        <item name="android:paddingEnd">@dimen/patient_margin</item>
+        <item name="android:paddingTop">@dimen/patient_large_space</item>
+        <item name="android:paddingBottom">@dimen/patient_large_space</item>
+    </style>
+    <style name="PatientBody">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/patient_body</item>
+        <item name="android:textColor">@color/patient_text</item>
+        <item name="android:layout_marginTop">@dimen/patient_space</item>
+    </style>
+    <style name="PatientLabel" parent="PatientBody">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="PatientTitle" parent="PatientLabel">
+        <item name="android:textSize">@dimen/patient_title</item>
+    </style>
+    <style name="PatientField" parent="PatientBody">
+        <item name="android:minHeight">@dimen/patient_target</item>
+    </style>
+    <style name="PatientButton" parent="Widget.Material3.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/patient_target</item>
+        <item name="cornerRadius">@dimen/patient_radius</item>
+        <item name="android:layout_marginTop">@dimen/patient_space</item>
+    </style>
+    <style name="PatientSecondary" parent="PatientButton">
+        <item name="backgroundTint">@color/patient_light</item>
+        <item name="android:textColor">@color/patient_primary</item>
+    </style>
+</resources>

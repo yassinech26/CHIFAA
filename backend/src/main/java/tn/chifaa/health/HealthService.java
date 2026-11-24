@@ -21,8 +21,10 @@ public class HealthService {
     }
     public Catalog catalog(UUID pid) {
         access.healthVersion(pid);
-        return new Catalog(db.queryForList("select code from care_phase_catalog order by code",String.class),
-            db.queryForList("select code from side_effect_catalog order by code",String.class));
+        var phases=db.queryForList("select code from care_phase_catalog order by code",String.class);
+        var effects=db.queryForList("select code from side_effect_catalog order by code",String.class);
+        // A partly loaded catalog cannot represent all the choices on the form.
+        return new Catalog(phases.size()==7 ? phases : List.of(),effects.size()==11 ? effects : List.of());
     }
     public Form profile(UUID pid) {
         access.healthVersion(pid);

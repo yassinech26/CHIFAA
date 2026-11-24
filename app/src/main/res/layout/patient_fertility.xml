@@ -1,0 +1,8 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/patient_page" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="@color/patient_background">
+    <LinearLayout style="@style/PatientPage">
+        <TextView style="@style/PatientTitle" android:text="@string/title_fertility" />
+        <TextView style="@style/PatientBody" android:id="@+id/result"  />
+        <include layout="@layout/patient_feedback" />
+    </LinearLayout>
+</ScrollView>

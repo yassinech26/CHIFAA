@@ -1,0 +1,14 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/patient_page" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="@color/patient_background">
+    <LinearLayout style="@style/PatientPage">
+        <TextView style="@style/PatientTitle" android:text="@string/title_edit_profile" />
+        <TextView style="@style/PatientLabel" android:labelFor="@id/age_band" android:text="@string/age_band" />
+        <Spinner style="@style/PatientField" android:id="@+id/age_band"  />
+        <TextView style="@style/PatientLabel" android:labelFor="@id/governorate" android:text="@string/governorate" />
+        <Spinner style="@style/PatientField" android:id="@+id/governorate"  />
+        <TextView style="@style/PatientLabel" android:labelFor="@id/language" android:text="@string/language" />
+        <Spinner style="@style/PatientField" android:id="@+id/language"  />
+        <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/save" android:text="@string/save" />
+        <include layout="@layout/patient_feedback" />
+    </LinearLayout>
+</ScrollView>
