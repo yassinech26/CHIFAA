@@ -1,0 +1,13 @@
+server:
+  address: ${CHIFAA_BIND_ADDRESS:127.0.0.1}
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
+chifaa:
+  safety:
+    rules:
+      - {phrase: 'Scénario détresse démo', type: DEMO_DISTRESS, severity: High}
+      - {phrase: 'اختبار ضيق تجريبي', type: DEMO_DISTRESS, severity: High}
+      - {phrase: 'ما نجم اختبار', type: DEMO_DISTRESS, severity: High}

@@ -1,0 +1,9 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+    <TextView android:id="@+id/referenceTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_primary" android:textSize="@dimen/e3_subtitle" android:accessibilityHeading="true" />
+    <TextView android:id="@+id/referenceSource" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:textSize="@dimen/e3_caption" />
+    <TextView android:id="@+id/referenceReview" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:textSize="@dimen/e3_caption" />
+    <TextView android:id="@+id/fictional" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/text_secondary" android:textSize="@dimen/e3_caption" android:text="@string/e3_fictional_content" />
+    <com.google.android.material.button.MaterialButton android:id="@+id/openReference" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:minHeight="@dimen/e3_touch" android:textAllCaps="false"
+        android:text="@string/e3_reference" app:cornerRadius="@dimen/e3_button_radius" />
+</LinearLayout>

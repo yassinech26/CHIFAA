@@ -13,3 +13,11 @@
 .externalNativeBuild
 .cxx
 local.properties
+/.env
+/.env.*
+!/.env.example
+/backend/target/
+*.apk
+*.jks
+*.keystore
+*.p12

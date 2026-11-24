@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: chifaa_e3
+      POSTGRES_USER: ${CHIFAA_DB_USER:-chifaa}
+      POSTGRES_PASSWORD: ${CHIFAA_DB_PASSWORD:?Set CHIFAA_DB_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:${CHIFAA_DB_PORT:-5432}:5432"
+    volumes:
+      - chifaa_e3_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  chifaa_e3_data:

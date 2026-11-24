@@ -1,0 +1,127 @@
+# Inventaire des fichiers E3
+
+Les chemins marqués communs demandent une réconciliation si les deux autres branches modifient les mêmes points d’entrée ou configurations.
+
+## Fichiers communs ou points de fusion
+
+- `.env.example`
+- `.gitignore`
+- `README.md`
+- `app/build.gradle.kts`
+- `app/src/debug/AndroidManifest.xml`
+- `app/src/main/AndroidManifest.xml`
+- `app/src/main/java/com/example/chifaaapp/MainActivity.java`
+- `backend/pom.xml`
+- `docker-compose.yml`
+
+## Fichiers du lot E3
+
+- `app/src/androidTest/java/com/example/chifaaapp/Student3UiTest.java`
+- `app/src/androidTest/java/com/example/chifaaapp/directory/DirectoryCacheTest.java`
+- `app/src/main/java/com/example/chifaaapp/admin/directory/AddOrganisationActivity.java`
+- `app/src/main/java/com/example/chifaaapp/admin/directory/AdminDirectoryActivity.java`
+- `app/src/main/java/com/example/chifaaapp/admin/directory/EditOrganisationActivity.java`
+- `app/src/main/java/com/example/chifaaapp/admin/directory/OrganisationVerificationActivity.java`
+- `app/src/main/java/com/example/chifaaapp/admin/safety/SafetyEventDetailsActivity.java`
+- `app/src/main/java/com/example/chifaaapp/admin/safety/SafetyQueueActivity.java`
+- `app/src/main/java/com/example/chifaaapp/chat/ChatActivity.java`
+- `app/src/main/java/com/example/chifaaapp/chat/ChatApiService.java`
+- `app/src/main/java/com/example/chifaaapp/chat/ChatHistoryActivity.java`
+- `app/src/main/java/com/example/chifaaapp/chat/ChatRepository.java`
+- `app/src/main/java/com/example/chifaaapp/chat/ChatViewModel.java`
+- `app/src/main/java/com/example/chifaaapp/directory/DirectoryActivity.java`
+- `app/src/main/java/com/example/chifaaapp/directory/DirectoryApiService.java`
+- `app/src/main/java/com/example/chifaaapp/directory/DirectoryDetailsActivity.java`
+- `app/src/main/java/com/example/chifaaapp/directory/DirectoryLabels.java`
+- `app/src/main/java/com/example/chifaaapp/directory/DirectoryRepository.java`
+- `app/src/main/java/com/example/chifaaapp/directory/DirectoryViewModel.java`
+- `app/src/main/java/com/example/chifaaapp/directory/OrganisationCacheEntity.java`
+- `app/src/main/java/com/example/chifaaapp/directory/OrganisationDao.java`
+- `app/src/main/java/com/example/chifaaapp/local/ApiRepository.java`
+- `app/src/main/java/com/example/chifaaapp/local/ChifaaApi.java`
+- `app/src/main/java/com/example/chifaaapp/local/LocalActivity.java`
+- `app/src/main/java/com/example/chifaaapp/local/RetrofitClient.java`
+- `app/src/main/java/com/example/chifaaapp/local/ScreenViewModel.java`
+- `app/src/main/res/drawable/e3_back.xml`
+- `app/src/main/res/drawable/e3_category_cnam.xml`
+- `app/src/main/res/drawable/e3_category_fertility.xml`
+- `app/src/main/res/drawable/e3_category_financial.xml`
+- `app/src/main/res/drawable/e3_category_legal.xml`
+- `app/src/main/res/drawable/e3_category_oncology.xml`
+- `app/src/main/res/drawable/e3_category_peers.xml`
+- `app/src/main/res/drawable/e3_category_prostheses.xml`
+- `app/src/main/res/drawable/e3_category_psychology.xml`
+- `app/src/main/res/drawable/e3_category_transport.xml`
+- `app/src/main/res/drawable/e3_support.xml`
+- `app/src/main/res/layout/activity_student3.xml`
+- `app/src/main/res/layout/item_chat_session.xml`
+- `app/src/main/res/layout/item_knowledge_reference.xml`
+- `app/src/main/res/layout/item_message_assistant.xml`
+- `app/src/main/res/layout/item_message_user.xml`
+- `app/src/main/res/layout/layout_chat_input.xml`
+- `app/src/main/res/layout/layout_safety_resources.xml`
+- `app/src/main/res/values-ar/student3_strings.xml`
+- `app/src/main/res/values/student3_design.xml`
+- `app/src/main/res/values/student3_strings.xml`
+- `backend/.mvn/wrapper/maven-wrapper.properties`
+- `backend/mvnw`
+- `backend/mvnw.cmd`
+- `backend/src/main/java/com/chifaa/backend/ChifaaApplication.java`
+- `backend/src/main/java/com/chifaa/backend/audit/PostgresAuditService.java`
+- `backend/src/main/java/com/chifaa/backend/auth/LocalAuthentication.java`
+- `backend/src/main/java/com/chifaa/backend/chat/ChatController.java`
+- `backend/src/main/java/com/chifaa/backend/chat/ChatService.java`
+- `backend/src/main/java/com/chifaa/backend/chat/ChatSessionRepository.java`
+- `backend/src/main/java/com/chifaa/backend/chat/ChatSessionService.java`
+- `backend/src/main/java/com/chifaa/backend/chat/LanguageDetectionService.java`
+- `backend/src/main/java/com/chifaa/backend/chat/MedicalBoundaryService.java`
+- `backend/src/main/java/com/chifaa/backend/chat/MessageRepository.java`
+- `backend/src/main/java/com/chifaa/backend/chat/ResponseBuilderService.java`
+- `backend/src/main/java/com/chifaa/backend/chat/TopicDetectionService.java`
+- `backend/src/main/java/com/chifaa/backend/common/ApiErrors.java`
+- `backend/src/main/java/com/chifaa/backend/common/HealthController.java`
+- `backend/src/main/java/com/chifaa/backend/compatibility/AuditService.java`
+- `backend/src/main/java/com/chifaa/backend/compatibility/ConsentProvider.java`
+- `backend/src/main/java/com/chifaa/backend/compatibility/DemoAccounts.java`
+- `backend/src/main/java/com/chifaa/backend/compatibility/KnowledgeSearchProvider.java`
+- `backend/src/main/java/com/chifaa/backend/compatibility/LocalServices.java`
+- `backend/src/main/java/com/chifaa/backend/compatibility/StaffIdentityProvider.java`
+- `backend/src/main/java/com/chifaa/backend/compatibility/UserIdentityProvider.java`
+- `backend/src/main/java/com/chifaa/backend/config/OpenApiConfiguration.java`
+- `backend/src/main/java/com/chifaa/backend/directory/AdminOrganisationController.java`
+- `backend/src/main/java/com/chifaa/backend/directory/DirectoryCatalog.java`
+- `backend/src/main/java/com/chifaa/backend/directory/Organisation.java`
+- `backend/src/main/java/com/chifaa/backend/directory/OrganisationController.java`
+- `backend/src/main/java/com/chifaa/backend/directory/OrganisationRepository.java`
+- `backend/src/main/java/com/chifaa/backend/directory/OrganisationRequest.java`
+- `backend/src/main/java/com/chifaa/backend/directory/OrganisationResponse.java`
+- `backend/src/main/java/com/chifaa/backend/directory/OrganisationService.java`
+- `backend/src/main/java/com/chifaa/backend/directory/OrganisationVerificationService.java`
+- `backend/src/main/java/com/chifaa/backend/knowledge/KnowledgeSearchService.java`
+- `backend/src/main/java/com/chifaa/backend/safety/DistressDetectionService.java`
+- `backend/src/main/java/com/chifaa/backend/safety/SafetyEvent.java`
+- `backend/src/main/java/com/chifaa/backend/safety/SafetyEventController.java`
+- `backend/src/main/java/com/chifaa/backend/safety/SafetyEventRepository.java`
+- `backend/src/main/java/com/chifaa/backend/safety/SafetyEventService.java`
+- `backend/src/main/java/com/chifaa/backend/safety/SafetyProperties.java`
+- `backend/src/main/java/com/chifaa/backend/safety/SafetyResourceService.java`
+- `backend/src/main/java/com/chifaa/backend/security/SecurityConfiguration.java`
+- `backend/src/main/resources/application-dev.yml`
+- `backend/src/main/resources/application.yml`
+- `backend/src/main/resources/db/compatibility/V1__local_dependencies.sql`
+- `backend/src/main/resources/db/migration/V2__student3_modules.sql`
+- `backend/src/test/java/com/chifaa/backend/ApiIntegrationTest.java`
+- `backend/src/test/java/com/chifaa/backend/chat/ChatRulesTest.java`
+- `database/demo.sql`
+- `database/test-android-live.ps1`
+- `database/test-backend.ps1`
+- `docs/api/openapi.yaml`
+- `docs/architecture/student3.md`
+- `docs/database/data-dictionary.md`
+- `docs/database/schema.md`
+- `docs/integration/student3-files.md`
+- `docs/integration/student3-integration.md`
+- `docs/student3-demo.md`
+- `docs/validation/student3-compliance.md`
+
+Les captures issues du test instrumenté sont dans `docs/screenshots/student3/`.

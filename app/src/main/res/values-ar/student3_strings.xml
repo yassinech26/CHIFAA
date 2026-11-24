@@ -1,0 +1,148 @@
+<resources>
+    <string name="e3_home">الرئيسية شفاء</string>
+    <string name="e3_directory">دليل الخدمات</string>
+    <string name="e3_chat">رفيق شفاء</string>
+    <string name="e3_history">السجل</string>
+    <string name="e3_staff">فضاء الموظفين</string>
+    <string name="e3_login">تسجيل الدخول</string>
+    <string name="e3_logout">تسجيل الخروج</string>
+    <string name="e3_username">اسم المستخدم</string>
+    <string name="e3_password">كلمة المرور</string>
+    <string name="e3_queue">قائمة السلامة</string>
+    <string name="e3_manage">إدارة الدليل</string>
+    <string name="e3_search">البحث بالاسم</string>
+    <string name="e3_reset">إعادة ضبط</string>
+    <string name="e3_governorate">الولاية</string>
+    <string name="e3_category">نوع الخدمة</string>
+    <string name="e3_all">الكل</string>
+    <string name="e3_results">النتائج (%1$d)</string>
+    <string name="e3_offline">دون اتصال · آخر مزامنة %1$s</string>
+    <string name="e3_synced">آخر مزامنة %1$s</string>
+    <string name="e3_refresh">تحديث</string>
+    <string name="e3_empty">لا توجد نتائج</string>
+    <string name="e3_network">الاتصال غير متاح أو انتهت المهلة.</string>
+    <string name="e3_error">تعذر تنفيذ الإجراء. راجعي المعلومات وحاولي مجددًا.</string>
+    <string name="e3_unauthorized">يلزم تسجيل الدخول أو انتهت الجلسة.</string>
+    <string name="e3_forbidden">الوصول ممنوع.</string>
+    <string name="e3_detail">عرض التفاصيل</string>
+    <string name="e3_dial">اتصال</string>
+    <string name="e3_due">يلزم تجديد التحقق</string>
+    <string name="e3_verified">آخر تحقق · %1$s</string>
+    <string name="e3_address">العنوان</string>
+    <string name="e3_phone">الهاتف</string>
+    <string name="e3_cost">التكلفة</string>
+    <string name="e3_languages">اللغات المتاحة</string>
+    <string name="e3_test_data">بيانات وهمية</string>
+    <string name="e3_name">اسم الخدمة</string>
+    <string name="e3_add">إضافة</string>
+    <string name="e3_edit">تعديل</string>
+    <string name="e3_verify">تسجيل التحقق</string>
+    <string name="e3_method">طريقة التحقق</string>
+    <string name="e3_save">حفظ</string>
+    <string name="e3_cancel">إلغاء</string>
+    <string name="e3_confirm">تأكيد الحفظ</string>
+    <string name="e3_saved">تم الحفظ</string>
+    <string name="e3_loading">جار التحميل</string>
+    <string name="e3_back">رجوع</string>
+    <string name="e3_disclaimer">هذا الرفيق لا يحل محل مختص في الرعاية الصحية.</string>
+    <string name="e3_message">اكتبي رسالتك…</string>
+    <string name="e3_send">إرسال</string>
+    <string name="e3_retry">إعادة محاولة الإرسال</string>
+    <string name="e3_new_chat">محادثة جديدة</string>
+    <string name="e3_older">تحميل المزيد</string>
+    <string name="e3_support">هل تحتاجين إلى دعم؟</string>
+    <string name="e3_not_sent">ما زال إرسال هذه الرسالة بحاجة إلى تأكيد.</string>
+    <string name="e3_fictional_content">محتوى تجريبي غير معتمد</string>
+    <string name="e3_reference">عرض البطاقة</string>
+    <string name="e3_rating">تقييم الإجابة من ٥</string>
+    <string name="e3_severity">الخطورة</string>
+    <string name="e3_status">الحالة</string>
+    <string name="e3_reviewer">المسؤول</string>
+    <string name="e3_action">الإجراء المتخذ</string>
+    <string name="e3_outcome">نتيجة الإحالة</string>
+    <string name="e3_organisation">المؤسسة</string>
+    <string name="e3_duration">الحل · %1$s ث</string>
+    <string name="e3_user_pseudonym">المستخدمة · %1$s</string>
+    <string name="e3_event_date">تاريخ الإبلاغ %1$s</string>
+    <string name="e3_demo_admin">لوحة التحكم المحلية</string>
+    <string name="e3_staff_login">دخول الموظفين</string>
+    <string name="e3_account">دخول المستخدمة</string>
+    <string name="e3_no_value">غير محدد</string>
+    <string name="e3_input_required">أكملي الحقول المطلوبة.</string>
+    <string name="e3_research">البطاقة المرجعية</string>
+    <string-array name="e3_governorates">
+        <item>تونس</item>
+        <item>أريانة</item>
+        <item>بن عروس</item>
+        <item>منوبة</item>
+        <item>نابل</item>
+        <item>زغوان</item>
+        <item>بنزرت</item>
+        <item>باجة</item>
+        <item>جندوبة</item>
+        <item>الكاف</item>
+        <item>سليانة</item>
+        <item>القيروان</item>
+        <item>القصرين</item>
+        <item>سيدي بوزيد</item>
+        <item>سوسة</item>
+        <item>المنستير</item>
+        <item>المهدية</item>
+        <item>صفاقس</item>
+        <item>قفصة</item>
+        <item>توزر</item>
+        <item>قبلي</item>
+        <item>قابس</item>
+        <item>مدنين</item>
+        <item>تطاوين</item>
+    </string-array>
+    <string-array name="e3_categories">
+        <item>الأورام</item>
+        <item>الدعم النفسي</item>
+        <item>المساعدة القانونية</item>
+        <item>الخصوبة</item>
+        <item>الدعم المالي</item>
+        <item>دعم الأقران</item>
+        <item>الأطراف الاصطناعية والشعر المستعار</item>
+        <item>النقل</item>
+        <item>مساعدة التأمين الصحي</item>
+    </string-array>
+    <string-array name="e3_costs">
+        <item>مجاني</item>
+        <item>يغطيه التأمين الصحي</item>
+        <item>مدفوع</item>
+        <item>غير معروف</item>
+    </string-array>
+    <string-array name="e3_language_labels">
+        <item>الفرنسية</item>
+        <item>الدارجة</item>
+        <item>العربية الفصحى</item>
+    </string-array>
+    <string-array name="e3_severity_labels">
+        <item>منخفضة</item>
+        <item>متوسطة</item>
+        <item>مرتفعة</item>
+        <item>حرجة</item>
+    </string-array>
+    <string-array name="e3_status_labels">
+        <item>مفتوح</item>
+        <item>قيد المعالجة</item>
+        <item>تم الحل</item>
+        <item>مغلق</item>
+    </string-array>
+    <string name="e3_language">اللغة</string>
+    <string name="e3_welcome">أهلاً بك في شفاء</string>
+    <string name="e3_intro">راجعي محادثاتك واستكشفي خدمات الدعم.</string>
+    <string name="e3_overview">نظرة عامة</string>
+    <string name="e3_stat_open">أحداث مفتوحة · %1$d</string>
+    <string name="e3_stat_critical">أحداث حرجة · %1$d</string>
+    <string name="e3_stat_resolved">أحداث محلولة · %1$d</string>
+    <string name="e3_stat_organisations">المؤسسات · %1$d</string>
+    <string name="e3_stat_due">عمليات تحقق للتجديد · %1$d</string>
+    <string name="e3_suggestions">اقتراحات</string>
+    <string-array name="e3_chat_suggestions">
+        <item>اكتشاف الموارد المتاحة</item>
+        <item>إعداد أسئلتي للموعد</item>
+        <item>العثور على خدمة دعم</item>
+    </string-array>
+</resources>

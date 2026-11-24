@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root" android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/background">
+    <com.google.android.material.appbar.MaterialToolbar android:id="@+id/toolbar"
+        android:layout_width="0dp" android:layout_height="wrap_content" android:minHeight="@dimen/e3_touch"
+        android:background="@color/surface" app:titleTextColor="@color/text_primary"
+        app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <LinearLayout android:id="@+id/header" android:layout_width="0dp" android:layout_height="wrap_content"
+        android:orientation="vertical" android:paddingHorizontal="@dimen/e3_padding"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <TextView android:id="@+id/status" android:layout_width="0dp" android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/e3_padding" android:accessibilityLiveRegion="polite"
+        android:textColor="@color/text_secondary" android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/header" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <ProgressBar android:id="@+id/progress" style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp" android:layout_height="wrap_content" android:indeterminate="true"
+        android:contentDescription="@string/e3_loading" android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/status" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+    <androidx.recyclerview.widget.RecyclerView android:id="@+id/list" android:layout_width="0dp" android:layout_height="0dp"
+        android:clipToPadding="false" android:paddingHorizontal="@dimen/e3_padding" android:paddingVertical="@dimen/e3_gap"
+        app:layout_constraintTop_toBottomOf="@id/progress" app:layout_constraintBottom_toTopOf="@id/footer"
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
+    <LinearLayout android:id="@+id/footer" android:layout_width="0dp" android:layout_height="wrap_content"
+        android:orientation="vertical" android:paddingHorizontal="@dimen/e3_padding"
+        app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

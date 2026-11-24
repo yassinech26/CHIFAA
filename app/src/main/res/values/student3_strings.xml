@@ -1,0 +1,148 @@
+<resources>
+    <string name="e3_home">Accueil CHIFAA</string>
+    <string name="e3_directory">Annuaire des services</string>
+    <string name="e3_chat">Compagnon CHIFAA</string>
+    <string name="e3_history">Historique</string>
+    <string name="e3_staff">Espace personnel</string>
+    <string name="e3_login">Connexion</string>
+    <string name="e3_logout">Déconnexion</string>
+    <string name="e3_username">Identifiant</string>
+    <string name="e3_password">Mot de passe</string>
+    <string name="e3_queue">File de sécurité</string>
+    <string name="e3_manage">Gestion de l’annuaire</string>
+    <string name="e3_search">Rechercher par nom</string>
+    <string name="e3_reset">Réinitialiser</string>
+    <string name="e3_governorate">Gouvernorat</string>
+    <string name="e3_category">Type de service</string>
+    <string name="e3_all">Tous</string>
+    <string name="e3_results">Résultats (%1$d)</string>
+    <string name="e3_offline">Hors ligne · Synchronisé le %1$s</string>
+    <string name="e3_synced">Synchronisé le %1$s</string>
+    <string name="e3_refresh">Actualiser</string>
+    <string name="e3_empty">Aucun résultat</string>
+    <string name="e3_network">Connexion indisponible ou délai dépassé.</string>
+    <string name="e3_error">Action impossible. Vérifiez les informations et réessayez.</string>
+    <string name="e3_unauthorized">Connexion requise ou expirée.</string>
+    <string name="e3_forbidden">Accès interdit.</string>
+    <string name="e3_detail">Voir les détails</string>
+    <string name="e3_dial">Appeler</string>
+    <string name="e3_due">Vérification à renouveler</string>
+    <string name="e3_verified">Dernière vérification · %1$s</string>
+    <string name="e3_address">Adresse</string>
+    <string name="e3_phone">Téléphone</string>
+    <string name="e3_cost">Coût</string>
+    <string name="e3_languages">Langues proposées</string>
+    <string name="e3_test_data">Données fictives</string>
+    <string name="e3_name">Nom du service</string>
+    <string name="e3_add">Ajouter</string>
+    <string name="e3_edit">Modifier</string>
+    <string name="e3_verify">Enregistrer la vérification</string>
+    <string name="e3_method">Méthode de vérification</string>
+    <string name="e3_save">Enregistrer</string>
+    <string name="e3_cancel">Annuler</string>
+    <string name="e3_confirm">Confirmer l’enregistrement</string>
+    <string name="e3_saved">Enregistré</string>
+    <string name="e3_loading">Chargement</string>
+    <string name="e3_back">Retour</string>
+    <string name="e3_disclaimer">Ce compagnon ne remplace pas un professionnel de santé.</string>
+    <string name="e3_message">Écrivez votre message…</string>
+    <string name="e3_send">Envoyer</string>
+    <string name="e3_retry">Réessayer l’envoi</string>
+    <string name="e3_new_chat">Nouvelle conversation</string>
+    <string name="e3_older">Charger la suite</string>
+    <string name="e3_support">Besoin de soutien</string>
+    <string name="e3_not_sent">La transmission de ce message reste à confirmer.</string>
+    <string name="e3_fictional_content">Contenu fictif – non validé</string>
+    <string name="e3_reference">Consulter la fiche</string>
+    <string name="e3_rating">Évaluer la réponse sur 5</string>
+    <string name="e3_severity">Gravité</string>
+    <string name="e3_status">Statut</string>
+    <string name="e3_reviewer">Référent</string>
+    <string name="e3_action">Action effectuée</string>
+    <string name="e3_outcome">Résultat de l’orientation</string>
+    <string name="e3_organisation">Organisation</string>
+    <string name="e3_duration">Résolution · %1$s s</string>
+    <string name="e3_user_pseudonym">Usagère · %1$s</string>
+    <string name="e3_event_date">Signalé le %1$s</string>
+    <string name="e3_demo_admin">Tableau de bord local</string>
+    <string name="e3_staff_login">Connexion du personnel</string>
+    <string name="e3_account">Connexion utilisatrice</string>
+    <string name="e3_no_value">Non renseigné</string>
+    <string name="e3_input_required">Complétez les champs requis.</string>
+    <string name="e3_research">Fiche de référence</string>
+    <string-array name="e3_governorates">
+        <item>Tunis</item>
+        <item>Ariana</item>
+        <item>Ben Arous</item>
+        <item>La Manouba</item>
+        <item>Nabeul</item>
+        <item>Zaghouan</item>
+        <item>Bizerte</item>
+        <item>Béja</item>
+        <item>Jendouba</item>
+        <item>Le Kef</item>
+        <item>Siliana</item>
+        <item>Kairouan</item>
+        <item>Kasserine</item>
+        <item>Sidi Bouzid</item>
+        <item>Sousse</item>
+        <item>Monastir</item>
+        <item>Mahdia</item>
+        <item>Sfax</item>
+        <item>Gafsa</item>
+        <item>Tozeur</item>
+        <item>Kébili</item>
+        <item>Gabès</item>
+        <item>Médenine</item>
+        <item>Tataouine</item>
+    </string-array>
+    <string-array name="e3_categories">
+        <item>Oncologie</item>
+        <item>Soutien psychologique</item>
+        <item>Assistance juridique</item>
+        <item>Fertilité</item>
+        <item>Soutien financier</item>
+        <item>Soutien par les pairs</item>
+        <item>Prothèses et perruques</item>
+        <item>Transport</item>
+        <item>Aide CNAM</item>
+    </string-array>
+    <string-array name="e3_costs">
+        <item>Gratuit</item>
+        <item>Couvert par la CNAM</item>
+        <item>Payant</item>
+        <item>Inconnu</item>
+    </string-array>
+    <string-array name="e3_language_labels">
+        <item>Français</item>
+        <item>Darija</item>
+        <item>Arabe standard</item>
+    </string-array>
+    <string-array name="e3_severity_labels">
+        <item>Faible</item>
+        <item>Moyenne</item>
+        <item>Élevée</item>
+        <item>Critique</item>
+    </string-array>
+    <string-array name="e3_status_labels">
+        <item>Ouvert</item>
+        <item>En cours</item>
+        <item>Résolu</item>
+        <item>Clôturé</item>
+    </string-array>
+    <string name="e3_language">Langue</string>
+    <string name="e3_welcome">Bienvenue sur CHIFAA</string>
+    <string name="e3_intro">Retrouvez vos conversations et explorez les services de soutien.</string>
+    <string name="e3_overview">Vue d’ensemble</string>
+    <string name="e3_stat_open">Événements ouverts · %1$d</string>
+    <string name="e3_stat_critical">Événements critiques · %1$d</string>
+    <string name="e3_stat_resolved">Événements résolus · %1$d</string>
+    <string name="e3_stat_organisations">Organisations · %1$d</string>
+    <string name="e3_stat_due">Vérifications à renouveler · %1$d</string>
+    <string name="e3_suggestions">Suggestions</string>
+    <string-array name="e3_chat_suggestions">
+        <item>Découvrir les ressources disponibles</item>
+        <item>Préparer mes questions pour un rendez-vous</item>
+        <item>Trouver un service de soutien</item>
+    </string-array>
+</resources>
