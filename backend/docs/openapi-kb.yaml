@@ -1,0 +1,127 @@
+openapi: 3.0.3
+info:
+  title: CHIFAA · Bibliothèque M4
+  version: 1.0.0
+  description: Lecture des fiches visibles dans kb_visible_items. Accès par HTTPS avec un jeton de l’émetteur configuré pour CHIFAA.
+security:
+  - bearerAuth: []
+paths:
+  /api/kb:
+    get:
+      operationId: listKnowledgeItems
+      summary: Lister ou rechercher des fiches visibles
+      description: Les filtres se combinent par ET. Les résultats suivent l’ordre croissant de contentId. Sans correspondance, items est vide et nextAfter vaut null.
+      parameters:
+        - name: q
+          in: query
+          description: Sous-chaîne littérale du titre, du texte ou du sujet, sans distinction de casse. Les caractères % et _ sont ordinaires. Les espaces aux extrémités sont ignorés.
+          schema: {type: string, maxLength: 200}
+        - name: topic
+          in: query
+          description: Sujet exact, sans distinction de casse, après suppression des espaces aux extrémités.
+          schema: {type: string, maxLength: 50}
+        - name: language
+          in: query
+          description: Langue du contenu. Omettre pour toutes les langues.
+          schema: {$ref: '#/components/schemas/Language'}
+        - name: after
+          in: query
+          description: Curseur exclusif. Pour la page suivante, reprendre nextAfter avec les mêmes filtres.
+          schema: {$ref: '#/components/schemas/ContentId'}
+        - name: limit
+          in: query
+          schema: {type: integer, minimum: 1, maximum: 100, default: 20}
+      responses:
+        '200':
+          description: Page de résumés visibles.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, nextAfter]
+                properties:
+                  items:
+                    type: array
+                    items: {$ref: '#/components/schemas/ItemSummary'}
+                  nextAfter:
+                    type: string
+                    nullable: true
+                    pattern: '^KB-[0-9]{4}$'
+                    description: Dernier identifiant renvoyé si une autre page existe, sinon null.
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+  /api/kb/{id}:
+    get:
+      operationId: getKnowledgeItem
+      summary: Consulter le contenu et les métadonnées d’une fiche visible
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {$ref: '#/components/schemas/ContentId'}
+      responses:
+        '200':
+          description: Fiche de la version identifiée, visible au moment de la requête.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/ItemDetail'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '404':
+          description: Identifiant bien formé, inconnu ou fiche non visible.
+          content:
+            application/problem+json:
+              schema: {$ref: '#/components/schemas/Problem'}
+components:
+  securitySchemes:
+    bearerAuth: {type: http, scheme: bearer, bearerFormat: JWT}
+  responses:
+    BadRequest:
+      description: Identifiant mal formé, filtre ou pagination invalide.
+      content:
+        application/problem+json:
+          schema: {$ref: '#/components/schemas/Problem'}
+    Unauthorized:
+      description: Jeton absent ou invalide pour cette API.
+      headers:
+        WWW-Authenticate:
+          schema: {type: string}
+  schemas:
+    ContentId: {type: string, pattern: '^KB-[0-9]{4}$', example: KB-0001}
+    Language: {type: string, enum: [French, Darija, MSA]}
+    ItemSummary:
+      type: object
+      required: [contentId, title, topic, language, fictional, notice]
+      properties:
+        contentId: {$ref: '#/components/schemas/ContentId'}
+        title: {type: string}
+        topic: {type: string}
+        language: {$ref: '#/components/schemas/Language'}
+        fictional: {type: boolean}
+        notice:
+          type: string
+          nullable: true
+          example: Contenu fictif – non validé
+    ItemDetail:
+      allOf:
+        - {$ref: '#/components/schemas/ItemSummary'}
+        - type: object
+          required: [sourceType, sourceReference, contentText, evidenceLevel, localApplicability, contentVersion, reviewDate, expiryDate]
+          properties:
+            sourceType: {type: string, description: Libellé AT-044}
+            sourceReference: {type: string}
+            contentText: {type: string}
+            evidenceLevel: {type: string, nullable: true}
+            localApplicability: {type: string, nullable: true}
+            contentVersion: {type: string}
+            reviewDate: {type: string, format: date}
+            expiryDate: {type: string, format: date, nullable: true}
+    Problem:
+      type: object
+      required: [status]
+      properties:
+        type: {type: string}
+        title: {type: string}
+        status: {type: integer}
+        detail: {type: string}
+        instance: {type: string}
