@@ -1,102 +1,19 @@
 package tn.chifaa.knowledge;
 
-import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.JWSHeader;
-import com.nimbusds.jose.crypto.RSASSASigner;
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.gen.RSAKeyGenerator;
-import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.SignedJWT;
-import com.sun.net.httpserver.HttpServer;
-import io.zonky.test.db.postgres.embedded.EmbeddedPostgres;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
-import java.time.Instant;
-import java.util.Date;
-
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.nullValue;
+import tn.chifaa.PostgresJwtTest;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest(properties = {
-    "CHIFAA_JWT_ISSUER_URI=https://issuer.test", "CHIFAA_JWT_AUDIENCE=chifaa-test",
-    "spring.flyway.locations=classpath:fixture,classpath:db/migration",
-    "spring.flyway.placeholders.at044Source1=Test A", "spring.flyway.placeholders.at044Source2=Test B",
-    "spring.flyway.placeholders.at044Source3=Test C", "spring.flyway.placeholders.at044Source4=Test D",
-    "spring.flyway.placeholders.at044Source5=Test E"
-})
-@AutoConfigureMockMvc
 @Sql(scripts = "/knowledge-api-fixtures.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
-class KnowledgeApiTest {
-    @TestConfiguration(proxyBeanMethods = false)
-    static class Database {
-        @Bean(destroyMethod = "close")
-        EmbeddedPostgres postgres() throws IOException {
-            return EmbeddedPostgres.start();
-        }
-
-        @Bean
-        DataSource dataSource(EmbeddedPostgres postgres) {
-            return postgres.getPostgresDatabase();
-        }
-    }
-
-    private static RSAKey signingKey;
-    private static HttpServer keys;
-    @Autowired MockMvc mvc;
-
-    @DynamicPropertySource
-    static void signingKeys(DynamicPropertyRegistry properties) throws Exception {
-        signingKey = new RSAKeyGenerator(2048).keyID("test").generate();
-        byte[] jwks = new JWKSet(signingKey.toPublicJWK()).toString().getBytes(StandardCharsets.UTF_8);
-        keys = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);
-        keys.createContext("/keys", exchange -> {
-            exchange.getResponseHeaders().add("Content-Type", "application/json");
-            exchange.sendResponseHeaders(200, jwks.length);
-            try (var out = exchange.getResponseBody()) {
-                out.write(jwks);
-            }
-        });
-        keys.start();
-        properties.add("spring.security.oauth2.resourceserver.jwt.jwk-set-uri",
-                () -> "http://127.0.0.1:" + keys.getAddress().getPort() + "/keys");
-    }
-
-    @AfterAll
-    static void closeKeys() {
-        if (keys != null) keys.stop(0);
-    }
-
-    private String bearer(String audience) throws Exception {
-        var claims = new JWTClaimsSet.Builder().issuer("https://issuer.test").subject("test-user")
-                .audience(audience).expirationTime(Date.from(Instant.now().plusSeconds(300))).build();
-        var token = new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.RS256).keyID("test").build(), claims);
-        token.sign(new RSASSASigner(signingKey));
-        return "Bearer " + token.serialize();
-    }
-
+class KnowledgeApiTest extends PostgresJwtTest {
     private MockHttpServletRequestBuilder read(String path) throws Exception {
-        return get(path).header("Authorization", bearer("chifaa-test"));
+        return get(path).header("Authorization", bearer("test-user", "chifaa-test"));
     }
 
     @Test
@@ -154,6 +71,6 @@ class KnowledgeApiTest {
     void requiresAValidAccessToken(String path) throws Exception {
         mvc.perform(get(path)).andExpect(status().isUnauthorized());
         mvc.perform(get(path).header("Authorization", "Bearer invalid")).andExpect(status().isUnauthorized());
-        mvc.perform(get(path).header("Authorization", bearer("other-app"))).andExpect(status().isUnauthorized());
+        mvc.perform(get(path).header("Authorization", bearer("test-user", "other-app"))).andExpect(status().isUnauthorized());
     }
 }

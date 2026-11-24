@@ -1,0 +1,22 @@
+# Exemple technique. À copier dans une configuration locale externe uniquement pour une démonstration.
+# Remplacer les marqueurs par les SEPT libellés officiels AT-022 et les règles de l’encadrant.
+spring:
+  flyway:
+    placeholders:
+      at022Type1: "TEST_AT022_1"
+      at022Type2: "TEST_AT022_2"
+      at022Type3: "TEST_AT022_3"
+      at022Type4: "TEST_AT022_4"
+      at022Type5: "TEST_AT022_5"
+      at022Type6: "TEST_AT022_6"
+      at022Type7: "TEST_AT022_7"
+chifaa:
+  chat:
+    kb-version: KB-20261124
+    triggers:
+      - phrase: "MARQUEUR TECHNIQUE DE TEST"
+        type: "TEST_AT022_1"
+        severity: High
+    resources:
+      fr: "RESSOURCE TECHNIQUE DE TEST"
+      ar: "مورد تجريبي للاختبار"

@@ -1,4 +1,4 @@
-# Bibliothèque M4 · API de lecture et PostgreSQL
+# Backend CHIFAA · Bibliothèque M4 et compagnon M5
 
 La migration Flyway crée `kb_items` et la vue `kb_visible_items`. Les deux routes de lecture utilisent cette vue, y compris pour une recherche par identifiant. Elle expose les fiches approuvées dont la revue a déjà eu lieu, avec leur source et leurs dates. Une fiche fictive comporte la mention « Contenu fictif – non validé » dans `notice`. Aucune fiche de démonstration n’est insérée par la migration.
 
@@ -12,7 +12,7 @@ Depuis `backend`, lancer `mvn test` avec Maven et un JDK 17 ou ultérieur. JUnit
 
 1. Appliquer d’abord la migration d’E3 qui fournit `staff.staff_id` (`varchar(10)`, clé primaire). La fixture de test ne fait pas partie des ressources de l’application.
 2. Renseigner les propriétés Flyway `flyway.placeholders.at044Source1` à `flyway.placeholders.at044Source5` avec les cinq libellés distincts du catalogue AT-044 v0.5. Doubler toute apostrophe simple dans ces paramètres de migration SQL. Le PDF indique leur nombre mais ne les énumère pas. Les valeurs de test ne doivent pas servir à initialiser la base de l’équipe.
-3. Depuis `backend`, avec la connexion PostgreSQL et ces propriétés dans la configuration locale de Flyway, lancer `flyway -locations=filesystem:src/main/resources/db/migration migrate`, puis `flyway validate` avec la même configuration et le même emplacement de migrations.
+3. Pour appliquer uniquement le lot M4, utiliser la cible Flyway `2026112401`. Pour appliquer également M5, fournir les dépendances et propriétés de la section M5 ci-dessous. Depuis `backend`, lancer `flyway -locations=filesystem:src/main/resources/db/migration migrate`, puis `flyway validate` avec la même configuration et le même emplacement de migrations.
 
 ## Démarrer le serveur de lecture
 
@@ -27,3 +27,21 @@ Envoyer `Authorization: Bearer <jeton>` pour les deux lectures. Par exemple, `GE
 Les deux routes répondent 401 si le jeton est absent ou invalide et 400 pour un paramètre mal formé. Le détail répond 404 pour une fiche inconnue ou masquée. Le client peut utiliser `fictional` pour afficher la mention de démonstration dans la langue d’interface. Les noms JSON, limites et formats de réponse figurent dans le [contrat OpenAPI](docs/openapi-kb.yaml).
 
 La commande `mvn verify` vérifie aussi les routes via Spring MVC, Spring Security et PostgreSQL, avec des jetons signés et des données fictives propres aux tests.
+
+## Compagnon M5
+
+Le [contrat OpenAPI du chat](docs/openapi-chat.yaml) décrit les sessions, les messages, la lecture de l’historique et la notation. Le JWT d’E1 doit porter le pseudonyme UUID dans `sub`. Le serveur vérifie la dernière décision de consentement `Health data` à chaque opération, car les messages peuvent contenir des données de santé. La session appartient exclusivement à ce pseudonyme.
+
+La migration M5 dépend de `users(user_pid)`, `staff(staff_id)`, `organisations(org_id)` et du socle M4. À l’exécution, le registre `consents` d’E1 doit aussi être accessible. Configurer les sept libellés AT-022 dans Flyway en plus des cinq AT-044 de M4. Doubler les apostrophes simples dans les valeurs SQL des placeholders. La version KB correspond à la publication du catalogue, au format `KB-YYYYMMDD`. L’équipe doit la mettre à jour à chaque publication.
+
+L’[exemple de configuration](docs/chat-config.example.yaml) contient uniquement des marqueurs techniques. En exploitation, fournir les phrases, types et gravités de l’encadrant ainsi que les ressources officielles CHIFAA. Sans règles de détresse ou sans version KB valide, l’envoi répond 503. Les coordonnées officielles configurées sont incluses dans le texte de détresse conservé. Une ressource absente laisse uniquement le texte d’orientation. L’événement débute à `Open` ; cela ne vaut pas prise en charge par un humain.
+
+Pour utiliser le chat, créer une session avec `POST /api/chat/sessions`, puis envoyer par exemple `{"text":"Je cherche une fiche sur l’accueil","messageId":"c237dd15-1193-44bc-9f18-80c66afe2901"}` à `POST /api/chat/sessions/{id}/messages`. Le client conserve cet UUID pendant les reprises réseau. Le serveur sérialise les envois d’une même session et écrit la question, la réponse et l’alerte éventuelle dans une transaction. Le client attend la confirmation HTTP avant d’indiquer qu’un envoi a été enregistré.
+
+La détection des langues et des limites médicales repose sur des règles lexicales. La détresse configurée est prioritaire, puis viennent les demandes de diagnostic, posologie ou choix de traitement. La recherche suivante porte sur les mots des sujets, des titres et des textes de la vue M4. Un sujet pèse davantage qu’un titre, et un titre davantage que le corps. La langue détectée est requise sauf pour un message mixte, pour lequel la recherche privilégie la langue correspondante. Une réponse documentaire reprend le texte de la fiche, sa mention fictive et son identifiant. L’absence de résultat produit une orientation vers l’annuaire. Les règles linguistiques demandent une validation par l’équipe pour les formulations locales.
+
+Consulter une conversation avec `GET /api/chat/sessions/{id}/messages` et noter la réponse avec `POST /api/chat/messages/{id}/feedback` et `{"rating":4}`. Une fiche devenue invisible a son texte et sa référence masqués dans l’historique. Les dates sont renvoyées en UTC. Pour les journaux de production, conserver désactivée la journalisation des corps HTTP et des valeurs de paramètres SQL.
+
+Pour afficher la carte de la source, le client utilise `answer.contentId` sur `GET /api/kb/{id}`. Pour une question mixte, un marqueur darija privilégie une fiche darija, sinon la recherche privilégie l’arabe standard. Le français est la langue de repli. Le texte des ressources de détresse suit la langue de réponse, avec repli sur l’autre traduction officielle disponible.
+
+La configuration partagée de Spring Security conserve la validation JWT sur M4 et M5. Le JAR ne contient ni données de démonstration ni clés de test. Lors de l’intégration, vérifier également que les journaux du serveur PostgreSQL n’enregistrent aucune ligne de message ni valeur liée, y compris en cas d’erreur.

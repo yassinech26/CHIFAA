@@ -25,6 +25,7 @@ class KnowledgeMigrationTest {
         Flyway flyway = Flyway.configure()
                 .dataSource(pg.getPostgresDatabase())
                 .locations("classpath:fixture", "classpath:db/migration")
+                .target("2026112401")
                 .placeholders(Map.of("at044Source1", "Test A", "at044Source2", "Test B",
                         "at044Source3", "Test C", "at044Source4", "Test D", "at044Source5", "Test E"))
                 .load();
