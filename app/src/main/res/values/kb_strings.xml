@@ -1,0 +1,31 @@
+<resources>
+    <string name="kb_high">Élevé</string>
+    <string name="kb_moderate">Modéré</string>
+    <string name="kb_low">Faible</string>
+    <string name="kb_expert">Avis d’expert</string>
+    <string name="kb_library">Bibliothèque</string>
+    <string name="kb_keyword">Mot-clé</string>
+    <string name="kb_topic">Sujet</string>
+    <string name="kb_language">Langue du contenu</string>
+    <string name="kb_all">Toutes les langues</string>
+    <string name="kb_french">Français</string>
+    <string name="kb_msa">Arabe standard</string>
+    <string name="kb_darija">Darija</string>
+    <string name="kb_apply">Rechercher</string>
+    <string name="kb_more">Afficher la suite</string>
+    <string name="kb_notice">Contenu fictif – non validé</string>
+    <string name="kb_row_meta">%1$s · %2$s</string>
+    <string name="kb_metadata">Sujet : %1$s\nLangue : %2$s\nSource : %3$s · %4$s\nDate de revue : %5$s\nExpiration : %6$s\nNiveau de preuve : %7$s\nVersion : %8$s</string>
+    <string name="kb_unspecified">Non renseigné</string>
+    <string name="kb_loading">Chargement…</string>
+    <string name="kb_empty">Aucune fiche ne correspond à cette recherche.</string>
+    <string name="kb_offline">Serveur indisponible. Fiches déjà consultées sur cet appareil.</string>
+    <string name="kb_cached_detail">Copie enregistrée sur cet appareil.</string>
+    <string name="kb_offline_empty">Serveur indisponible. Aucune fiche consultée ne correspond aux filtres.</string>
+    <string name="kb_not_saved">Cette fiche est indisponible hors ligne.</string>
+    <string name="kb_auth">Connectez-vous pour accéder à la bibliothèque.</string>
+    <string name="kb_hidden">Cette fiche n’est plus disponible.</string>
+    <string name="kb_error">Impossible de charger les fiches. Réessayez.</string>
+    <string name="kb_back">Retour à la bibliothèque</string>
+    <string name="kb_retry">Actualiser</string>
+</resources>
