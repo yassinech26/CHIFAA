@@ -1,8 +1,8 @@
-# Backend CHIFAA · Bibliothèque M4, compagnon M5 et file de sécurité B3
+# Backend CHIFAA · Bibliothèque M4, compagnon M5, validation B2 et file de sécurité B3
 
 La migration Flyway crée `kb_items` et la vue `kb_visible_items`. Les deux routes de lecture utilisent cette vue, y compris pour une recherche par identifiant. Elle expose les fiches approuvées dont la revue a déjà eu lieu, avec leur source et leurs dates. Une fiche fictive comporte la mention « Contenu fictif – non validé » dans `notice`. Aucune fiche de démonstration n’est insérée par la migration.
 
-La date d’expiration est le premier jour de non-publication, à partir de minuit UTC. Une date absente signifie qu’aucune échéance n’est renseignée. Lors d’un remplacement, le service de versionnement devra insérer la nouvelle fiche et, dans la même transaction, retirer l’ancienne en renseignant `superseded_by`. Cela évite de republier l’ancienne fiche si la nouvelle est supprimée.
+La date d’expiration est le premier jour de non-publication, à partir de minuit UTC. Une date absente signifie qu’aucune échéance n’est renseignée. Lors d’un remplacement, B2 retire la publication précédente et approuve le nouveau brouillon dans la même transaction.
 
 ## Exécuter les tests
 
@@ -58,3 +58,32 @@ Le back-office lit les alertes que M5 enregistre dans `safety_events`. La liste 
 Les horodatages sont établis par PostgreSQL et renvoyés en UTC. `handlingDelaySeconds` mesure les secondes entières entre le signalement et le premier passage en cours. `resolutionDelaySeconds` mesure celles entre le signalement et la résolution. Les deux valeurs sont calculées à la lecture, y compris dans la réponse du PATCH. Un instant inconnu donne un délai `null`, notamment pour les alertes déjà traitées avant la migration B3. La clôture conserve les deux délais.
 
 La suite `mvn verify` exerce les routes avec des jetons signés, les migrations Flyway et PostgreSQL temporaire. Les champs, valeurs admises et codes de réponse figurent dans le [contrat OpenAPI B3](docs/openapi-safety.yaml).
+
+## Validation des fiches B2
+
+Le personnel utilise le même contrat JWT que B3. Le serveur identifie le compte avec `sub = staff.staff_id`, puis vérifie son état actif et son rôle à chaque opération. Les comptes `Content team` et `Clinical reviewer` peuvent lire toutes les versions dans le back-office.
+
+| Opération | Route et rôle |
+| --- | --- |
+| Lister les versions, avec filtre de statut et pagination | `GET /api/admin/kb?status=Draft&offset=0&limit=50` · les deux rôles |
+| Lire le texte exact à relire et sa provenance | `GET /api/admin/kb/{id}` · les deux rôles |
+| Parcourir l’historique depuis la première version | `GET /api/admin/kb/{id}/versions?offset=0&limit=50` · les deux rôles |
+| Créer un brouillon | `POST /api/admin/kb` · Content team |
+| Réviser le contenu d’un brouillon ou d’une publication | `PATCH /api/admin/kb/{id}` · Content team |
+| Approuver ou retirer | `PATCH /api/admin/kb/{id}` · Clinical reviewer |
+
+### Exemple de relecture
+
+À la création, envoyer `title`, `topic`, `language`, `contentText`, `sourceType` et `sourceReference`. Le type de source doit figurer parmi les cinq valeurs AT-044 de la base. Le serveur renvoie HTTP 201, un `contentId` au format `KB-####` et la version `v1.0`. Les nouvelles fiches de ce projet étudiant sont fictives. Elles conservent la mention « Contenu fictif – non validé » après approbation de démonstration.
+
+Pour corriger un titre, envoyer par exemple `{"title":"Guide fictif révisé"}`. Une modification effective crée un nouveau brouillon et incrémente la version mineure. Le corps et l’en-tête `Location` désignent le nouvel identifiant à utiliser pour la suite. Un champ omis conserve sa valeur. Envoyer `null` efface une métadonnée facultative, par exemple `expiryDate`. Un PATCH sans changement renvoie la version existante. Chaque version conserve son propre texte.
+
+Le relecteur consulte le nouvel identifiant, puis lui adresse `{"approvalStatus":"Clinically approved"}`. Il peut aussi fixer une échéance avec `expiryDate` au format `YYYY-MM-DD`, strictement postérieure au jour de validation. Le serveur renseigne `clinicalReviewer` et `reviewDate` avec le compte authentifié et la date UTC. Une décision porte sur un identifiant précis. Un brouillon déjà remplacé renvoie HTTP 409.
+
+La bibliothèque et le chat continuent à utiliser la publication en vigueur pendant les corrections, sous réserve de son échéance. À l’approbation de la nouvelle version, la précédente quitte la vue M4. Pour retirer, envoyer `{"approvalStatus":"Retired"}`. Retirer uniquement le brouillon laisse la publication en place. Retirer la publication retire également son éventuel brouillon en cours, afin qu’une décision en attente ne puisse pas republier le contenu retiré.
+
+### Migration et vérification
+
+Flyway `V2026112502` ajoute `previous_version_id` et reconstruit les liens antérieurs depuis `superseded_by`. Ce dernier pointe vers la version suivante dans la chaîne historique et peut donc traverser des brouillons archivés. Les mutations d’une même chaîne se sérialisent sur sa racine. Les brouillons et l’historique administratif restent accessibles seulement au personnel autorisé.
+
+Depuis `backend`, `mvn verify` exerce le cycle, les rôles, les modifications concurrentes, la migration et la visibilité M4/M5 avec PostgreSQL temporaire et des jetons signés. Les corps JSON, les champs facultatifs et les codes HTTP figurent dans le [contrat OpenAPI B2](docs/openapi-clinicalreview.yaml).
