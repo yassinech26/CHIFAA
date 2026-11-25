@@ -1,4 +1,4 @@
-# Backend CHIFAA · Bibliothèque M4 et compagnon M5
+# Backend CHIFAA · Bibliothèque M4, compagnon M5 et file de sécurité B3
 
 La migration Flyway crée `kb_items` et la vue `kb_visible_items`. Les deux routes de lecture utilisent cette vue, y compris pour une recherche par identifiant. Elle expose les fiches approuvées dont la revue a déjà eu lieu, avec leur source et leurs dates. Une fiche fictive comporte la mention « Contenu fictif – non validé » dans `notice`. Aucune fiche de démonstration n’est insérée par la migration.
 
@@ -45,3 +45,16 @@ Consulter une conversation avec `GET /api/chat/sessions/{id}/messages` et noter 
 Pour afficher la carte de la source, le client utilise `answer.contentId` sur `GET /api/kb/{id}`. Pour une question mixte, un marqueur darija privilégie une fiche darija, sinon la recherche privilégie l’arabe standard. Le français est la langue de repli. Le texte des ressources de détresse suit la langue de réponse, avec repli sur l’autre traduction officielle disponible.
 
 La configuration partagée de Spring Security conserve la validation JWT sur M4 et M5. Le JAR ne contient ni données de démonstration ni clés de test. Lors de l’intégration, vérifier également que les journaux du serveur PostgreSQL n’enregistrent aucune ligne de message ni valeur liée, y compris en cas d’erreur.
+
+## File de sécurité B3
+
+Le back-office lit les alertes que M5 enregistre dans `safety_events`. La liste présente uniquement les métadonnées de suivi et les identifiants pseudonymes. Le contrat d’intégration B1 prévoit un JWT de l’émetteur et de l’audience configurés avec `sub = staff.staff_id`. B3 relit `staff.active` et `staff.role` pour chaque opération. Seul un compte actif portant le rôle exact `Safety reviewer` peut consulter la file ou la modifier. La table du personnel appartient à E3. La migration B3 ajoute l’horodatage nullable `taken_in_charge_at` à la table de M5.
+
+1. Appeler `GET /api/admin/safety-events?status=Open&limit=50&offset=0` avec le jeton Bearer. Le serveur affiche d’abord les alertes critiques, puis les gravités High, Medium et Low. À gravité égale, l’alerte la plus ancienne apparaît en premier. Omettre `status` pour consulter tous les statuts.
+2. Envoyer `PATCH /api/admin/safety-events/{id}` avec `Content-Type: application/json` et `{"status":"In progress"}`. Une affectation existante est conservée. Une alerte libre est attribuée au référent connecté. Pour choisir un autre référent actif, transmettre son `reviewerId`. Une affectation seule laisse le statut et le chronomètre de prise en charge inchangés.
+3. Enregistrer l’action et l’orientation, par exemple avec `{"status":"Resolved","actionTaken":"Referral","referralOutcome":"Contacted","orgId":"ORG-001"}`. L’identifiant fictif de cet exemple suppose la présence de cette organisation dans les données de test. Une propriété omise conserve sa valeur. Une valeur explicite `null` efface un champ facultatif.
+4. Clore l’alerte avec `{"status":"Closed"}`. Les mises à jour concurrentes sont sérialisées par alerte. Répéter un PATCH identique au même stade conserve les horodatages. Une transition en arrière, un saut d’étape ou une modification après clôture renvoie HTTP 409.
+
+Les horodatages sont établis par PostgreSQL et renvoyés en UTC. `handlingDelaySeconds` mesure les secondes entières entre le signalement et le premier passage en cours. `resolutionDelaySeconds` mesure celles entre le signalement et la résolution. Les deux valeurs sont calculées à la lecture, y compris dans la réponse du PATCH. Un instant inconnu donne un délai `null`, notamment pour les alertes déjà traitées avant la migration B3. La clôture conserve les deux délais.
+
+La suite `mvn verify` exerce les routes avec des jetons signés, les migrations Flyway et PostgreSQL temporaire. Les champs, valeurs admises et codes de réponse figurent dans le [contrat OpenAPI B3](docs/openapi-safety.yaml).

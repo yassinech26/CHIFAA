@@ -12,7 +12,7 @@ class ApiSecurity {
     @Bean
     SecurityFilterChain authenticatedApi(HttpSecurity http) throws Exception {
         return http.sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/chat/**"))
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/chat/**", "/api/admin/safety-events/*"))
                 .authorizeHttpRequests(routes -> routes.anyRequest().authenticated())
                 .oauth2ResourceServer(resource -> resource.jwt(Customizer.withDefaults()))
                 .build();

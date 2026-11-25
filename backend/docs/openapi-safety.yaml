@@ -1,0 +1,131 @@
+openapi: 3.0.3
+info:
+  title: CHIFAA · File de sécurité B3
+  version: 1.0.0
+  description: >
+    API HTTPS du back-office. Le sujet du JWT Bearer validé identifie staff.staff_id.
+    Le rôle Safety reviewer et le statut actif du compte sont vérifiés en base à chaque opération.
+security:
+  - bearerAuth: []
+paths:
+  /api/admin/safety-events:
+    get:
+      operationId: listSafetyEvents
+      summary: Consulter la file des alertes créées par M5
+      description: Gravité décroissante, puis signalement le plus ancien et identifiant croissant.
+      parameters:
+        - name: status
+          in: query
+          schema: {$ref: '#/components/schemas/Status'}
+        - name: offset
+          in: query
+          schema: {type: integer, minimum: 0, default: 0}
+        - name: limit
+          in: query
+          schema: {type: integer, minimum: 1, maximum: 100, default: 50}
+      responses:
+        '200':
+          description: Page des alertes, éventuellement vide.
+          content:
+            application/json:
+              schema: {type: array, items: {$ref: '#/components/schemas/Event'}}
+        '400': {$ref: '#/components/responses/Invalid'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/Unavailable'}
+  /api/admin/safety-events/{id}:
+    patch:
+      operationId: updateSafetyEvent
+      summary: Affecter un référent et suivre le traitement d’une alerte
+      description: >
+        Le cycle avance d’une étape à la fois. Un PATCH peut aussi mettre à jour les champs de suivi
+        au statut courant. Lors du premier passage en cours, une alerte sans référent est affectée
+        au demandeur si reviewerId est omis. Une alerte close accepte la répétition de ses valeurs finales.
+        Les champs omis gardent leur valeur, null efface un champ facultatif.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: string, format: uuid}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Patch'}
+            examples:
+              prendreEnCharge:
+                value: {status: In progress}
+              resoudre:
+                value: {status: Resolved, actionTaken: Referral, referralOutcome: Contacted, orgId: ORG-001}
+              clore:
+                value: {status: Closed}
+      responses:
+        '200':
+          description: Alerte mise à jour avec les horodatages et délais disponibles.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Event'}
+        '400': {$ref: '#/components/responses/Invalid'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {description: Alerte inconnue.}
+        '409': {description: 'Saut d’étape, retour en arrière ou modification d’une alerte close.'}
+        '503': {$ref: '#/components/responses/Unavailable'}
+components:
+  securitySchemes:
+    bearerAuth: {type: http, scheme: bearer, bearerFormat: JWT}
+  responses:
+    Invalid: {description: 'Paramètre ou corps invalide, organisation inconnue ou affectation invalide.'}
+    Unauthorized: {description: Jeton absent ou invalide.}
+    Forbidden: {description: 'Compte du personnel inconnu, inactif ou privé du rôle Safety reviewer.'}
+    Unavailable: {description: Accès aux données temporairement indisponible.}
+  schemas:
+    Status: {type: string, enum: [Open, In progress, Resolved, Closed]}
+    Reviewer:
+      type: string
+      minLength: 1
+      maxLength: 10
+      nullable: true
+      description: Identifiant d’un référent sécurité actif lors de son affectation. Obligatoire après Open pour les nouvelles transitions.
+    Action: {type: string, nullable: true, enum: [Resource shared, Human contacted, Referral, None needed, null]}
+    Outcome: {type: string, nullable: true, enum: [Contacted, Attended, Declined, Unknown, N/A, null]}
+    Org: {type: string, minLength: 1, maxLength: 7, nullable: true}
+    Patch:
+      type: object
+      minProperties: 1
+      additionalProperties: false
+      properties:
+        status: {$ref: '#/components/schemas/Status'}
+        reviewerId: {$ref: '#/components/schemas/Reviewer'}
+        actionTaken: {$ref: '#/components/schemas/Action'}
+        referralOutcome: {$ref: '#/components/schemas/Outcome'}
+        orgId: {$ref: '#/components/schemas/Org'}
+    Event:
+      type: object
+      required: [eventId, userPid, sessionId, triggerType, severity, status, reviewerId, actionTaken, referralOutcome, orgId, flaggedAt, takenInChargeAt, resolvedAt, handlingDelaySeconds, resolutionDelaySeconds]
+      properties:
+        eventId: {type: string, format: uuid}
+        userPid: {type: string, format: uuid, nullable: true}
+        sessionId: {type: string, format: uuid, nullable: true}
+        triggerType: {type: string, description: Valeur AT-022 enregistrée par M5.}
+        severity: {type: string, enum: [Critical, High, Medium, Low]}
+        status: {$ref: '#/components/schemas/Status'}
+        reviewerId: {$ref: '#/components/schemas/Reviewer'}
+        actionTaken: {$ref: '#/components/schemas/Action'}
+        referralOutcome: {$ref: '#/components/schemas/Outcome'}
+        orgId: {$ref: '#/components/schemas/Org'}
+        flaggedAt: {type: string, format: date-time}
+        takenInChargeAt: {type: string, format: date-time, nullable: true}
+        resolvedAt: {type: string, format: date-time, nullable: true}
+        handlingDelaySeconds:
+          type: integer
+          format: int64
+          minimum: 0
+          nullable: true
+          description: Secondes entières entre flaggedAt et le premier passage en cours. Null si cet instant est inconnu.
+        resolutionDelaySeconds:
+          type: integer
+          format: int64
+          minimum: 0
+          nullable: true
+          description: Secondes entières entre flaggedAt et resolvedAt. Null en attente de résolution.
