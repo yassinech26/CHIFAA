@@ -15,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChifaaAPP">
         <activity android:name=".chat.ChatActivity" android:exported="false" android:theme="@style/KbTheme" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".clinicalreview.ContentListActivity" android:exported="false" android:theme="@style/KbTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".clinicalreview.ClinicalReviewActivity" android:exported="false" android:theme="@style/KbTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".clinicalreview.ContentEditorActivity" android:exported="false" android:theme="@style/KbTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".clinicalreview.ContentVersionHistoryActivity" android:exported="false" android:theme="@style/KbTheme" android:windowSoftInputMode="adjustResize" />
         <activity android:name=".safety.SafetyQueueActivity" android:exported="false" android:theme="@style/KbTheme" />
         <activity android:name=".safety.SafetyEventDetailsActivity" android:exported="false" android:theme="@style/KbTheme" android:windowSoftInputMode="adjustResize" />
         <activity android:name=".chat.ChatHistoryActivity" android:exported="false" android:theme="@style/KbTheme"/>

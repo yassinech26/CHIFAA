@@ -17,7 +17,13 @@ public final class SafetySession {
     static final class Connection {
         final String generation = UUID.randomUUID().toString();
         final SafetyRepository api;
-        Connection(SafetyRepository api) { this.api = api; }
+        final Retrofit retrofit;
+        final String role;
+        Connection(Retrofit retrofit, String role) {
+            this.retrofit = retrofit;
+            this.api = retrofit.create(SafetyRepository.class);
+            this.role = role;
+        }
     }
     static volatile Connection current;
     static final Set<Runnable> observers = new CopyOnWriteArraySet<>();
@@ -27,6 +33,15 @@ public final class SafetySession {
     }
 
     static void open(String baseUrl, String staffToken, OkHttpClient.Builder transport) {
+        open(baseUrl,staffToken,null,transport);
+    }
+
+    /** Rôle du compte fourni par B1 pour adapter les commandes des écrans. Le serveur autorise chaque écriture. */
+    public static void open(String baseUrl, String staffToken, String role) {
+        open(baseUrl,staffToken,role,new OkHttpClient.Builder());
+    }
+
+    static void open(String baseUrl, String staffToken, String role, OkHttpClient.Builder transport) {
         HttpUrl url = baseUrl == null ? null : HttpUrl.parse(baseUrl);
         if (url == null || !url.isHttps() || !url.encodedPath().endsWith("/") || !url.username().isEmpty()
                 || !url.password().isEmpty() || url.query() != null || url.fragment() != null
@@ -36,7 +51,7 @@ public final class SafetySession {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(url)
                 .client(transport.followRedirects(false).retryOnConnectionFailure(false).build())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().serializeNulls().create())).build();
-        replace(new Connection(retrofit.create(SafetyRepository.class)));
+        replace(new Connection(retrofit,role));
     }
 
     public static void close() { replace(null); }

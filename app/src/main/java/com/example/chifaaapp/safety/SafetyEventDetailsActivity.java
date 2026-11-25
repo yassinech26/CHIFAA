@@ -36,7 +36,7 @@ public class SafetyEventDetailsActivity extends SafetyScreen {
         findViewById(R.id.b3_save).setOnClickListener(v -> save());
     }
 
-    @Override void clear() {
+    @Override protected void clear() {
         event = null;
         findViewById(R.id.b3_content).setVisibility(View.GONE);
         for (int field : new int[]{R.id.b3_trigger,R.id.b3_meta,R.id.b3_ids,R.id.b3_times,R.id.b3_delays,R.id.b3_summary})
@@ -50,7 +50,7 @@ public class SafetyEventDetailsActivity extends SafetyScreen {
         note(0);
     }
 
-    @Override void reload() {
+    @Override protected void reload() {
         clear();
         if (id == null || !session.generation.equals(getIntent().getStringExtra("generation"))) { finish(); return; }
         findViewById(R.id.b3_reload).setEnabled(true);
