@@ -134,8 +134,10 @@ public class ChatFlowTest {
     @Test public void createOpenReferenceAndReplaceRatingFromHistory() {
         try (ActivityScenario<MainActivity> screen = ActivityScenario.launch(MainActivity.class)) {
             onView(withId(R.id.open_chat)).perform(click());
+            visible(allOf(withId(R.id.chat_medical_limits),withText(R.string.chat_medical_limits)));
             visible(withText(R.string.chat_empty));
             onView(withId(R.id.chat_new)).perform(click());
+            visible(allOf(withId(R.id.chat_medical_limits),withText(R.string.chat_medical_limits)));
             visible(withText(R.string.chat_first));
             assertTrue(created);
             typeAndSend("Une fiche fictive");
@@ -238,6 +240,21 @@ public class ChatFlowTest {
         }
     }
 
+    @Test public void medicalLimitsRemainVisibleInArabicWhenHistoryFails() {
+        access = 503;
+        var original = androidx.appcompat.app.AppCompatDelegate.getApplicationLocales();
+        try (var screen = ActivityScenario.launch(com.example.chifaaapp.chat.ChatHistoryActivity.class)) {
+            screen.onActivity(activity -> androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(
+                    androidx.core.os.LocaleListCompat.forLanguageTags("ar")));
+            visible(allOf(withId(R.id.chat_medical_limits),withText(containsString("جرعات الأدوية"))));
+            visible(withId(R.id.chat_retry));
+            onView(withId(R.id.chat_medical_limits)).check(matches(isDisplayed()));
+        } finally {
+            InstrumentationRegistry.getInstrumentation().runOnMainSync(
+                    () -> androidx.appcompat.app.AppCompatDelegate.setApplicationLocales(original));
+        }
+    }
+
     @Test public void arabicDistressTextAndBubbleDirectionFollowRtl() {
         String guidance = "نص توجيهي للاختبار";
         history.add(message(UUID.randomUUID().toString(), "User", "رسالة اختبار"));
@@ -246,6 +263,8 @@ public class ChatFlowTest {
         history.add(answer);
         android.content.res.Configuration config = new android.content.res.Configuration(context.getResources().getConfiguration());
         config.setLocale(new java.util.Locale("ar"));
+        String limits = context.createConfigurationContext(config).getString(R.string.chat_medical_limits);
+        assertTrue(limits.contains("تشخيص") && limits.contains("جرعات"));
         assertEquals("موارد المساعدة", context.createConfigurationContext(config).getString(R.string.chat_distress));
         try (ActivityScenario<ChatActivity> screen = conversation()) {
             visible(withText(guidance));

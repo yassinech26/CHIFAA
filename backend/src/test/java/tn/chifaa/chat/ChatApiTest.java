@@ -92,6 +92,25 @@ class ChatApiTest extends PostgresJwtTest {
         if (!kind.equals("Knowledge")) assertTrue(result.get("contentId").isNull());
     }
 
+    @ParameterizedTest
+    @CsvSource(delimiter='|',value={
+        "Quelle dose prendre ?|MedicalLimit|Je ne peux pas poser de diagnostic",
+        "ما هي جرعة الدواء؟|MedicalLimit|لتشخيص الحالة",
+        "Aucunmotconnu|Directory|Je n’ai trouvé aucune fiche",
+        "مجهول|Directory|لم أجد بطاقة مناسبة",
+        "signal test|Distress|Vous pouvez contacter",
+        "signal test مساعدة|Distress|يمكنك التواصل",
+        "دليل تجريبي|Knowledge|محتوى افتراضي – غير معتمد"
+    })
+    void sendsLocalizedReplyAndPreservesItInHistory(String question,String kind,String prefix) throws Exception {
+        var answer = send(question,null).get("answer");
+        String text = answer.get("text").asText();
+        assertEquals(kind,answer.get("replyKind").asText());
+        assertTrue(text.startsWith(prefix),text);
+        if (kind.equals("Distress")) assertTrue(text.endsWith("\nRESSOURCE TECHNIQUE DE TEST"));
+        mvc.perform(auth(get(path()),user)).andExpect(jsonPath("$[1].text").value(text));
+    }
+
     @Test void distressWinsAndRetryDoesNotDuplicateEventOrTurn() throws Exception {
         UUID id = UUID.randomUUID();
         String text = "SIGNAL-test ! Quelle dose pour Alpha ?";
