@@ -5,6 +5,7 @@
         android:paddingTop="@dimen/kb_gap" android:paddingBottom="@dimen/kb_gap">
         <TextView android:id="@+id/chat_heading" style="@style/KbTitle"
         android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/chat_title" />
+        <include layout="@layout/chat_medical_limits" />
         <include layout="@layout/chat_status_bar" />
         <ListView android:id="@+id/chat_list" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
             android:saveEnabled="false" android:divider="@null" android:dividerHeight="@dimen/kb_gap" />

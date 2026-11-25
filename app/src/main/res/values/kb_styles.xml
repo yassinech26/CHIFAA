@@ -1,10 +1,10 @@
 <resources>
-    <color name="kb_primary">#0F766E</color>
-    <color name="kb_light">#E8F5F1</color>
-    <color name="kb_bg">#FAF8F5</color>
-    <color name="kb_surface">#FFFFFF</color>
-    <color name="kb_text">#263238</color>
-    <color name="kb_muted">#64748B</color>
+    <color name="kb_primary">@color/primary</color>
+    <color name="kb_light">@color/primary_light</color>
+    <color name="kb_bg">@color/background</color>
+    <color name="kb_surface">@color/surface</color>
+    <color name="kb_text">@color/text_primary</color>
+    <color name="kb_muted">@color/text_secondary</color>
     <dimen name="kb_margin">20dp</dimen>
     <dimen name="kb_gap">8dp</dimen>
     <dimen name="kb_card_radius">16dp</dimen>
@@ -13,6 +13,11 @@
     <style name="KbTheme" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/kb_primary</item>
         <item name="colorOnPrimary">@color/kb_surface</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorOnSecondary">@color/text_primary</item>
+        <item name="colorError">@color/error</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
         <item name="android:windowBackground">@color/kb_bg</item>
         <item name="android:fontFamily">sans</item>
         <item name="android:windowLightStatusBar">true</item>

@@ -1,4 +1,5 @@
 <resources>
+    <string name="chat_medical_limits">لا يقدّم هذا الرفيق تشخيصًا ولا يحدّد جرعات الأدوية. لهذه الأسئلة، تواصلي مع فريق الرعاية.</string>
     <string name="chat_title">رفيق شفاء</string>
     <string name="chat_history">محادثاتي</string>
     <string name="chat_new">محادثة جديدة</string>
