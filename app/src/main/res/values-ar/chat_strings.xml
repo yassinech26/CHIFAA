@@ -1,0 +1,31 @@
+<resources>
+    <string name="chat_title">رفيق شفاء</string>
+    <string name="chat_history">محادثاتي</string>
+    <string name="chat_new">محادثة جديدة</string>
+    <string name="chat_session">محادثة %1$s</string>
+    <string name="chat_closed">محادثة منتهية</string>
+    <string name="chat_empty">لا توجد محادثات بعد.</string>
+    <string name="chat_first">اكتبي رسالتك الأولى.</string>
+    <string name="chat_consent">يلزم تقديم الموافقة على استخدام البيانات الصحية لفتح المحادثة.</string>
+    <string name="chat_missing">هذه المحادثة أو الإجابة غير متاحة.</string>
+    <string name="chat_network">تعذّر الاتصال. تحقّقي من الشبكة ثم حاولي مجددًا.</string>
+    <string name="chat_error">تعذّر تنفيذ الطلب. حاولي مجددًا.</string>
+    <string name="chat_retry">إعادة المحاولة</string>
+    <string name="chat_previous">السابق</string>
+    <string name="chat_next">التالي</string>
+    <string name="chat_hint">رسالتك</string>
+    <string name="chat_send">إرسال</string>
+    <string name="chat_user">أنتِ</string>
+    <string name="chat_ai">الرفيق</string>
+    <string name="chat_reviewer">فريق المراجعة</string>
+    <string name="chat_distress">موارد المساعدة</string>
+    <string name="chat_unavailable">البطاقة المرجعية لهذه الإجابة غير متاحة.</string>
+    <string name="chat_ref">البطاقة المرجعية · %1$s</string>
+    <string name="chat_rate">تقييم الإجابة</string>
+    <string name="chat_rating">تقييمك · %1$d/5</string>
+    <string name="chat_pending">لم يتأكّد الإرسال. أعيدي المحاولة للتحقّق.</string>
+    <string name="chat_invalid">رُفضت الرسالة. تحقّقي من النص أو افتحي محادثة جديدة.</string>
+    <string name="chat_feedback_error">لم يتأكّد التقييم. يمكنك تقييم الإجابة مرة أخرى.</string>
+    <string name="chat_loading">جارٍ التحميل</string>
+    <string name="chat_no_reply">إجابة الرفيق غير متاحة حاليًا. حاولي مجددًا لاحقًا.</string>
+</resources>

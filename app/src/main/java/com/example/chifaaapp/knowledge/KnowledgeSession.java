@@ -18,6 +18,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public final class KnowledgeSession {
     private KnowledgeSession() {}
     static volatile KnowledgeRepository current;
+    private static Retrofit transportApi;
+    public static synchronized Retrofit authenticatedClient() {
+        return current == null || current.revoked ? null : transportApi;
+    }
+    public static void observe(Runnable observer) { observers.add(observer); }
+    public static void removeObserver(Runnable observer) { observers.remove(observer); }
     private static String scope;
     static final Set<Runnable> observers = new CopyOnWriteArraySet<>();
 
@@ -36,8 +42,9 @@ public final class KnowledgeSession {
         transport.interceptors().add(0, chain -> chain.proceed(chain.request().newBuilder()
                 .header("Authorization", "Bearer " + accessToken).build()));
         OkHttpClient client = transport.followRedirects(false).build();
-        KnowledgeApi api = new Retrofit.Builder().baseUrl(url).client(client)
-                .addConverterFactory(GsonConverterFactory.create()).build().create(KnowledgeApi.class);
+        transportApi = new Retrofit.Builder().baseUrl(url).client(client)
+                .addConverterFactory(GsonConverterFactory.create()).build();
+        KnowledgeApi api = transportApi.create(KnowledgeApi.class);
         File directory = new File(context.getNoBackupFilesDir(), "m4/" + key);
         replace(new KnowledgeRepository(api, new VisitedCache(directory)), key);
     }
@@ -54,7 +61,10 @@ public final class KnowledgeSession {
         for (Runnable observer : observers) main.post(observer);
     }
 
-    public static synchronized void close() { replace(null, ""); }
+    public static synchronized void close() {
+        transportApi = null;
+        replace(null, "");
+    }
 
     static String digest(String value) {
         try {

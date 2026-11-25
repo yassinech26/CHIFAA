@@ -11,8 +11,11 @@ import com.example.chifaaapp.R;
 public final class LibraryLauncher {
     private LibraryLauncher() {}
     public static void open(Activity from) {
+        open(from, LibraryActivity.class);
+    }
+    public static void open(Activity from, Class<? extends Activity> destination) {
         if (KnowledgeSession.current != null && !KnowledgeSession.current.revoked) {
-            from.startActivity(new Intent(from, LibraryActivity.class));
+            from.startActivity(new Intent(from, destination));
             return;
         }
         View form = from.getLayoutInflater().inflate(R.layout.kb_debug_connect, null);
@@ -25,7 +28,7 @@ public final class LibraryLauncher {
             try {
                 KnowledgeSession.open(from, base.endsWith("/") ? base : base + "/", KnowledgeSession.digest(token), token);
                 dialog.dismiss();
-                from.startActivity(new Intent(from, LibraryActivity.class));
+                from.startActivity(new Intent(from, destination));
             } catch (IllegalArgumentException e) { url.setError(from.getString(R.string.kb_dev_error)); }
         }));
         dialog.show();

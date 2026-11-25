@@ -17,4 +17,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button android:id="@+id/open_chat" android:text="@string/chat_title"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/kb_gap"
+        app:layout_constraintTop_toBottomOf="@id/open_library"
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
