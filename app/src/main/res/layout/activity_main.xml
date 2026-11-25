@@ -22,4 +22,9 @@
         android:layout_marginTop="@dimen/kb_gap"
         app:layout_constraintTop_toBottomOf="@id/open_library"
         app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
+    <Button android:id="@+id/open_safety" android:text="@string/b3_queue"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/kb_gap" android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/open_chat"
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

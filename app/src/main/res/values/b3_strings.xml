@@ -1,0 +1,56 @@
+<resources>
+    <string name="b3_queue">File de sécurité</string>
+    <string name="b3_staff">Connexion du personnel</string>
+    <string name="b3_detail">Détail de l’alerte</string>
+    <string name="b3_filter">Filtrer par statut</string>
+    <string name="b3_all">Tous les statuts</string>
+    <string name="b3_empty">Aucune alerte pour ce filtre.</string>
+    <string name="b3_auth">Connectez-vous avec votre compte du personnel.</string>
+    <string name="b3_forbidden">L’accès à cette file est réservé aux référents sécurité actifs.</string>
+    <string name="b3_error">Impossible de charger les alertes. Actualisez pour réessayer.</string>
+    <string name="b3_missing">Cette alerte est indisponible.</string>
+    <string name="b3_invalid">Vérifiez les champs, le code du référent et celui du service.</string>
+    <string name="b3_conflict">Le statut a changé. Actualisez avant de modifier l’alerte.</string>
+    <string name="b3_uncertain">Modification non confirmée. Actualisez pour vérifier l’état de l’alerte.</string>
+    <string name="b3_confirmed">Modifications enregistrées.</string>
+    <string name="b3_unchanged">Aucune modification à enregistrer.</string>
+    <string name="b3_reviewer">Code du référent</string>
+    <string name="b3_action">Action menée</string>
+    <string name="b3_outcome">Suite de l’orientation</string>
+    <string name="b3_org">Code du service d’orientation</string>
+    <string name="b3_status">Statut</string>
+    <string name="b3_save">Enregistrer</string>
+    <string name="b3_pending">Non disponible</string>
+    <string name="b3_none">Non renseigné</string>
+    <string name="b3_meta">%1$s · %2$s</string>
+    <string name="b3_ids">Alerte · %1$s\nUtilisatrice · %2$s\nConversation · %3$s</string>
+    <string name="b3_times">Signalée · %1$s\nPrise en charge · %2$s\nRésolution · %3$s</string>
+    <string name="b3_delays">Délai de prise en charge · %1$s\nDélai de résolution · %2$s</string>
+    <string name="b3_summary">Référent · %1$s\nAction · %2$s\nSuite · %3$s\nService · %4$s</string>
+    <string name="b3_back">Retour à la file</string>
+    <string-array name="b3_states">
+        <item>Ouverte</item>
+        <item>En cours</item>
+        <item>Résolue</item>
+        <item>Close</item>
+    </string-array>
+    <string-array name="b3_severity">
+        <item>Faible</item>
+        <item>Moyenne</item>
+        <item>Élevée</item>
+        <item>Critique</item>
+    </string-array>
+    <string-array name="b3_actions">
+        <item>Ressource partagée</item>
+        <item>Personne contactée</item>
+        <item>Orientation</item>
+        <item>Aucune action nécessaire</item>
+    </string-array>
+    <string-array name="b3_outcomes">
+        <item>Contact pris</item>
+        <item>Rendez-vous honoré</item>
+        <item>Orientation refusée</item>
+        <item>Inconnue</item>
+        <item>Sans objet</item>
+    </string-array>
+</resources>
