@@ -58,24 +58,23 @@ class ChatService {
         }
 
         boolean arabic = ChatText.arabicReply(text,language);
+        ResourceBundle replies = ResourceBundle.getBundle("i18n.chat.replies",
+                arabic ? Locale.forLanguageTag("ar") : Locale.FRENCH);
         String normalized = ChatText.normalize(text);
         var trigger = ChatText.distress(normalized,policy);
         Reply reply;
         if (trigger.isPresent()) {
             sessions.alert(user,sessionId,trigger.get());
             String help = policy.resource(arabic);
-            String intro = arabic ? "يمكنك التواصل مع شخص تثقين به أو مع فريق الرعاية."
-                    : "Vous pouvez contacter une personne de confiance ou votre équipe soignante.";
+            String intro = replies.getString("distress");
             reply = new Reply("Distress", help == null || help.isBlank() ? intro : intro + "\n" + help,null,null);
         } else if (ChatText.medical(normalized)) {
-            reply = new Reply("MedicalLimit", arabic ? "لتشخيص الحالة أو تحديد الجرعة أو العلاج، يرجى التواصل مع فريق الرعاية."
-                    : "Je ne peux pas poser de diagnostic, déterminer une dose ou choisir un traitement. Adressez-vous à votre équipe soignante.",null,null);
+            reply = new Reply("MedicalLimit",replies.getString("medicalLimit"),null,null);
         } else {
             reply = knowledge.search(text,language)
-                    .map(hit -> new Reply("Knowledge",hit.notice() == null ? hit.content() : hit.notice() + "\n" + hit.content(),
+                    .map(hit -> new Reply("Knowledge",hit.notice() == null ? hit.content() : replies.getString("fictionalNotice") + "\n" + hit.content(),
                             hit.id(),hit.topic()))
-                    .orElseGet(() -> new Reply("Directory",arabic ? "لم أجد بطاقة مناسبة. يمكنك الاطلاع على دليل الخدمات."
-                            : "Je n’ai trouvé aucune fiche correspondante. Vous pouvez consulter l’annuaire des services.",null,null));
+                    .orElseGet(() -> new Reply("Directory",replies.getString("directory"),null,null));
         }
         int latency = (int)Math.min(Integer.MAX_VALUE,TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-start));
         messages.answer(sessionId,id,reply,language,policy.kbVersion(),latency);

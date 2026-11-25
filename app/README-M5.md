@@ -1,5 +1,7 @@
 # Compagnon Android M5
 
+L’historique et la conversation affichent dès l’ouverture, en français ou en arabe, les limites du compagnon concernant le diagnostic et la posologie. Cette mention est disponible hors ligne avant toute saisie. Les réponses types du serveur sont traduites dans `backend/src/main/resources/i18n/chat/replies_{fr,ar}.properties`. Le serveur choisit la langue selon le message et ajoute les ressources de détresse issues de la configuration CHIFAA.
+
 Depuis l’accueil, ouvrir **Compagnon CHIFAA**. L’historique présente les conversations du compte connecté, de la plus récente à la plus ancienne. **Nouvelle conversation** crée une session. Toucher une conversation permet de lire ses messages dans l’ordre chronologique. Les boutons **Précédents** et **Suivants** parcourent les pages de 50 éléments. La saisie est disponible à la fin d’une conversation ouverte.
 
 | Action Android | Route HTTPS |
