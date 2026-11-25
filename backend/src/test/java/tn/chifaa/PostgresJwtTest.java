@@ -51,7 +51,8 @@ public abstract class PostgresJwtTest {
     public static class Database {
         @Bean(destroyMethod = "close")
         EmbeddedPostgres postgres() throws IOException {
-            return EmbeddedPostgres.builder().setServerConfig("log_error_verbosity","terse")
+            return EmbeddedPostgres.builder().setPGStartupWait(java.time.Duration.ofSeconds(60))
+                    .setServerConfig("log_error_verbosity","terse")
                     .setServerConfig("log_min_error_statement","panic").start();
         }
 
@@ -88,8 +89,12 @@ public abstract class PostgresJwtTest {
     }
 
     protected String bearer(String subject, String audience) throws Exception {
+        return bearer(subject, audience, Instant.now().plusSeconds(300));
+    }
+
+    protected String bearer(String subject, String audience, Instant expiresAt) throws Exception {
         var claims = new JWTClaimsSet.Builder().issuer("https://issuer.test").subject(subject)
-                .audience(audience).expirationTime(Date.from(Instant.now().plusSeconds(300))).build();
+                .audience(audience).jwtID(java.util.UUID.randomUUID().toString()).expirationTime(Date.from(expiresAt)).build();
         var token = new SignedJWT(new JWSHeader.Builder(JWSAlgorithm.RS256).keyID("test").build(), claims);
         token.sign(new RSASSASigner(signingKey));
         return "Bearer " + token.serialize();

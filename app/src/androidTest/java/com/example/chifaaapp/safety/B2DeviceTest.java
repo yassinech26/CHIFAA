@@ -13,10 +13,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.security.KeyStore;
-import java.security.cert.CertificateFactory;
-import javax.net.ssl.*;
-import okhttp3.OkHttpClient;
 import org.hamcrest.Matcher;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -33,18 +29,8 @@ public class B2DeviceTest {
     private final Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
     private void login(String token,String role) throws Exception {
-        String url = fixture.get("url").getAsString();
-        assertTrue(url.matches("https://localhost:[0-9]+/"));
-        KeyStore trust = KeyStore.getInstance(KeyStore.getDefaultType());
-        trust.load(null);
-        try (InputStream pem = new ByteArrayInputStream(fixture.get("certificate").getAsString().getBytes(StandardCharsets.US_ASCII))) {
-            trust.setCertificateEntry("local",CertificateFactory.getInstance("X.509").generateCertificate(pem));
-        }
-        TrustManagerFactory tm = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()); tm.init(trust);
-        X509TrustManager manager = (X509TrustManager)tm.getTrustManagers()[0];
-        SSLContext tls = SSLContext.getInstance("TLS"); tls.init(null,new TrustManager[]{manager},null);
-        SafetySession.open(url,fixture.get(token).getAsString(),role,
-                new OkHttpClient.Builder().sslSocketFactory(tls.getSocketFactory(),manager));
+        SafetySession.open(fixture.get("url").getAsString(),fixture.get(token).getAsString(),role,
+                com.example.chifaaapp.DeviceTls.client(fixture));
     }
 
     private void waitFor(Matcher<View> view) {

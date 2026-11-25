@@ -32,3 +32,5 @@ Avec un émulateur démarré, exécuter à la racine du projet :
 ```
 
 Les tests instrumentés utilisent les écrans Java/XML, le client Retrofit et un intercepteur OkHttp de test pour simuler le serveur, une réponse perdue, un retrait de fiche et un refus de consentement. Les scénarios du backend Spring et PostgreSQL s’exécutent depuis `backend` avec `mvn verify`.
+
+Le [parcours M4/M5 avec deux comptes fictifs](README-E1-M4-M5.md) vérifie aussi le remplacement du jeton, l’isolation entre comptes et le retrait du consentement contre le serveur HTTPS.

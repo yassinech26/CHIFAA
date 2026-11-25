@@ -58,6 +58,22 @@ class ChatApiTest extends PostgresJwtTest {
                 .andReturn().getResponse().getContentAsByteArray());
     }
 
+    @Test void renewedTokenUsesLatestConsentForItsOwner() throws Exception {
+        String renewed = bearer(user, "chifaa-test");
+        String tokenB = bearer(other, "chifaa-test");
+        mvc.perform(get(path()).header("Authorization", renewed)).andExpect(status().isOk());
+        mvc.perform(get(path()).header("Authorization", tokenB)).andExpect(status().isNotFound());
+
+        // E1 peut historiser le retrait tout en conservant la ligne Given précédente.
+        db.update("""
+                insert into consents(consent_id,user_pid,consent_purpose,consent_status,given_at,withdrawn_at)
+                values (concat('T',nextval('test_consent_seq')),?,'Health data','Withdrawn',now(),now())
+                """, UUID.fromString(user));
+        mvc.perform(get(path()).header("Authorization", renewed)).andExpect(status().isForbidden());
+        mvc.perform(get("/api/kb").header("Authorization", renewed)).andExpect(status().isOk());
+        mvc.perform(post(ROOT).header("Authorization", tokenB)).andExpect(status().isCreated());
+    }
+
     @Test void retrievesVisibleTextAndRecordsProvenanceAndRating() throws Exception {
         var turn = send("Bonjour, je cherche Alpha",null);
         var answer = turn.get("answer");

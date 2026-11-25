@@ -24,6 +24,8 @@ import org.hamcrest.Matcher;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.onData;
+import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -147,14 +149,17 @@ public class ChatFlowTest {
             pressBack();
             visible(withText(containsString("Source de test")));
             onView(allOf(withId(R.id.chat_rate), isDisplayed())).perform(click());
-            onView(withText("1")).perform(click());
+            onData(anything()).inRoot(isDialog()).atPosition(0).perform(click());
             visible(withText(context.getString(R.string.chat_rating, 1)));
             pressBack();
-            visible(withText(startsWith("Conversation du ")));
-            onView(withText(startsWith("Conversation du "))).perform(click());
+            Matcher<View> sessionRow = allOf(withId(android.R.id.text1), isDescendantOfA(withId(R.id.chat_list)));
+            visible(sessionRow);
+            onView(sessionRow).perform(click());
             visible(withText(context.getString(R.string.chat_rating, 1)));
-            onView(allOf(withId(R.id.chat_rate), isDisplayed())).perform(click());
-            onView(withText("5")).perform(click());
+            // La carte M4 est chargée séparément et peut déplacer le bouton pendant le clic.
+            visible(withText(containsString("Source de test")));
+            onView(allOf(withId(R.id.chat_rate), isEnabled(), isDisplayed())).perform(click());
+            onData(anything()).inRoot(isDialog()).atPosition(4).perform(click());
             visible(withText(context.getString(R.string.chat_rating, 5)));
             assertEquals(5, history.get(1).get("userFeedback"));
         }
