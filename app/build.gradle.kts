@@ -31,6 +31,15 @@ android {
     }
 
     buildTypes {
+        debug {
+            val localEndpoint = localSettings.getProperty("chifaa.debugApi")
+            if (localEndpoint != null) {
+                require(localEndpoint.matches(Regex("http://localhost:[0-9]{1,5}/api/"))) {
+                    "chifaa.debugApi must use http://localhost:<port>/api/"
+                }
+                buildConfigField("String", "PATIENT_API", "\"$localEndpoint\"")
+            }
+        }
         release {
             optimization {
                 enable = true

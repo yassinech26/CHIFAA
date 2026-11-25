@@ -10,14 +10,18 @@ final class PatientRepository {
     private volatile String token;
     PatientApi api;
     private PatientRepository() {
-        if (!BuildConfig.PATIENT_API.startsWith("https://")) throw new IllegalStateException("HTTPS required");
+        String endpoint = BuildConfig.PATIENT_API;
+        boolean localDebug = BuildConfig.DEBUG && endpoint.matches("http://localhost:[0-9]{1,5}/api/");
+        if (!endpoint.startsWith("https://") && !localDebug) {
+            throw new IllegalStateException("HTTPS required");
+        }
         var client=new OkHttpClient.Builder().followRedirects(false).addInterceptor(chain->{
             var builder=chain.request().newBuilder();
             String current=token;
             if (current!=null) builder.header("Authorization","Bearer "+current);
             return chain.proceed(builder.build());
         }).build();
-        api=new Retrofit.Builder().baseUrl(BuildConfig.PATIENT_API).client(client)
+        api=new Retrofit.Builder().baseUrl(endpoint).client(client)
             .addConverterFactory(GsonConverterFactory.create()).build().create(PatientApi.class);
     }
     void authenticate(String value) { token=value; }

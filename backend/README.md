@@ -52,6 +52,8 @@ Pour un dépôt synchronisé par OneDrive, si Gradle signale `AccessDeniedExcept
 
 Ouvrir **Accéder à mon espace**. L’URL par défaut est `https://localhost:8443/api/`. Une autre adresse HTTPS se configure avec la propriété Gradle `chifaaApi`. Le téléphone Android communique uniquement avec Spring Boot.
 
+Pour une démo locale avec un serveur HTTP déjà lancé sur le port 18080, ajouter `chifaa.debugApi=http://localhost:18080/api/` à `local.properties`, exécuter `adb reverse tcp:18080 tcp:18080`, puis relancer la variante debug depuis Android Studio. Cette option autorise HTTP vers localhost dans l’APK debug. Pour recevoir l’OTP, lancer Spring Boot dans un terminal interactif avec `CHIFAA_DEMO_OTP=true`.
+
 ## Contrat HTTP
 
 Les dates civiles utilisent AAAA-MM-JJ, les instants ISO 8601 UTC. Après vérification, envoyer `Authorization: Bearer <token>`. Le serveur déduit la propriétaire du jeton.
@@ -104,6 +106,16 @@ Les tables d’association évitent les doublons et valident chaque valeur. Les 
 **E3.** Le back-office autorisé peut appeler `DataService.executeDeletion(requestId)`. Sa transaction clôt la demande et supprime le compte. La migration d’E3 pour staff devra remplacer la contrainte temporaire `pending_staff_fk` par la FK `handled_by REFERENCES staff(staff_id) ON DELETE RESTRICT`. Le service d’audit E1 émet des événements de lecture, modification et export et les journalise après commit. Le journal des accès du personnel appartient au module E3. E2 et E3 peuvent fournir un bean `PersonalExportSection` par module pour ajouter leurs données personnelles à l’export. Chaque section reçoit le UUID authentifié et déclare si elle nécessite le consentement santé.
 
 ## Vérification
+
+### Comptes fictifs pour M4 et M5
+
+Sur une base de test dédiée et vide, activer `SPRING_PROFILES_ACTIVE=demo-seed` et `CHIFAA_DEMO_OTP=true` avant de lancer le serveur. Se connecter avec `+12025550100` (Service et Santé accordés) ou `+12025550101` (Service accordé, Santé absente). Le profil de démo crée ces comptes au premier démarrage. Les modifications de consentement sont conservées lors des démarrages suivants.
+
+Le serveur émet un jeton Bearer opaque de 30 minutes après `POST /api/auth/login` et `POST /api/auth/verify`. Une reconnexion OTP génère un nouveau jeton pour le même UUID. Les UUID sont propres à la base. La réponse de session contient `token` et `expiresAt`. Le serveur retrouve l’UUID dans son registre de sessions. Pour brancher `KnowledgeSession.open` sur Android, convenir d’un moyen de fournir le UUID dans le contrat, par exemple un champ `userPid` dans la réponse de vérification. Prévoir `KnowledgeSession.close` lors de la déconnexion et lorsque l’application efface la session après un 401.
+
+Pour accorder la santé, envoyer `PUT /api/consents` avec le Bearer du compte et le JSON `{"purpose":"Health data","version":"v1.0","given":true}`. Pour retirer cet accord, renvoyer le même corps avec `given:false`. Le retrait santé conserve le jeton, et la prochaine opération protégée par le consentement santé doit répondre 403.
+
+Les routes M4 et M5 doivent être couvertes par la chaîne de sécurité patient pour obtenir l’UUID authentifié. Côté serveur, dans la transaction de l’opération, le contrôle `PatientAccess.lock(pid)` vérifie `Service use`. M5 peut utiliser `PatientAccess.healthVersion(pid)` pour cumuler les contrôles Service et Santé et les sérialiser avec les modifications de consentement. Pour contrôler une ligne de preuve, filtrer par `user_pid` et `consent_purpose`, puis trier par `given_at DESC, consent_id DESC`. Une ligne autorise l’accès avec `consent_status='Given'` et `withdrawn_at IS NULL`. L’absence de ligne ne donne aucun accord.
 
 Le test JVM Android facultatif `LivePatientApiTest` utilise le véritable dépôt Retrofit et le serveur HTTPS. Sur une base jetable, importer les deux catalogues de test, configurer la confiance TLS du processus de test JVM, fournir un numéro fictif libre dans `CHIFAA_TEST_PHONE` et un répertoire privé dans `CHIFAA_TEST_OTP_DIR`. Exécuter `.\gradlew.bat :app:testDebugUnitTest --tests "*.LivePatientApiTest" --rerun-tasks`. Quand le terminal privé du serveur affiche le challenge et son OTP, écrire les six chiffres dans un fichier UTF-8 nommé exactement comme le challenge dans ce répertoire. Le test effectue une inscription, crée un bilan et vérifie les droits après retrait et déconnexion.
 
