@@ -34,6 +34,8 @@ La deuxième restauration ajoute une conversation fictive dont la relation quest
 
 ## Sur la copie à recevoir d’E3
 
+E3 a confirmé que ses essais se sont déroulés sur la base locale `chifaa_e3`, avec PostgreSQL 18.3 et les migrations V1 et V2. Le diff Git entre le commit de code `e435f75` et le commit publié `d1e7049` contient uniquement les captures d’écran et leur README. Les scripts utilisés pour la répétition sont donc les mêmes. Les effectifs de `database/demo.sql` décrivent l’état initial. L’inventaire des ajouts ultérieurs et des éventuelles modifications manuelles reste à comparer au rapport privé d’E3 et à son dump restauré.
+
 1. Vérifier le commit et la version PostgreSQL effectivement en service, les schémas, extensions, séquences, checksums Flyway et modifications manuelles. Le Compose E3 désigne PostgreSQL 17 et la répétition a utilisé PostgreSQL 18.3. Restaurer une copie assainie et produire les effectifs et empreintes de référence.
 2. Remplacer les correspondances de démonstration par celles approuvées par E3, E1 et l’encadrant. Contrôler les collisions, comptes désactivés, sources AT-044, types AT-022, valeurs libres et dates. Confirmer le canal de chaque session et la signification des versions de catalogue.
 3. Rapprocher les fiches de leurs relecteurs et de leurs versions successives. Distinguer les approbations documentées des mentions de démo. Vérifier les archives, les liens des réponses, les notes, les ressources retirées et les acteurs du journal. Le temps de première prise en charge reste inconnu en l’absence d’un événement daté.
