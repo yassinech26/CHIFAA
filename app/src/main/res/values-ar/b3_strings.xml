@@ -1,0 +1,56 @@
+<resources>
+    <string name="b3_queue">قائمة تنبيهات السلامة</string>
+    <string name="b3_staff">دخول الموظفين</string>
+    <string name="b3_detail">تفاصيل التنبيه</string>
+    <string name="b3_filter">تصفية حسب الحالة</string>
+    <string name="b3_all">كل الحالات</string>
+    <string name="b3_empty">لا توجد تنبيهات لهذا المرشّح.</string>
+    <string name="b3_auth">سجّل الدخول بحساب الموظفين.</string>
+    <string name="b3_forbidden">هذه القائمة متاحة فقط لمسؤولي السلامة النشطين.</string>
+    <string name="b3_error">تعذّر تحميل التنبيهات. حدّث القائمة للمحاولة مجدّدًا.</string>
+    <string name="b3_missing">هذا التنبيه غير متاح.</string>
+    <string name="b3_invalid">تحقّق من الحقول ورمز المسؤول ورمز الجهة.</string>
+    <string name="b3_conflict">تغيّرت الحالة. حدّث التنبيه قبل تعديله.</string>
+    <string name="b3_uncertain">لم يتأكّد التعديل. حدّث التنبيه للتحقّق من حالته.</string>
+    <string name="b3_confirmed">حُفظت التعديلات.</string>
+    <string name="b3_unchanged">لا توجد تعديلات للحفظ.</string>
+    <string name="b3_reviewer">رمز مسؤول السلامة</string>
+    <string name="b3_action">الإجراء المتّخذ</string>
+    <string name="b3_outcome">نتيجة الإحالة</string>
+    <string name="b3_org">رمز جهة الإحالة</string>
+    <string name="b3_status">الحالة</string>
+    <string name="b3_save">حفظ</string>
+    <string name="b3_pending">غير متاح</string>
+    <string name="b3_none">غير محدّد</string>
+    <string name="b3_meta">%1$s · %2$s</string>
+    <string name="b3_ids">التنبيه · %1$s\nالمستخدمة · %2$s\nالمحادثة · %3$s</string>
+    <string name="b3_times">وقت التنبيه · %1$s\nبدء المعالجة · %2$s\nوقت الحلّ · %3$s</string>
+    <string name="b3_delays">مدة بدء المعالجة · %1$s\nمدة الحلّ · %2$s</string>
+    <string name="b3_summary">المسؤول · %1$s\nالإجراء · %2$s\nالنتيجة · %3$s\nالجهة · %4$s</string>
+    <string name="b3_back">العودة إلى القائمة</string>
+    <string-array name="b3_states">
+        <item>مفتوح</item>
+        <item>قيد المعالجة</item>
+        <item>تمّ الحلّ</item>
+        <item>مغلق</item>
+    </string-array>
+    <string-array name="b3_severity">
+        <item>منخفضة</item>
+        <item>متوسطة</item>
+        <item>مرتفعة</item>
+        <item>حرجة</item>
+    </string-array>
+    <string-array name="b3_actions">
+        <item>تمت مشاركة مورد</item>
+        <item>تم التواصل مع شخص</item>
+        <item>إحالة</item>
+        <item>لا يلزم إجراء</item>
+    </string-array>
+    <string-array name="b3_outcomes">
+        <item>تم التواصل</item>
+        <item>تم الحضور</item>
+        <item>رُفضت الإحالة</item>
+        <item>غير معروفة</item>
+        <item>لا ينطبق</item>
+    </string-array>
+</resources>

@@ -1,0 +1,24 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:minHeight="@dimen/kb_target"
+    android:padding="@dimen/kb_gap"
+    android:background="@color/kb_surface">
+    <TextView
+        android:id="@+id/b3_row_title"
+        style="@style/KbSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/b3_row_meta"
+        style="@style/KbNotice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/b3_row_date"
+        style="@style/KbBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
