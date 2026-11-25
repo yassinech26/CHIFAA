@@ -1,0 +1,142 @@
+openapi: 3.0.3
+info:
+  title: CHIFAA · Compagnon M5
+  version: 1.0.0
+  description: API HTTPS. Le sujet du JWT validé correspond au user_pid UUID d’E1. Les lectures et écritures nécessitent le consentement Health data actif.
+security: [{bearerAuth: []}]
+paths:
+  /api/chat/sessions:
+    get:
+      operationId: listChatSessions
+      summary: Lister ses sessions, de la plus récente à la plus ancienne
+      parameters:
+        - {$ref: '#/components/parameters/Limit'}
+        - {$ref: '#/components/parameters/Offset'}
+      responses:
+        '200':
+          description: Résultat de la requête.
+          content:
+            application/json:
+              schema: {type: array, items: {$ref: '#/components/schemas/Session'}}
+        '401': {description: 'Jeton absent ou invalide.'}
+        '403': {description: 'Pseudonyme ou consentement invalide.'}
+        '400': {description: 'Paramètres ou corps invalides.'}
+    post:
+      operationId: createChatSession
+      summary: Ouvrir une conversation mobile
+      responses:
+        '201':
+          description: Résultat de la requête.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Session'}
+        '401': {description: 'Jeton absent ou invalide.'}
+        '403': {description: 'Pseudonyme ou consentement invalide.'}
+  /api/chat/sessions/{id}/messages:
+    get:
+      operationId: listChatMessages
+      summary: Relire les messages de sa session, du plus ancien au plus récent
+      parameters:
+        - {$ref: '#/components/parameters/Id'}
+        - {$ref: '#/components/parameters/Limit'}
+        - {$ref: '#/components/parameters/Offset'}
+      responses:
+        '200':
+          description: Résultat de la requête.
+          content:
+            application/json:
+              schema: {type: array, items: {$ref: '#/components/schemas/Message'}}
+        '401': {description: 'Jeton absent ou invalide.'}
+        '403': {description: 'Pseudonyme ou consentement invalide.'}
+        '400': {description: 'Paramètres ou corps invalides.'}
+        '404': {description: 'Ressource absente, inaccessible ou message non évaluable.'}
+    post:
+      operationId: sendChatMessage
+      summary: Enregistrer la question et la réponse du compagnon
+      parameters:
+        - {$ref: '#/components/parameters/Id'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Question'}
+      responses:
+        '200':
+          description: Tour complet enregistré, ou tour déjà enregistré pour le même messageId.
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Turn'}
+        '401': {description: 'Jeton absent ou invalide.'}
+        '403': {description: 'Pseudonyme ou consentement invalide.'}
+        '400': {description: 'Paramètres ou corps invalides.'}
+        '404': {description: 'Ressource absente, inaccessible ou message non évaluable.'}
+        '409': {description: 'Identifiant déjà utilisé autrement ou session terminée.'}
+        '503': {description: 'Règles de sécurité ou version KB indisponibles.'}
+  /api/chat/messages/{id}/feedback:
+    post:
+      operationId: rateChatReply
+      summary: Attribuer ou remplacer la note de sa propre réponse du compagnon
+      parameters:
+        - {$ref: '#/components/parameters/Id'}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Feedback'}
+      responses:
+        '204':
+          description: Note enregistrée.
+        '401': {description: 'Jeton absent ou invalide.'}
+        '403': {description: 'Pseudonyme ou consentement invalide.'}
+        '400': {description: 'Paramètres ou corps invalides.'}
+        '404': {description: 'Ressource absente, inaccessible ou message non évaluable.'}
+components:
+  securitySchemes:
+    bearerAuth: {type: http, scheme: bearer, bearerFormat: JWT}
+  parameters:
+    Id: {name: id, in: path, required: true, schema: {type: string, format: uuid}}
+    Limit: {name: limit, in: query, schema: {type: integer, minimum: 1, maximum: 100, default: 50}}
+    Offset: {name: offset, in: query, schema: {type: integer, minimum: 0, default: 0}}
+  schemas:
+    Session:
+      type: object
+      required: [sessionId, channel, startedAt, endedAt]
+      properties:
+        sessionId: {type: string, format: uuid}
+        channel: {type: string, enum: [App, Web, WhatsApp, Voice]}
+        startedAt: {type: string, format: date-time}
+        endedAt: {type: string, format: date-time, nullable: true}
+    Question:
+      type: object
+      required: [text]
+      properties:
+        text: {type: string, minLength: 1, maxLength: 4000, description: Question non blanche.}
+        messageId: {type: string, format: uuid, description: Identifiant facultatif généré une fois par envoi. Réutiliser avec le même texte et la même session en cas de reprise.}
+    Feedback:
+      type: object
+      required: [rating]
+      properties:
+        rating: {type: integer, minimum: 1, maximum: 5}
+    Turn:
+      type: object
+      required: [question, answer]
+      properties:
+        question: {$ref: '#/components/schemas/Message'}
+        answer: {$ref: '#/components/schemas/Message'}
+    Message:
+      type: object
+      required: [messageId, sessionId, senderRole, messageTimestamp, text, detectedLanguage, topicTag, distressFlag, replyKind, contentId, kbVersion, responseLatencyMs, userFeedback]
+      properties:
+        messageId: {type: string, format: uuid}
+        sessionId: {type: string, format: uuid}
+        senderRole: {type: string, enum: [User, AI, Human reviewer]}
+        messageTimestamp: {type: string, format: date-time}
+        text: {type: string, nullable: true, description: Masqué si la fiche de la réponse historique est devenue invisible.}
+        detectedLanguage: {type: string, enum: [French, Darija, MSA, Mixed]}
+        topicTag: {type: string, nullable: true}
+        distressFlag: {type: boolean}
+        replyKind: {type: string, nullable: true, enum: [Knowledge, Directory, MedicalLimit, Distress, ReferenceUnavailable, null]}
+        contentId: {type: string, nullable: true, pattern: '^KB-[0-9]{4}$'}
+        kbVersion: {type: string, nullable: true, pattern: '^KB-[0-9]{8}$'}
+        responseLatencyMs: {type: integer, nullable: true, minimum: 0}
+        userFeedback: {type: integer, nullable: true, minimum: 1, maximum: 5}

@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.open_chat).setOnClickListener(v ->
+                com.example.chifaaapp.knowledge.LibraryLauncher.open(this, com.example.chifaaapp.chat.ChatHistoryActivity.class));
         findViewById(R.id.open_library).setOnClickListener(v ->
                 com.example.chifaaapp.knowledge.LibraryLauncher.open(this));
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

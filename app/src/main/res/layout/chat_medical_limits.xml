@@ -1,0 +1,10 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chat_medical_limits"
+    style="@style/KbBody"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/kb_gap"
+    android:layout_marginBottom="@dimen/kb_gap"
+    android:background="@drawable/chat_medical_notice"
+    android:padding="@dimen/kb_gap"
+    android:text="@string/chat_medical_limits" />

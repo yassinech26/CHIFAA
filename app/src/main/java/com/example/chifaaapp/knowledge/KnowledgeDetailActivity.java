@@ -6,7 +6,7 @@ import android.widget.TextView;
 import com.example.chifaaapp.R;
 
 public class KnowledgeDetailActivity extends LibraryScreen {
-    static final String ID = "knowledge.contentId";
+    public static final String ID = "knowledge.contentId";
     private String id;
     @Override String displayedId() { return id; }
     @Override protected void onCreate(Bundle state) {

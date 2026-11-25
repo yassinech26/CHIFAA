@@ -5,5 +5,8 @@ import android.content.Intent;
 
 public final class LibraryLauncher {
     private LibraryLauncher() {}
-    public static void open(Activity from) { from.startActivity(new Intent(from, LibraryActivity.class)); }
+    public static void open(Activity from) { open(from, LibraryActivity.class); }
+    public static void open(Activity from, Class<? extends Activity> destination) {
+        from.startActivity(new Intent(from, destination));
+    }
 }

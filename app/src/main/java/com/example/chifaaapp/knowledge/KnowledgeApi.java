@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-interface KnowledgeApi {
+public interface KnowledgeApi {
     @GET("api/kb")
     Call<Page> list(@Query("q") String keyword, @Query("topic") String topic,
                     @Query("language") String language, @Query("after") String after);
@@ -23,6 +23,8 @@ interface KnowledgeApi {
 
     @Keep
     class Item {
+        public String title() { return title; }
+        public String sourceReference() { return sourceReference; }
         String contentId, title, topic, language, notice;
         Boolean fictional;
         String contentText, sourceType, sourceReference, evidenceLevel, localApplicability;
