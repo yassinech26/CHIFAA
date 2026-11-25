@@ -1,0 +1,43 @@
+<resources>
+    <color name="kb_primary">@color/primary</color>
+    <color name="kb_light">@color/primary_light</color>
+    <color name="kb_bg">@color/background</color>
+    <color name="kb_surface">@color/surface</color>
+    <color name="kb_text">@color/text_primary</color>
+    <color name="kb_muted">@color/text_secondary</color>
+    <dimen name="kb_margin">20dp</dimen>
+    <dimen name="kb_gap">8dp</dimen>
+    <dimen name="kb_card_radius">16dp</dimen>
+    <dimen name="kb_button_radius">12dp</dimen>
+    <dimen name="kb_target">48dp</dimen>
+    <style name="KbTheme" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/kb_primary</item>
+        <item name="colorOnPrimary">@color/kb_surface</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorOnSecondary">@color/text_primary</item>
+        <item name="colorError">@color/error</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="android:windowBackground">@color/kb_bg</item>
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+    <style name="KbBody" parent="Widget.AppCompat.TextView">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/kb_text</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+    <style name="KbTitle" parent="KbBody">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="KbSubtitle" parent="KbTitle"><item name="android:textSize">18sp</item></style>
+    <style name="KbNotice" parent="KbBody"><item name="android:textColor">@color/kb_primary</item></style>
+    <style name="KbButton" parent="Widget.Material3.Button">
+        <item name="cornerRadius">@dimen/kb_button_radius</item>
+        <item name="android:minHeight">@dimen/kb_target</item>
+    </style>
+    <string-array name="kb_languages">
+        <item>@string/kb_all</item><item>@string/kb_french</item><item>@string/kb_msa</item><item>@string/kb_darija</item>
+    </string-array>
+</resources>

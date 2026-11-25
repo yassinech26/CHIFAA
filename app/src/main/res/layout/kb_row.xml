@@ -1,0 +1,10 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/kb_gap" android:clickable="true" android:focusable="true"
+    app:cardBackgroundColor="@color/kb_surface" app:cardCornerRadius="@dimen/kb_card_radius">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/kb_margin">
+        <TextView android:id="@+id/row_title" style="@style/KbSubtitle" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <TextView android:id="@+id/row_meta" style="@style/KbBody" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <TextView android:id="@+id/row_notice" style="@style/KbNotice" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/kb_notice" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
