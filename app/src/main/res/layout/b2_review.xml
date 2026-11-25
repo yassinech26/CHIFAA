@@ -1,0 +1,126 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/b3_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/kb_bg">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/kb_margin"
+        android:paddingEnd="@dimen/kb_margin"
+        android:paddingTop="@dimen/kb_gap"
+        android:paddingBottom="@dimen/kb_gap">
+        <TextView
+            android:id="@+id/b2_heading"
+            style="@style/KbTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/b2_review" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/b2_back"
+                style="@style/KbButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/b2_back" />
+            <Button
+                android:id="@+id/b3_reload"
+                style="@style/KbButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/kb_retry" />
+        </LinearLayout>
+        <include
+            layout="@layout/b3_feedback" />
+        <ScrollView
+            android:id="@+id/b2_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:saveEnabled="false">
+            <LinearLayout
+                android:id="@+id/b2_panel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/b2_title"
+                    style="@style/KbTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/b2_meta"
+                    style="@style/KbSubtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/b2_notice"
+                    style="@style/KbNotice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/b2_body"
+                    style="@style/KbBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/b2_details"
+                    style="@style/KbBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/b2_history"
+                    style="@style/KbButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/b2_history" />
+                <Button
+                    android:id="@+id/b2_edit"
+                    style="@style/KbButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/b2_edit" />
+                <LinearLayout
+                    android:id="@+id/b2_approval"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        style="@style/KbBody"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/b2_expiry"
+                        android:labelFor="@+id/b2_expiry" />
+                    <EditText
+                        android:id="@+id/b2_expiry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/kb_target"
+                        android:inputType="textNoSuggestions"
+                        android:saveEnabled="false"
+                        android:importantForAutofill="no"
+                        android:imeOptions="flagNoPersonalizedLearning"
+                        android:maxLength="10" />
+                    <Button
+                        android:id="@+id/b2_approve"
+                        style="@style/KbButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/b2_approve" />
+                </LinearLayout>
+                <Button
+                    android:id="@+id/b2_retire"
+                    style="@style/KbButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/b2_retire" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

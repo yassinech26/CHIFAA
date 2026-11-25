@@ -12,7 +12,10 @@ public final class SafetyLauncher {
     private SafetyLauncher() {}
     public static boolean available() { return true; }
     public static void open(Activity from) {
-        Intent queue = new Intent(from, SafetyQueueActivity.class);
+        open(from,SafetyQueueActivity.class);
+    }
+    public static void open(Activity from, Class<? extends Activity> destination) {
+        Intent queue = new Intent(from, destination);
         if (SafetySession.current != null) { from.startActivity(queue); return; }
         View form = from.getLayoutInflater().inflate(R.layout.kb_debug_connect, null);
         AlertDialog dialog = new AlertDialog.Builder(from).setTitle(R.string.b3_staff).setView(form)

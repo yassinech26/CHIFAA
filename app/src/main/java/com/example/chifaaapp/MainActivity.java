@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.open_review).setOnClickListener(v -> SafetyLauncher.open(this,
+                com.example.chifaaapp.clinicalreview.ContentListActivity.class));
         findViewById(R.id.open_safety).setOnClickListener(v -> SafetyLauncher.open(this));
         findViewById(R.id.open_chat).setOnClickListener(v ->
                 com.example.chifaaapp.knowledge.LibraryLauncher.open(this, com.example.chifaaapp.chat.ChatHistoryActivity.class));
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override protected void onResume() {
         super.onResume();
+        findViewById(R.id.open_review).setVisibility(SafetyLauncher.available() ? View.VISIBLE : View.GONE);
         findViewById(R.id.open_safety).setVisibility(SafetyLauncher.available() ? View.VISIBLE : View.GONE);
     }
 }

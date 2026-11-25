@@ -66,7 +66,7 @@ public class SafetyQueueActivity extends SafetyScreen {
     private String status() { return filter == 0 ? null : SafetyLabels.STATES.get(filter - 1); }
     private void move(int count) { if (authorized()) { offset += count; reload(); } }
 
-    @Override void clear() {
+    @Override protected void clear() {
         page.clear();
         rows.notifyDataSetChanged();
         findViewById(R.id.b3_prev).setVisibility(View.GONE);
@@ -76,7 +76,7 @@ public class SafetyQueueActivity extends SafetyScreen {
         note(0);
     }
 
-    @Override void reload() {
+    @Override protected void reload() {
         clear();
         findViewById(R.id.b3_filter).setEnabled(true);
         findViewById(R.id.b3_reload).setEnabled(true);

@@ -12,7 +12,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-abstract class SafetyScreen extends AppCompatActivity {
+public abstract class SafetyScreen extends AppCompatActivity {
     SafetySession.Connection session;
     private Call<?> active;
     private boolean started;
@@ -20,7 +20,7 @@ abstract class SafetyScreen extends AppCompatActivity {
         if (started && session != SafetySession.current) bind();
     };
 
-    void layout(int resource) {
+    protected void layout(int resource) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(resource);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.b3_root), (view, state) -> {
@@ -54,11 +54,15 @@ abstract class SafetyScreen extends AppCompatActivity {
         super.onStop();
     }
 
-    boolean authorized() { return started && session != null && session == SafetySession.current; }
-    abstract void clear();
-    abstract void reload();
+    protected boolean authorized() { return started && session != null && session == SafetySession.current; }
+    protected String generation() { return session.generation; }
+    protected String staffRole() { return session.role; }
+    protected <T> T api(Class<T> type) { return session.retrofit.create(type); }
+    protected boolean revokeOnForbidden() { return true; }
+    protected abstract void clear();
+    protected abstract void reload();
 
-    void note(int id) {
+    protected void note(int id) {
         TextView message = findViewById(R.id.b3_notice);
         message.setText(id == 0 ? "" : getString(id));
         message.setVisibility(id == 0 ? View.GONE : View.VISIBLE);
@@ -70,10 +74,10 @@ abstract class SafetyScreen extends AppCompatActivity {
         findViewById(R.id.b3_progress).setVisibility(View.GONE);
     }
 
-    interface Success<T> { void accept(T value); }
-    interface Failure { void accept(int code); }
+    protected interface Success<T> { void accept(T value); }
+    protected interface Failure { void accept(int code); }
 
-    <T> void fetch(Call<T> call, Success<T> success, Failure failure) {
+    protected <T> void fetch(Call<T> call, Success<T> success, Failure failure) {
         if (!authorized()) return;
         cancel();
         active = call;
@@ -88,7 +92,7 @@ abstract class SafetyScreen extends AppCompatActivity {
             @Override public void onResponse(Call<T> ignored, Response<T> response) {
                 if (!complete()) return;
                 int code = response.code();
-                if (code == 401 || code == 403) {
+                if (code == 401 || (code == 403 && revokeOnForbidden())) {
                     SafetySession.Connection denied = session;
                     session = null;
                     clear();

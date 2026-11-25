@@ -7,6 +7,9 @@ public final class SafetyLauncher {
     private SafetyLauncher() {}
     public static boolean available() { return SafetySession.current != null; }
     public static void open(Activity from) {
-        if (available()) from.startActivity(new Intent(from, SafetyQueueActivity.class));
+        open(from,SafetyQueueActivity.class);
+    }
+    public static void open(Activity from, Class<? extends Activity> destination) {
+        if (available()) from.startActivity(new Intent(from, destination));
     }
 }
