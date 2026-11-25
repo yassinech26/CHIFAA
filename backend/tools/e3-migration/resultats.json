@@ -1,0 +1,59 @@
+{
+  "postgres": "18.3",
+  "source_commit": "d1e70493a3d746158a53140d9d48083ca3c24794",
+  "target_commit": "bd742d15890deb6e4263b4029279fc7281196790",
+  "source": {
+    "users": 2,
+    "staff": 3,
+    "kb_items": 6,
+    "chat_sessions": 25,
+    "messages": 500,
+    "safety_events": 4,
+    "organisations": 30,
+    "organisation_languages": 60,
+    "access_log": 0,
+    "flyway_schema_history": 2
+  },
+  "scenarios": {
+    "demo": {
+      "candidate": {
+        "users": 2,
+        "staff": 3,
+        "kb_items": 6,
+        "chat_sessions": 25,
+        "messages": 0,
+        "safety_events": 4,
+        "organisations": 30,
+        "organisation_languages": 60
+      },
+      "archived_messages": 500,
+      "archived_ratings": 250,
+      "held_sessions": 25,
+      "visible_kb": 0,
+      "source_intact": true,
+      "verified_checks": 16,
+      "duplicate_run_rejected": true,
+      "missing_mapping_and_rollback_tested": false
+    },
+    "edge": {
+      "candidate": {
+        "users": 2,
+        "staff": 3,
+        "kb_items": 6,
+        "chat_sessions": 26,
+        "messages": 2,
+        "safety_events": 4,
+        "organisations": 30,
+        "organisation_languages": 60
+      },
+      "archived_messages": 500,
+      "archived_ratings": 250,
+      "held_sessions": 25,
+      "visible_kb": 0,
+      "source_intact": true,
+      "verified_checks": 16,
+      "duplicate_run_rejected": true,
+      "missing_mapping_and_rollback_tested": true
+    }
+  }
+}
