@@ -31,12 +31,14 @@ Le lanceur démarre Spring en HTTPS, un PostgreSQL vierge avec les migrations pa
 
 Les trois phases instrumentées (`initialConsents`, `reconnectAndSwitchAccounts` et `withdrawHealthConsent`) ont réussi sur l’émulateur Android API 37. Après le retrait santé d’A avec son jeton courant, les cinq opérations M5 ont répondu 403. La liste et le détail M4 sont restés accessibles, puis la fiche consultée a été relue hors ligne. B a pu envoyer un nouveau message. Le contrôle SQL final a confirmé les deux sessions, les deux messages d’A et les quatre de B, sans note enregistrée pour la tentative refusée. Les 85 tests des six suites backend ont également réussi, sans test ignoré.
 
+Après fusion de `develop` au commit `903f90d`, le parcours HTTPS à trois phases et le contrôle SQL ont été rejoués avec succès sur l’APK fusionné. Les 14 tests d’écran de la bibliothèque et du chat ont réussi. Les huit suites backend totalisent 90 tests réussis, dont les trois tests optionnels du parcours E1 exécutés sur une autre base PostgreSQL éphémère. Le test JVM Android facultatif `LivePatientApiTest` a été ignoré faute de boîte OTP dédiée à ce test.
+
 ## Raccordement restant sur la branche E1
 
 1. Ajouter `userPid` (UUID du compte authentifié) à `AuthDtos.Session` et le remplir dans `Sessions.open`. Ajouter le champ à `Models.Session` côté Android. Pour le seul test, le lanceur récupère cet UUID dans le registre serveur après la vérification OTP.
 2. Dans le parcours de succès de `OtpVerificationActivity`, transmettre la session complète à `PatientRepository`. Appeler `KnowledgeSession.open(context, baseUrl, userPid, token, onUnauthorized)` après vérification OTP et lors de toute restauration d’une session valide. Fournir la racine HTTPS terminée par `/`, en amont de `/api/`.
 3. Relier `onUnauthorized` à la routine E1 qui efface le jeton, l’UUID et renvoie vers l’OTP. Appeler `KnowledgeSession.close()` lors de la déconnexion, d’un 401 reçu par le client E1 ou d’un retrait de Service. Un 403 santé doit laisser M4 accessible. Tester ces transitions depuis les écrans E1, y compris le changement de compte.
-4. Reprendre les changements de `SecurityConfig` et `PatientAccess` livrés sur cette branche. Dans `Accounts.authenticate`, aligner aussi la vérification Service lors de la reconnexion sur la dernière preuve. La version E1 publiée recherche encore toute ligne `Given` à cet endroit.
+4. La branche fusionnée contient les changements de `SecurityConfig` et `PatientAccess`. Dans `Accounts.authenticate`, aligner la vérification Service lors de la reconnexion sur la dernière preuve. La version E1 publiée recherche encore toute ligne `Given` à cet endroit.
 
 Dans l’accueil patient assemblé, reprendre les deux actions de l’accueil E2, `LibraryLauncher.open(activity)` pour la bibliothèque et `LibraryLauncher.open(activity, ChatHistoryActivity.class)` pour le chat. L’URL de développement HTTP d’E1 doit également être remplacée par la racine HTTPS du serveur commun pour ces modules.
 

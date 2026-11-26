@@ -1,0 +1,5 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/PatientGroup">
+    <ProgressBar android:id="@+id/loading" android:layout_width="wrap_content" android:layout_height="wrap_content" android:contentDescription="@string/loading" android:visibility="gone" />
+    <TextView android:id="@+id/message" style="@style/PatientBody" android:accessibilityLiveRegion="polite" android:visibility="gone" />
+    <Button android:id="@+id/retry" style="@style/PatientSecondary" android:text="@string/retry" android:visibility="gone" />
+</LinearLayout>

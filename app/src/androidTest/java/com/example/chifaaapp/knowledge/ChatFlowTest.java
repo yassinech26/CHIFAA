@@ -28,6 +28,7 @@ import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.matcher.RootMatchers.isDialog;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.*;
@@ -133,6 +134,14 @@ public class ChatFlowTest {
         return ActivityScenario.launch(new Intent(context, ChatActivity.class).putExtra("chat.session", session));
     }
 
+    private void rateVisibleAnswer(int position) {
+        onView(withId(R.id.chat_list)).perform(swipeUp());
+        Matcher<View> rate = allOf(withId(R.id.chat_rate), isEnabled(), isDisplayed());
+        visible(rate);
+        onView(rate).perform(click());
+        onData(anything()).inRoot(isDialog()).atPosition(position).perform(click());
+    }
+
     @Test public void createOpenReferenceAndReplaceRatingFromHistory() {
         try (ActivityScenario<MainActivity> screen = ActivityScenario.launch(MainActivity.class)) {
             onView(withId(R.id.open_chat)).perform(click());
@@ -148,8 +157,7 @@ public class ChatFlowTest {
             visible(withText("Détail fictif"));
             pressBack();
             visible(withText(containsString("Source de test")));
-            onView(allOf(withId(R.id.chat_rate), isDisplayed())).perform(click());
-            onData(anything()).inRoot(isDialog()).atPosition(0).perform(click());
+            rateVisibleAnswer(0);
             visible(withText(context.getString(R.string.chat_rating, 1)));
             pressBack();
             Matcher<View> sessionRow = allOf(withId(android.R.id.text1), isDescendantOfA(withId(R.id.chat_list)));
@@ -158,8 +166,7 @@ public class ChatFlowTest {
             visible(withText(context.getString(R.string.chat_rating, 1)));
             // La carte M4 est chargée séparément et peut déplacer le bouton pendant le clic.
             visible(withText(containsString("Source de test")));
-            onView(allOf(withId(R.id.chat_rate), isEnabled(), isDisplayed())).perform(click());
-            onData(anything()).inRoot(isDialog()).atPosition(4).perform(click());
+            rateVisibleAnswer(4);
             visible(withText(context.getString(R.string.chat_rating, 5)));
             assertEquals(5, history.get(1).get("userFeedback"));
         }

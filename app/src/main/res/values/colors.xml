@@ -1,5 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="patient_primary">#0F766E</color>
+    <color name="patient_light">#E8F5F1</color>
+    <color name="patient_background">#FAF8F5</color>
+    <color name="patient_surface">#FFFFFF</color>
+    <color name="patient_text">#263238</color>
+    <color name="patient_muted">#64748B</color>
+    <color name="patient_accent">#C76A8A</color>
+    <color name="patient_error">#DC2626</color>
+    <color name="patient_warning">#D97706</color>
 </resources>

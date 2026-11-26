@@ -1,0 +1,11 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/patient_page" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="@color/patient_background">
+    <LinearLayout style="@style/PatientPage">
+        <TextView style="@style/PatientTitle" android:text="@string/title_otp" />
+        <TextView style="@style/PatientBody" android:id="@+id/otp_notice" android:text="@string/otp_notice" />
+        <TextView style="@style/PatientLabel" android:labelFor="@id/otp_code" android:text="@string/otp_code" />
+        <EditText style="@style/PatientField" android:id="@+id/otp_code" android:textDirection="ltr" android:digits="@string/patient_digits" android:singleLine="true" android:saveEnabled="false" android:inputType="number" />
+        <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/verify" android:text="@string/verify" />
+        <include layout="@layout/patient_feedback" />
+    </LinearLayout>
+</ScrollView>

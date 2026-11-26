@@ -1,0 +1,11 @@
+<resources>
+    <dimen name="patient_margin">20dp</dimen>
+    <dimen name="patient_space">8dp</dimen>
+    <dimen name="patient_large_space">24dp</dimen>
+    <dimen name="patient_target">48dp</dimen>
+    <dimen name="patient_title">24sp</dimen>
+    <dimen name="patient_subtitle">18sp</dimen>
+    <dimen name="patient_body">16sp</dimen>
+    <dimen name="patient_radius">12dp</dimen>
+    <dimen name="patient_card_radius">16dp</dimen>
+</resources>

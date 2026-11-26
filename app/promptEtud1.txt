@@ -1,0 +1,266 @@
+
+Tu es un ingénieur logiciel senior spécialisé en Android natif Java/XML, Spring Boot, PostgreSQL et sécurité des données de santé.
+
+PROJET : CHIFAA
+Je suis l'ÉTUDIANT 1 d'une équipe de trois étudiants. Chaque membre travaille avec son propre Codex et son propre ordinateur sur le même dépôt GitHub.
+
+MISSION
+Développer intégralement mes fonctionnalités frontend Android, backend Java, base PostgreSQL et tests, en suivant le cahier des charges "Projet étudiant : application mobile et sa base de données V2".
+
+Commence par lire le PDF du projet s'il est disponible dans le dépôt. Lis aussi README.md, AGENTS.md, les contrats API et les fichiers existants. Le PDF est la référence fonctionnelle. Ne suppose pas que les valeurs manquantes du catalogue v0.5 sont connues.
+
+STACK OBLIGATOIRE
+- Android Studio
+- Java pour Android
+- XML pour tous les layouts
+- Material Components
+- Retrofit + OkHttp pour les requêtes API
+- Spring Boot Java pour le serveur
+- Spring Security
+- Spring Data JPA
+- PostgreSQL
+- Flyway pour les migrations
+- Gradle pour Android, Maven pour Spring Boot
+- JUnit pour les tests
+
+INTERDICTIONS
+- Pas de Kotlin
+- Pas de Jetpack Compose
+- Pas de Flutter
+- Pas de React Native
+- Pas de Firebase comme remplacement de PostgreSQL
+- Pas de connexion PostgreSQL directe depuis Android
+- Pas de logique de consentement protégée uniquement côté Android
+- Pas de secrets dans Git
+- Ne pas réécrire le code des autres étudiants
+
+SKILLS
+Utiliser mobile-android-design et java-springboot.
+Adapter les recommandations du skill Android à Java + XML.
+
+CHARTE GRAPHIQUE CHIFAA
+Primary : #0F766E
+Primary Light : #E8F5F1
+Background : #FAF8F5
+Surface : #FFFFFF
+Text : #263238
+Muted : #64748B
+Accent : #C76A8A
+Error : #DC2626
+Warning : #D97706
+
+Police Roboto.
+Titre 24sp, sous-titre 18sp, texte 16sp.
+Cartes arrondies 16dp.
+Boutons arrondis 12dp.
+Marges horizontales 20dp.
+Espacement multiple de 8dp.
+Actions tactiles minimum 48dp.
+Icônes Material Symbols.
+Interface claire, professionnelle, rassurante, cohérente.
+Éviter les couleurs vives ou un design hospitalier froid.
+
+Utiliser exclusivement les ressources partagées :
+res/values/colors.xml
+res/values/dimens.xml
+res/values/styles.xml
+res/values/strings.xml
+res/values-ar/strings.xml
+
+Ne jamais coder les couleurs directement dans les layouts.
+Respecter le mode RTL arabe, l'accessibilité et le contraste.
+
+MES MODULES
+
+M1 — INSCRIPTION ET CONSENTEMENT
+Créer les écrans :
+- WelcomeActivity
+- AgeVerificationActivity
+- ServiceConsentActivity
+- HealthConsentActivity
+- SurveyConsentActivity
+- RegisterActivity
+- OtpVerificationActivity
+- LoginActivity
+
+Implémenter :
+1. Vérification obligatoire 18 ans ou plus.
+2. Refus de l'inscription si mineure.
+3. Affichage des limites médicales.
+4. Consentements indépendants par finalité.
+5. Enregistrement du statut, version, date UTC et méthode.
+6. Inscription par numéro de téléphone.
+7. Code OTP simulé avec expiration et limitation d'essais.
+8. Génération sécurisée du user_pid UUID.
+9. Chiffrement du téléphone côté serveur.
+10. Empreinte de recherche du téléphone.
+11. Stockage des identifiants uniquement dans identities.
+12. Session sécurisée avec jeton à durée limitée.
+13. Déconnexion et gestion du jeton expiré.
+
+M2 — PROFIL
+Créer :
+- ProfileActivity
+- EditProfileActivity
+- LanguageSettingsActivity
+
+Implémenter :
+- Tranches 18-29, 30-39, 40-49, 50-59, 60+.
+- Sélection des 24 gouvernorats par code ISO.
+- Langues Darija, French, MSA, Mixed.
+- Langue d'interface français/arabe.
+- Mise à jour du profil.
+- Validation des valeurs côté serveur.
+- Gestion de last_active_date.
+- Traductions et RTL.
+
+M3 — PARCOURS SANTÉ
+Créer :
+- HealthHomeActivity
+- HealthProfileActivity
+- EditHealthProfileActivity
+- FertilityInfoActivity
+
+Implémenter :
+- Vérification du consentement santé sur chaque API.
+- Masquage du module sans consentement.
+- Type de cancer.
+- Étape de parcours.
+- Ancienneté et année du diagnostic.
+- Traitements à choix multiples.
+- Type de structure.
+- Option "Je préfère ne pas répondre".
+- Intérêt pour les informations sur la fertilité.
+- Affichage des fiches de fertilité via l'API bibliothèque d'E2.
+- Conservation de la version du consentement santé.
+- Validation des champs et mises à jour.
+
+M3 — BILANS
+Créer :
+- CreateCheckinActivity
+- CheckinHistoryActivity
+- CheckinDetailsActivity
+- CheckinChartActivity
+
+Implémenter :
+- Date du bilan.
+- Effets secondaires à choix multiples.
+- Enregistrement dans health_checkins.
+- Association dans checkin_side_effects.
+- Historique chronologique.
+- Graphique simple du nombre d'effets déclarés.
+- Gestion des états vide, chargement, erreur.
+- Interdiction d'accéder aux bilans d'une autre utilisatrice.
+
+M7 — MES DONNÉES
+Créer :
+- MyDataActivity
+- ManageConsentsActivity
+- ExportDataActivity
+- DeleteAccountRequestActivity
+
+Implémenter :
+- Consultation des consentements.
+- Retrait individuel.
+- Blocage immédiat de l'espace santé après retrait.
+- Invalidation des caches sensibles concernés.
+- Export des données propres à l'utilisatrice en JSON/CSV.
+- Enregistrement d'une demande de suppression.
+- Service serveur de suppression transactionnelle.
+- CASCADE des données personnelles.
+- Conservation pseudonymisée des preuves prévues.
+- Ne conserver aucune donnée directement identifiante dans les preuves.
+
+BASE DE DONNÉES À MA CHARGE
+users
+identities
+consents
+health_profiles
+health_profile_treatments
+health_checkins
+checkin_side_effects
+
+Pour data_requests, créer le service métier de demande et de suppression en coordination avec E3, qui réalisera l'administration des demandes.
+
+Respecter les colonnes, les contraintes CHECK, UNIQUE, PK, FK et les comportements ON DELETE du PDF.
+Ne pas inventer les listes AT-007 ou AT-073 manquantes. Prévoir une configuration documentée en attendant le catalogue.
+
+BACKEND
+Créer les packages nécessaires :
+auth/
+users/
+consents/
+health/
+datarequests/
+
+Utiliser :
+Controller + Service + Repository + Entity + DTO.
+Valider les DTO et les autorisations côté serveur.
+Ajouter les transactions nécessaires.
+Ne jamais faire confiance à un user_pid provenant librement du client.
+Journaliser les accès sensibles via le service d'audit commun.
+
+FRONTEND
+Chaque écran doit disposer de :
+- Un layout XML propre.
+- Une Activity Java ou un Fragment Java.
+- Des composants réutilisables.
+- Des labels accessibles.
+- Un chargement explicite.
+- Une gestion des erreurs de réseau.
+- Une validation des formulaires.
+- Des messages adaptés en français et en arabe.
+
+Les écrans doivent avoir le même design que ceux des autres étudiants.
+Ne pas modifier la navigation globale sans coordination.
+
+API
+Documenter les routes :
+/api/auth/*
+/api/users/me
+/api/consents/*
+/api/health/*
+/api/data/*
+
+Créer les interfaces Retrofit et DTO Android correspondant aux DTO de l'API.
+
+TESTS OBLIGATOIRES
+- Mineure refusée.
+- Inscription réussie.
+- Téléphone chiffré.
+- Consentements enregistrés.
+- Santé inaccessible sans consentement.
+- Retrait de consentement effectif côté serveur.
+- Bilans privés entre utilisatrices.
+- Ajout de traitements multiples.
+- Export personnel.
+- Demande de suppression.
+- Conservation correcte des preuves.
+- Tests UI inscription et bilan.
+
+GITHUB
+Travailler par branche feature/*.
+Ne jamais pousser directement sur main.
+Ne pas modifier les fichiers propriétaires des autres sans accord.
+Utiliser Flyway et ne jamais réécrire une migration fusionnée.
+Créer des commits descriptifs.
+Préparer une Pull Request avec fichiers modifiés et tests.
+
+MÉTHODE DE TRAVAIL
+1. Inspecter le dépôt existant.
+2. Présenter un plan court et la liste des fichiers concernés.
+3. Identifier les dépendances envers E2/E3.
+4. Implémenter en petits lots exécutables.
+5. Ajouter les migrations.
+6. Implémenter l'API et les tests.
+7. Implémenter l'UI XML/Java.
+8. Connecter l'UI à l'API.
+9. Exécuter les tests et corriger.
+10. Documenter les routes et la fonctionnalité.
+
+Ne pas prétendre avoir testé une fonction si elle n'a pas été exécutée.
+
+RÉSULTAT ATTENDU
+Un parcours complet d'inscription, connexion, profil, santé, bilans et gestion des données, fonctionnant réellement avec PostgreSQL et respectant le PDF.
+
+Commence maintenant par inspecter les fichiers et réaliser la première tâche disponible dans mon périmètre.

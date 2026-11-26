@@ -1,0 +1,9 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/patient_page" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="@color/patient_background">
+    <LinearLayout style="@style/PatientPage">
+        <TextView style="@style/PatientTitle" android:text="@string/title_health_profile" />
+        <TextView style="@style/PatientBody" android:id="@+id/result"  />
+        <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/edit_health" android:text="@string/edit_health" />
+        <include layout="@layout/patient_feedback" />
+    </LinearLayout>
+</ScrollView>

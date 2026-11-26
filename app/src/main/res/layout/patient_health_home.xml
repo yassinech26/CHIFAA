@@ -1,0 +1,12 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/patient_page" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="@color/patient_background">
+    <LinearLayout style="@style/PatientPage">
+        <TextView style="@style/PatientTitle" android:text="@string/title_health_home" />
+        <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/health_profile" android:text="@string/health_profile" />
+        <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/create_checkin" android:text="@string/create_checkin" />
+        <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/history" android:text="@string/history" />
+        <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/chart" android:text="@string/chart" />
+        <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/fertility" android:text="@string/fertility" />
+        <include layout="@layout/patient_feedback" />
+    </LinearLayout>
+</ScrollView>

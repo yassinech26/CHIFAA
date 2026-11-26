@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
                 com.example.chifaaapp.knowledge.LibraryLauncher.open(this, com.example.chifaaapp.chat.ChatHistoryActivity.class));
         findViewById(R.id.open_library).setOnClickListener(v ->
                 com.example.chifaaapp.knowledge.LibraryLauncher.open(this));
+        findViewById(R.id.open_patient).setOnClickListener(v -> startActivity(new android.content.Intent(
+            this, com.example.chifaaapp.patient.WelcomeActivity.class)));
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);

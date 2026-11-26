@@ -1,0 +1,22 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/patient_page" android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true" android:background="@color/patient_background">
+    <LinearLayout style="@style/PatientPage">
+        <TextView style="@style/PatientTitle" android:text="@string/title_edit_health" />
+        <TextView style="@style/PatientLabel" android:labelFor="@id/cancer" android:text="@string/cancer" />
+        <Spinner style="@style/PatientField" android:id="@+id/cancer"  />
+        <TextView style="@style/PatientLabel" android:labelFor="@id/phase" android:text="@string/phase" />
+        <Spinner style="@style/PatientField" android:id="@+id/phase"  />
+        <TextView style="@style/PatientLabel" android:labelFor="@id/period" android:text="@string/period" />
+        <Spinner style="@style/PatientField" android:id="@+id/period"  />
+        <TextView style="@style/PatientLabel" android:labelFor="@id/year" android:text="@string/year" />
+        <EditText style="@style/PatientField" android:id="@+id/year" android:textDirection="ltr" android:digits="@string/patient_digits" android:singleLine="true" android:saveEnabled="false" android:inputType="number" />
+        <TextView style="@style/PatientLabel" android:labelFor="@id/facility" android:text="@string/facility" />
+        <Spinner style="@style/PatientField" android:id="@+id/facility"  />
+        <TextView style="@style/PatientLabel" android:labelFor="@id/interest" android:text="@string/interest" />
+        <Spinner style="@style/PatientField" android:id="@+id/interest"  />
+        <TextView style="@style/PatientLabel" android:labelFor="@id/treatments" android:text="@string/treatments" />
+        <LinearLayout style="@style/PatientGroup" android:id="@+id/treatments"  />
+        <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/save" android:text="@string/save" />
+        <include layout="@layout/patient_feedback" />
+    </LinearLayout>
+</ScrollView>
