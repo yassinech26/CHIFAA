@@ -163,6 +163,12 @@ public class LibraryFlowTest {
             assertTrue(stored.ids().isEmpty());
         } finally { stored.clear(); }
         repo.detail("KB-0001", true);
+        detailStatus = 403;
+        try { repo.detail("KB-0001", true); fail(); }
+        catch (KnowledgeRepository.Failure denied) { assertEquals(403, denied.code); }
+        assertFalse(repo.revoked);
+        try { repo.detail("KB-0001", false); fail(); }
+        catch (KnowledgeRepository.Failure missing) { assertEquals(0, missing.code); }
         detailStatus = 401;
         try { repo.detail("KB-0001", true); fail(); }
         catch (KnowledgeRepository.Failure denied) { assertEquals(401, denied.code); }

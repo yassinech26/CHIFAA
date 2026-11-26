@@ -12,8 +12,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Sql(scripts = "/knowledge-api-fixtures.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 class KnowledgeApiTest extends PostgresJwtTest {
+    private String access;
+
+    @org.junit.jupiter.api.BeforeEach void signIn() { access = patientBearer(patient(false)); }
+
     private MockHttpServletRequestBuilder read(String path) throws Exception {
-        return get(path).header("Authorization", bearer("test-user", "chifaa-test"));
+        return get(path).header("Authorization", access);
     }
 
     @Test

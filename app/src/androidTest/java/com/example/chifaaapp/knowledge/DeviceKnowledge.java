@@ -9,8 +9,12 @@ public final class DeviceKnowledge {
     private DeviceKnowledge() {}
 
     public static void open(Context context, JsonObject fixture, String account, String token) throws Exception {
+        open(context, fixture, account, token, null);
+    }
+
+    public static void open(Context context, JsonObject fixture, String account, String token, Runnable onUnauthorized) throws Exception {
         KnowledgeSession.open(context, fixture.get("url").getAsString(), fixture.get(account).getAsString(),
-                fixture.get(token).getAsString(), DeviceTls.client(fixture));
+                fixture.get(token).getAsString(), DeviceTls.client(fixture), onUnauthorized);
     }
 
     public static void read(String id, boolean online) throws Exception {

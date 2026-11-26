@@ -104,6 +104,9 @@ abstract class LibraryScreen extends AppCompatActivity {
                 });
                 if (sync && online && !repo.revoked) {
                     repo.refreshVisited(displayedId()).whenComplete((nothing, failure) -> {
+                        if (failure instanceof KnowledgeRepository.Failure && ((KnowledgeRepository.Failure) failure).code == 403) runOnUiThread(() -> {
+                            if (started && generation == request && KnowledgeSession.current == repo) error(403);
+                        });
                         if (repo.revoked) runOnUiThread(() -> {
                             if (KnowledgeSession.current == repo) KnowledgeSession.close();
                         });
@@ -120,7 +123,7 @@ abstract class LibraryScreen extends AppCompatActivity {
     }
 
     void error(int code) {
-        status(code == 401 ? R.string.kb_auth : code == 404 || code == 410 ? R.string.kb_hidden :
+        status(code == 401 ? R.string.kb_auth : code == 403 ? R.string.kb_consent : code == 404 || code == 410 ? R.string.kb_hidden :
                 code == 0 ? R.string.kb_not_saved : R.string.kb_error);
     }
 

@@ -18,19 +18,19 @@ Depuis `backend`, lancer `mvn test` avec Maven et un JDK 17 ou ultérieur. JUnit
 
 Depuis `backend`, fournir à Spring Boot les paramètres de connexion PostgreSQL (`SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD`). Configurer les cinq libellés ci-dessus sous `spring.flyway.placeholders.at044Source1` à `spring.flyway.placeholders.at044Source5` dans la configuration locale de Spring. Flyway doit retrouver au démarrage toutes les migrations de l’équipe déjà appliquées, y compris celle de `staff`.
 
-Configurer `CHIFAA_JWT_ISSUER_URI` et `CHIFAA_JWT_AUDIENCE` avec l’émetteur et l’audience convenus avec E1. Spring Security utilise les clés publiques de l’émetteur pour vérifier le jeton Bearer. Le backend requiert un fournisseur compatible avec la découverte de clés JWT, ou une adresse de clés explicite via `spring.security.oauth2.resourceserver.jwt.jwk-set-uri`. Exposer le service via HTTPS. Lancer `mvn spring-boot:run` ou `mvn verify` puis `java -jar target/chifaa-backend-0.1.0-SNAPSHOT.jar`.
+Les routes patient utilisent le registre de sessions OTP E1 et le Bearer opaque renvoyé par `POST /api/auth/verify`. Fournir les deux clés privées distinctes `CHIFAA_PHONE_KEY` et `CHIFAA_LOOKUP_KEY` (32 octets chacune, en Base64). Pour les routes du personnel, configurer `CHIFAA_JWT_ISSUER_URI` et `CHIFAA_JWT_AUDIENCE`. Exposer le serveur via HTTPS.
 
 ## Utiliser les routes
 
 Envoyer `Authorization: Bearer <jeton>` pour les deux lectures. Par exemple, `GET /api/kb?topic=Accueil&language=French&q=guide&limit=20` renvoie des résumés dans `items`. Si `nextAfter` contient un identifiant, le passer dans `after` avec les mêmes filtres. Une recherche vide de résultats renvoie HTTP 200 et `items: []`. Pour ouvrir une fiche, utiliser son identifiant, par exemple `GET /api/kb/KB-0001`. Le détail contient le texte, la source, les dates, le niveau de preuve et la version.
 
-Les deux routes répondent 401 si le jeton est absent ou invalide et 400 pour un paramètre mal formé. Le détail répond 404 pour une fiche inconnue ou masquée. Le client peut utiliser `fictional` pour afficher la mention de démonstration dans la langue d’interface. Les noms JSON, limites et formats de réponse figurent dans le [contrat OpenAPI](docs/openapi-kb.yaml).
+Les deux routes répondent 401 si le jeton est absent, inconnu ou expiré, 403 si l’accord Service use est inactif, et 400 pour un paramètre mal formé. Le détail répond 404 pour une fiche inconnue ou masquée. Le client peut utiliser `fictional` pour afficher la mention de démonstration dans la langue d’interface. Les noms JSON, limites et formats de réponse figurent dans le [contrat OpenAPI](docs/openapi-kb.yaml).
 
-La commande `mvn verify` vérifie aussi les routes via Spring MVC, Spring Security et PostgreSQL, avec des jetons signés et des données fictives propres aux tests.
+La commande `mvn verify` vérifie aussi les routes via Spring MVC, Spring Security et PostgreSQL, avec des sessions opaques patient, des JWT personnel et des données fictives.
 
 ## Compagnon M5
 
-Le [contrat OpenAPI du chat](docs/openapi-chat.yaml) décrit les sessions, les messages, la lecture de l’historique et la notation. Le JWT d’E1 doit porter le pseudonyme UUID dans `sub`. Le serveur vérifie la dernière décision de consentement `Health data` à chaque opération, car les messages peuvent contenir des données de santé. La session appartient exclusivement à ce pseudonyme.
+Le [contrat OpenAPI du chat](docs/openapi-chat.yaml) décrit les sessions, les messages, la lecture de l’historique et la notation. Le registre E1 fournit l’UUID patient. Le serveur verrouille la ligne patient et vérifie les dernières décisions `Service use` et `Health data` dans la transaction de chaque opération, car les messages peuvent contenir des données de santé. La session appartient exclusivement à ce pseudonyme.
 
 La migration M5 dépend de `users(user_pid)`, `staff(staff_id)`, `organisations(org_id)` et du socle M4. À l’exécution, le registre `consents` d’E1 doit aussi être accessible. Configurer les sept libellés AT-022 dans Flyway en plus des cinq AT-044 de M4. Doubler les apostrophes simples dans les valeurs SQL des placeholders. La version KB correspond à la publication du catalogue, au format `KB-YYYYMMDD`. L’équipe doit la mettre à jour à chaque publication.
 
@@ -44,7 +44,7 @@ Consulter une conversation avec `GET /api/chat/sessions/{id}/messages` et noter 
 
 Pour afficher la carte de la source, le client utilise `answer.contentId` sur `GET /api/kb/{id}`. Pour une question mixte, un marqueur darija privilégie une fiche darija, sinon la recherche privilégie l’arabe standard. Le français est la langue de repli. Le texte des ressources de détresse suit la langue de réponse, avec repli sur l’autre traduction officielle disponible.
 
-La configuration partagée de Spring Security conserve la validation JWT sur M4 et M5. Le JAR ne contient ni données de démonstration ni clés de test. Lors de l’intégration, vérifier également que les journaux du serveur PostgreSQL n’enregistrent aucune ligne de message ni valeur liée, y compris en cas d’erreur.
+Le profil explicite `demo-seed` initialise les comptes fictifs sur une base de recette vide. Lors de l’intégration, vérifier également que les journaux du serveur PostgreSQL n’enregistrent aucune ligne de message ni valeur liée, y compris en cas d’erreur.
 
 ## File de sécurité B3
 

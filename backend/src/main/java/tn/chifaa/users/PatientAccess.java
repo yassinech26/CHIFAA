@@ -16,12 +16,23 @@ public class PatientAccess {
     public void lock(UUID pid) {
         int rows = db.update("update users set last_active_date=current_date where user_pid=?",pid);
         if (rows == 0) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-        if (!Boolean.TRUE.equals(db.queryForObject("select exists(select 1 from consents where user_pid=? and consent_purpose='Service use' and consent_status='Given')",Boolean.class,pid)))
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        activeVersion(pid, "Service use");
     }
+
+    @Transactional(propagation=Propagation.MANDATORY)
     public String healthVersion(UUID pid) {
         lock(pid);
-        return db.queryForList("select consent_version from consents where user_pid=? and consent_purpose='Health data' and consent_status='Given'",String.class,pid)
-            .stream().findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
+        return activeVersion(pid, "Health data");
+    }
+
+    private String activeVersion(UUID pid, String purpose) {
+        return db.queryForList("""
+                select consent_version from (
+                    select consent_version, consent_status, withdrawn_at from consents
+                    where user_pid=? and consent_purpose=?
+                    order by given_at desc, consent_id desc limit 1
+                ) latest where consent_status='Given' and withdrawn_at is null
+                """, String.class, pid, purpose).stream().findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
     }
 }

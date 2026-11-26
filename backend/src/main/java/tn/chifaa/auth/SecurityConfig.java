@@ -19,8 +19,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Configuration
 class SecurityConfig {
     @Bean java.time.Clock clock() { return java.time.Clock.systemUTC(); }
+    @org.springframework.core.annotation.Order(1)
     @Bean SecurityFilterChain patientApi(HttpSecurity http, Sessions sessions) throws Exception {
-        return http.securityMatcher("/api/auth/**","/api/users/me","/api/consents/**","/api/health/**","/api/data/**")
+        return http.securityMatcher("/api/auth/**","/api/users/me","/api/consents/**","/api/health/**","/api/data/**","/api/kb","/api/kb/**","/api/chat/**")
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(e -> e.authenticationEntryPoint((req,res,ex) -> res.setStatus(401)))

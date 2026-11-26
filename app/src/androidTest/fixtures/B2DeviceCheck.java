@@ -6,7 +6,7 @@ import java.util.Map;
 public class B2DeviceCheck extends DeviceCheck {
     private B2DeviceCheck(String adb, String serial) { super(adb, serial); }
 
-    @Override protected void exercise(JdbcTemplate db, String url, String certificate) throws Exception {
+    @Override protected void exercise(org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext context, JdbcTemplate db, String url, String certificate) throws Exception {
         db.update("insert into staff(staff_id,role,active) values ('CT-E2E','Content team',true),('CR-E2E','Clinical reviewer',true)");
         Map<String,String> fixture = Map.of("url",url,"certificate",certificate,
                             "editor",bearer("CT-E2E","chifaa-test").substring("Bearer ".length()),

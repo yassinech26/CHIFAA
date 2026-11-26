@@ -17,7 +17,7 @@ La pagination demande un élément supplémentaire pour savoir si la page suivan
 
 ## Session et confidentialité
 
-Le client partage le transport Retrofit HTTPS et la session Bearer de la bibliothèque. En release, E1 fournit le compte avec `KnowledgeSession.open(...)` et signale la déconnexion avec `KnowledgeSession.close()`. En debug, le formulaire de connexion existant permet d’utiliser une URL et un jeton de test. Le serveur vérifie l’identité, la propriété de la session et le consentement à chaque requête. Un refus d’accès efface le contenu du chat à l’écran. Un HTTP 401 ferme la session Android. Un HTTP 403 affiche le message de consentement.
+Le client partage le transport Retrofit HTTPS et la session Bearer de la bibliothèque. En release, E1 fournit le compte avec `KnowledgeSession.open(...)` et signale la déconnexion avec `KnowledgeSession.close()`. En debug, le formulaire de connexion existant permet d’utiliser une URL et un jeton de test. Le serveur vérifie l’identité, la propriété de la session et le consentement à chaque requête. Un refus d’accès efface le contenu du chat à l’écran. Un HTTP 401 ferme la session Android. Un HTTP 403 affiche le message de consentement. L’absence de Health data laisse la bibliothèque accessible lorsque Service use est actif.
 
 Le chat recharge son historique depuis le serveur à chaque retour au premier plan. Les messages et le brouillon restent en mémoire sur le téléphone. Une rotation conserve le brouillon et l’UUID d’un envoi en attente. Si la réponse réseau est perdue, **Réessayer** reprend le même envoi. En cas d’arrêt du processus Android, rouvrir l’historique pour vérifier l’enregistrement. Les libellés sont disponibles en français et en arabe et les bulles suivent le sens de lecture.
 

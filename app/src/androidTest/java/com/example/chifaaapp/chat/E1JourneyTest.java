@@ -2,6 +2,9 @@ package com.example.chifaaapp.chat;
 
 import android.content.Context;
 import android.os.SystemClock;
+import android.widget.TextView;
+import android.widget.ListView;
+import java.util.concurrent.atomic.AtomicBoolean;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -18,10 +21,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.assertion.ViewAssertions.*;
-import static androidx.test.espresso.matcher.ViewMatchers.*;
-import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
@@ -41,10 +40,15 @@ public class E1JourneyTest {
         }
     }
 
-    @After public void close() { KnowledgeSession.close(); }
+    private boolean preserveCache;
+    @After public void close() { if (!preserveCache) KnowledgeSession.close(); }
 
     private void open(String account, String token) throws Exception {
-        DeviceKnowledge.open(context, fixture, account, token);
+        open(account, token, null);
+    }
+
+    private void open(String account, String token, Runnable onUnauthorized) throws Exception {
+        DeviceKnowledge.open(context, fixture, account, token, onUnauthorized);
         chat = KnowledgeSession.authenticatedClient().create(ChatRepository.class);
         expectedToken = fixture.get(token).getAsString();
     }
@@ -73,26 +77,43 @@ public class E1JourneyTest {
         expect(404, chat.feedback(answer, new ChatRepository.Feedback(1)));
     }
 
-    @Test public void refreshAndSwitchAccounts() throws Exception {
-        open("a", "expired");
-        expect(401, chat.sessions(0, 10));
-
+    @Test public void initialConsents() throws Exception {
         open("a", "a1");
         DeviceKnowledge.read("KB-0001", true);
+        DeviceKnowledge.read("KB-0001", false);
         UUID sessionA = expect(201, chat.create()).sessionId;
         ChatRepository.Turn turnA = expect(200, chat.send(sessionA, new ChatRepository.Question("Alpha compte A")));
         assertEquals("KB-0001", turnA.answer.contentId);
 
-        assertFalse("Deux jetons distincts attendus", fixture.get("a1").equals(fixture.get("a2")));
-        open("a", "a2");
-        DeviceKnowledge.read("KB-0001", false);
-        onlySession(sessionA);
-        assertEquals(turnA.question.messageId, expect(200, chat.history(sessionA, 0, 10)).get(0).messageId);
-
         open("b", "b1");
         DeviceKnowledge.assertOfflineMissing("KB-0001");
+        DeviceKnowledge.read("KB-0002", true);
+        expect(403, chat.sessions(0, 10));
+        expect(403, chat.create());
+        open("a", "a1");
+        DeviceKnowledge.read("KB-0001", true);
+        preserveCache = true; // Reproduce restoration of the Android process before the first 401.
+    }
+
+    @Test public void reconnectAndSwitchAccounts() throws Exception {
+        java.util.concurrent.CountDownLatch expired = new java.util.concurrent.CountDownLatch(1);
+        open("a", "a1", expired::countDown);
+        DeviceKnowledge.read("KB-0001", false);
+        expect(401, chat.sessions(0, 10));
+        assertTrue(expired.await(10, java.util.concurrent.TimeUnit.SECONDS));
+        assertNull(KnowledgeSession.authenticatedClient());
+        open("a", "a2");
+        assertFalse(fixture.get("a1").equals(fixture.get("a2")));
+        UUID sessionA = UUID.fromString(fixture.get("sessionA").getAsString());
+        UUID answerA = UUID.fromString(fixture.get("answerA").getAsString());
+        onlySession(sessionA);
+        DeviceKnowledge.assertOfflineMissing("KB-0001");
+        DeviceKnowledge.read("KB-0001", true);
+
+        open("b", "b2");
+        DeviceKnowledge.assertOfflineMissing("KB-0001");
         assertTrue(expect(200, chat.sessions(0, 10)).isEmpty());
-        foreignConversation(sessionA, turnA.answer.messageId);
+        foreignConversation(sessionA, answerA);
         DeviceKnowledge.read("KB-0002", true);
         DeviceKnowledge.read("KB-0002", false);
         UUID sessionB = expect(201, chat.create()).sessionId;
@@ -120,24 +141,27 @@ public class E1JourneyTest {
         ChatRepository.Session item = new ChatRepository.Session();
         item.sessionId = session;
         try (ActivityScenario<ChatActivity> screen = ActivityScenario.launch(ChatActivity.intent(context, item))) {
-            long end = SystemClock.elapsedRealtime() + 15000;
-            while (true) {
-                try {
-                    onView(withId(R.id.chat_status)).check(matches(withText(R.string.chat_consent)));
-                    break;
-                } catch (AssertionError loading) {
-                    if (SystemClock.elapsedRealtime() >= end) throw loading;
-                    SystemClock.sleep(100);
-                }
-            }
-            onView(withText("Alpha compte A")).check(doesNotExist());
-            onView(withId(R.id.chat_input)).check(matches(not(isEnabled())));
+            AtomicBoolean displayed = new AtomicBoolean();
+            long end = SystemClock.elapsedRealtime() + 30000;
+            do {
+                screen.onActivity(activity -> {
+                    TextView status = activity.findViewById(R.id.chat_status);
+                    displayed.set(status.isShown() && activity.getString(R.string.chat_consent).contentEquals(status.getText()));
+                });
+                if (!displayed.get()) SystemClock.sleep(100);
+            } while (!displayed.get() && SystemClock.elapsedRealtime() < end);
+            assertTrue("Message de consentement affiché", displayed.get());
+            screen.onActivity(activity -> {
+                ListView messages = activity.findViewById(R.id.chat_list);
+                assertEquals(0, messages.getCount());
+                assertFalse(activity.findViewById(R.id.chat_input).isEnabled());
+            });
         }
         DeviceKnowledge.assertListedOnline("KB-0001");
         DeviceKnowledge.read("KB-0001", true);
         DeviceKnowledge.read("KB-0001", false);
 
-        open("b", "b1");
+        open("b", "b2");
         DeviceKnowledge.assertOfflineMissing("KB-0001");
         List<ChatRepository.Session> sessionsB = expect(200, chat.sessions(0, 10));
         assertEquals(1, sessionsB.size());

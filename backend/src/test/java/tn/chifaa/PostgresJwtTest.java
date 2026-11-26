@@ -66,8 +66,38 @@ public abstract class PostgresJwtTest {
     private static HttpServer keys;
     @Autowired protected MockMvc mvc;
 
+    @Autowired private org.springframework.jdbc.core.JdbcTemplate patientDb;
+    @Autowired private tn.chifaa.auth.Sessions patientSessions;
+
+    protected java.util.UUID patient(boolean health) {
+        java.util.UUID id = patientDb.queryForObject("""
+                insert into users(age_band,governorate,preferred_language,age_confirmed_18plus)
+                values ('18–29','TN-11','French',true) returning user_pid
+                """, java.util.UUID.class);
+        grant(id, "Service use");
+        if (health) grant(id, "Health data");
+        return id;
+    }
+
+    private void grant(java.util.UUID id, String purpose) {
+        patientDb.update("""
+                insert into consents(user_pid,consent_purpose,consent_version,consent_status,capture_method)
+                values (?,?,'v1.0','Given','In-app')
+                """, id, purpose);
+    }
+
+    protected String patientBearer(java.util.UUID id) {
+        return tn.chifaa.auth.PatientTestSessions.bearer(patientSessions, id);
+    }
+
     @DynamicPropertySource
     static void signingKeys(DynamicPropertyRegistry properties) throws Exception {
+        for (String property : java.util.List.of("chifaa.phone-key", "chifaa.lookup-key")) {
+            byte[] bytes = new byte[32];
+            new java.security.SecureRandom().nextBytes(bytes);
+            String value = java.util.Base64.getEncoder().encodeToString(bytes);
+            properties.add(property, () -> value);
+        }
         signingKey = new RSAKeyGenerator(2048).keyID("test").generate();
         byte[] jwks = new JWKSet(signingKey.toPublicJWK()).toString().getBytes(StandardCharsets.UTF_8);
         keys = HttpServer.create(new InetSocketAddress("127.0.0.1", 0), 0);

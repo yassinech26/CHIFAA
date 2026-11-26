@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: CHIFAA · Bibliothèque M4
   version: 1.0.0
-  description: Lecture des fiches visibles dans kb_visible_items. Accès par HTTPS avec un jeton de l’émetteur configuré pour CHIFAA.
+  description: Lecture des fiches visibles dans kb_visible_items. Accès par HTTPS avec un Bearer opaque de session OTP E1 et un accord Service use actif.
 security:
   - bearerAuth: []
 paths:
@@ -50,6 +50,7 @@ paths:
                     description: Dernier identifiant renvoyé si une autre page existe, sinon null.
         '400': {$ref: '#/components/responses/BadRequest'}
         '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {description: 'Accord Service use absent, expiré ou retiré.'}
   /api/kb/{id}:
     get:
       operationId: getKnowledgeItem
@@ -67,6 +68,7 @@ paths:
               schema: {$ref: '#/components/schemas/ItemDetail'}
         '400': {$ref: '#/components/responses/BadRequest'}
         '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {description: 'Accord Service use absent, expiré ou retiré.'}
         '404':
           description: Identifiant bien formé, inconnu ou fiche non visible.
           content:
@@ -74,7 +76,7 @@ paths:
               schema: {$ref: '#/components/schemas/Problem'}
 components:
   securitySchemes:
-    bearerAuth: {type: http, scheme: bearer, bearerFormat: JWT}
+    bearerAuth: {type: http, scheme: bearer, bearerFormat: opaque}
   responses:
     BadRequest:
       description: Identifiant mal formé, filtre ou pagination invalide.

@@ -161,13 +161,8 @@ class SafetyApiTest extends PostgresJwtTest {
     }
 
     @Test void chatSignalIsVisibleToB3WithOnlyTrackingMetadata() throws Exception {
-        UUID user = UUID.randomUUID();
-        db.update("insert into users values (?)",user);
-        db.update("""
-                insert into consents(consent_id,user_pid,consent_purpose,consent_status,given_at)
-                values ('B3TEST',?,'Health data','Given',now())
-                """,user);
-        String mobile = bearer(user.toString(),"chifaa-test");
+        UUID user = patient(true);
+        String mobile = patientBearer(user);
         var created = mvc.perform(post("/api/chat/sessions").header("Authorization",mobile))
                 .andExpect(status().isCreated()).andReturn();
         String session = json.readTree(created.getResponse().getContentAsByteArray()).get("sessionId").asText();

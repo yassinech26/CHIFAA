@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: CHIFAA · Compagnon M5
   version: 1.0.0
-  description: API HTTPS. Le sujet du JWT validé correspond au user_pid UUID d’E1. Les lectures et écritures nécessitent le consentement Health data actif.
+  description: API HTTPS. Le registre des sessions OTP E1 résout le Bearer opaque en UUID patient. Chaque opération exige les accords actifs Service use et Health data.
 security: [{bearerAuth: []}]
 paths:
   /api/chat/sessions:
@@ -19,7 +19,7 @@ paths:
             application/json:
               schema: {type: array, items: {$ref: '#/components/schemas/Session'}}
         '401': {description: 'Jeton absent ou invalide.'}
-        '403': {description: 'Pseudonyme ou consentement invalide.'}
+        '403': {description: 'Accord Service use ou Health data absent, expiré ou retiré.'}
         '400': {description: 'Paramètres ou corps invalides.'}
     post:
       operationId: createChatSession
@@ -31,7 +31,7 @@ paths:
             application/json:
               schema: {$ref: '#/components/schemas/Session'}
         '401': {description: 'Jeton absent ou invalide.'}
-        '403': {description: 'Pseudonyme ou consentement invalide.'}
+        '403': {description: 'Accord Service use ou Health data absent, expiré ou retiré.'}
   /api/chat/sessions/{id}/messages:
     get:
       operationId: listChatMessages
@@ -47,7 +47,7 @@ paths:
             application/json:
               schema: {type: array, items: {$ref: '#/components/schemas/Message'}}
         '401': {description: 'Jeton absent ou invalide.'}
-        '403': {description: 'Pseudonyme ou consentement invalide.'}
+        '403': {description: 'Accord Service use ou Health data absent, expiré ou retiré.'}
         '400': {description: 'Paramètres ou corps invalides.'}
         '404': {description: 'Ressource absente, inaccessible ou message non évaluable.'}
     post:
@@ -67,7 +67,7 @@ paths:
             application/json:
               schema: {$ref: '#/components/schemas/Turn'}
         '401': {description: 'Jeton absent ou invalide.'}
-        '403': {description: 'Pseudonyme ou consentement invalide.'}
+        '403': {description: 'Accord Service use ou Health data absent, expiré ou retiré.'}
         '400': {description: 'Paramètres ou corps invalides.'}
         '404': {description: 'Ressource absente, inaccessible ou message non évaluable.'}
         '409': {description: 'Identifiant déjà utilisé autrement ou session terminée.'}
@@ -87,12 +87,12 @@ paths:
         '204':
           description: Note enregistrée.
         '401': {description: 'Jeton absent ou invalide.'}
-        '403': {description: 'Pseudonyme ou consentement invalide.'}
+        '403': {description: 'Accord Service use ou Health data absent, expiré ou retiré.'}
         '400': {description: 'Paramètres ou corps invalides.'}
         '404': {description: 'Ressource absente, inaccessible ou message non évaluable.'}
 components:
   securitySchemes:
-    bearerAuth: {type: http, scheme: bearer, bearerFormat: JWT}
+    bearerAuth: {type: http, scheme: bearer, bearerFormat: opaque}
   parameters:
     Id: {name: id, in: path, required: true, schema: {type: string, format: uuid}}
     Limit: {name: limit, in: query, schema: {type: integer, minimum: 1, maximum: 100, default: 50}}

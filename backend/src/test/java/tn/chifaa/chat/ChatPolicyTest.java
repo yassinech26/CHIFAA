@@ -13,7 +13,7 @@ class ChatPolicyTest {
         var search = mock(KnowledgeSearchService.class);
         UUID user = UUID.randomUUID(), session = UUID.randomUUID();
         when(sessions.owned(user,session,true)).thenReturn(new ChatModels.Session(session,"App",null,null));
-        var chat = new ChatService(sessions,messages,new ChatPolicy("KB-20261124",List.of(),Map.of()),search);
+        var chat = new ChatService(mock(tn.chifaa.users.PatientAccess.class),sessions,messages,new ChatPolicy("KB-20261124",List.of(),Map.of()),search);
         var error = assertThrows(ResponseStatusException.class,
                 () -> chat.ask(user,session,new ChatModels.Question("Test",null)));
         assertEquals(503,error.getStatusCode().value());

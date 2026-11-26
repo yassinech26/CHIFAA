@@ -65,7 +65,7 @@ public class LibraryActivity extends LibraryScreen {
     }
 
     @Override void error(int code) {
-        if (code == 401) adapter.set(Collections.emptyList(), false);
+        if (code == 401 || code == 403) adapter.set(Collections.emptyList(), false);
         super.error(code);
     }
 }

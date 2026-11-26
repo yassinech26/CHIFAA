@@ -20,15 +20,6 @@ class ChatRepository {
                 r.getObject("started_at", OffsetDateTime.class).toInstant(), end == null ? null : end.toInstant());
     };
 
-    void checkConsent(UUID user) {
-        boolean allowed = db.sql("""
-                select consent_status = 'Given' and withdrawn_at is null from consents
-                where user_pid = :user and consent_purpose = 'Health data' and given_at <= current_timestamp
-                order by given_at desc, consent_id desc limit 1
-                """).param("user",user).query(Boolean.class).optional().orElse(false);
-        if (!allowed) throw new ResponseStatusException(FORBIDDEN);
-    }
-
     Session create(UUID user) {
         return db.sql("""
                 insert into chat_sessions(session_id,user_pid,channel) values (:id,:user,'App') returning *

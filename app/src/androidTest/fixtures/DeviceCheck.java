@@ -46,6 +46,7 @@ abstract class DeviceCheck extends PostgresJwtTest {
             }
             PostgresJwtTest.signingKeys((name,supplier) -> System.setProperty(name,supplier.get().toString()));
             SpringApplication app = new SpringApplication(ChifaaApplication.class, PostgresJwtTest.Database.class);
+            app.addPrimarySources(extraSources());
             app.setDefaultProperties(Map.of("server.address","127.0.0.1","server.port","0","server.ssl.enabled","true",
                     "server.ssl.key-store",p12.toUri().toString(),"server.ssl.key-store-password",password,
                     "server.ssl.key-store-type","PKCS12","spring.main.banner-mode","off"));
@@ -55,7 +56,7 @@ abstract class DeviceCheck extends PostgresJwtTest {
                 String tcp = "tcp:"+port;
                 adb(null,"reverse",tcp,tcp);
                 try {
-                    exercise(db, "https://localhost:"+port+"/", Files.readString(cert));
+                    exercise(context, db, "https://localhost:"+port+"/", Files.readString(cert));
                 } finally {
                     adb(null,"reverse","--remove",tcp);
                 }
@@ -70,7 +71,9 @@ abstract class DeviceCheck extends PostgresJwtTest {
         p.getInputStream().transferTo(OutputStream.nullOutputStream());
         if (p.waitFor()!=0) throw new IOException("Génération du certificat local impossible");
     }
-    protected abstract void exercise(JdbcTemplate db, String url, String certificate) throws Exception;
+    protected Set<Class<?>> extraSources() { return Set.of(); }
+
+    protected abstract void exercise(ServletWebServerApplicationContext context, JdbcTemplate db, String url, String certificate) throws Exception;
 
     protected final void instrument(Map<String,String> fixture, String config, String flag, String test) throws Exception {
         try {

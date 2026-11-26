@@ -28,4 +28,5 @@
     <string name="kb_error">تعذّر تحميل البطاقات. أعد المحاولة.</string>
     <string name="kb_back">العودة إلى المكتبة</string>
     <string name="kb_retry">تحديث</string>
+    <string name="kb_consent">تتطلب قراءة البطاقات الموافقة على استخدام الخدمة.</string>
 </resources>

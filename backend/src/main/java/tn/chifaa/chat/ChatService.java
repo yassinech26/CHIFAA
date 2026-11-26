@@ -1,6 +1,7 @@
 package tn.chifaa.chat;
 
 import org.springframework.stereotype.Service;
+import tn.chifaa.users.PatientAccess;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.*;
@@ -12,12 +13,14 @@ import static tn.chifaa.chat.ChatModels.*;
 @Transactional
 class ChatService {
     record Reply(String kind, String text, String contentId, String topic) {}
+    private final PatientAccess access;
     private final ChatRepository sessions;
     private final MessageRepository messages;
     private final ChatPolicy policy;
     private final KnowledgeSearchService knowledge;
 
-    ChatService(ChatRepository sessions, MessageRepository messages, ChatPolicy policy, KnowledgeSearchService knowledge) {
+    ChatService(PatientAccess access, ChatRepository sessions, MessageRepository messages, ChatPolicy policy, KnowledgeSearchService knowledge) {
+        this.access = access;
         this.sessions = sessions;
         this.messages = messages;
         this.policy = policy;
@@ -25,26 +28,24 @@ class ChatService {
     }
 
     Session create(UUID user) {
-        sessions.checkConsent(user);
+        access.healthVersion(user);
         return sessions.create(user);
     }
 
-    @Transactional(readOnly = true)
     List<Session> list(UUID user, int offset, int limit) {
-        sessions.checkConsent(user);
+        access.healthVersion(user);
         return sessions.sessions(user,offset,limit);
     }
 
-    @Transactional(readOnly = true)
     List<Message> history(UUID user, UUID id, int offset, int limit) {
-        sessions.checkConsent(user);
+        access.healthVersion(user);
         sessions.owned(user,id,false);
         return messages.history(id,offset,limit);
     }
 
     Turn ask(UUID user, UUID sessionId, Question request) {
         long start = System.nanoTime();
-        sessions.checkConsent(user);
+        access.healthVersion(user);
         Session session = sessions.owned(user,sessionId,true);
         if (session.endedAt() != null) throw new ResponseStatusException(CONFLICT);
         if (!policy.ready()) throw new ResponseStatusException(SERVICE_UNAVAILABLE);
@@ -82,7 +83,7 @@ class ChatService {
     }
 
     void rate(UUID user, UUID id, int rating) {
-        sessions.checkConsent(user);
+        access.healthVersion(user);
         messages.rate(user,id,rating);
     }
 }

@@ -37,17 +37,11 @@ class ChatApiTest extends PostgresJwtTest {
     }
 
     private String account() {
-        UUID id = UUID.randomUUID();
-        db.update("insert into users values (?)",id);
-        db.update("""
-                insert into consents(consent_id,user_pid,consent_purpose,consent_status,given_at)
-                values (concat('T',nextval('test_consent_seq')),?,'Health data','Given',now())
-                """,id);
-        return id.toString();
+        return patient(true).toString();
     }
 
     private MockHttpServletRequestBuilder auth(MockHttpServletRequestBuilder req, String subject) throws Exception {
-        return req.header("Authorization",bearer(subject,"chifaa-test")).contentType("application/json");
+        return req.header("Authorization",patientBearer(UUID.fromString(subject))).contentType("application/json");
     }
     private String path() { return ROOT+"/"+session+"/messages"; }
     private MockHttpServletRequestBuilder ask(String who, String text, UUID id) throws Exception {
@@ -58,16 +52,37 @@ class ChatApiTest extends PostgresJwtTest {
                 .andReturn().getResponse().getContentAsByteArray());
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"Expired", "Withdrawn", "missing"})
+    void serviceUseGatesBothModulesWithAValidSession(String status) throws Exception {
+        String token = patientBearer(UUID.fromString(user));
+        var answer = send("Alpha", null).get("answer").get("messageId").asText();
+        if ("missing".equals(status)) {
+            db.update("delete from consents where user_pid=? and consent_purpose='Service use'", UUID.fromString(user));
+        } else {
+            db.update("""
+                    insert into consents(user_pid,consent_purpose,consent_version,consent_status,capture_method,withdrawn_at)
+                    values (?,'Service use','v1.0',?,'In-app',case when ?='Withdrawn' then now() end)
+                    """, UUID.fromString(user), status, status);
+        }
+        for (var request : List.of(get("/api/kb"), get("/api/kb/KB-0001"), get(ROOT), post(ROOT),
+                get(path()), post(path()).content("{\"text\":\"Alpha\"}"),
+                post("/api/chat/messages/"+answer+"/feedback").content("{\"rating\":3}"))) {
+            mvc.perform(request.header("Authorization", token).contentType("application/json"))
+                    .andExpect(status().isForbidden());
+        }
+    }
+
     @Test void renewedTokenUsesLatestConsentForItsOwner() throws Exception {
-        String renewed = bearer(user, "chifaa-test");
-        String tokenB = bearer(other, "chifaa-test");
+        String renewed = patientBearer(UUID.fromString(user));
+        String tokenB = patientBearer(UUID.fromString(other));
         mvc.perform(get(path()).header("Authorization", renewed)).andExpect(status().isOk());
         mvc.perform(get(path()).header("Authorization", tokenB)).andExpect(status().isNotFound());
 
         // E1 peut historiser le retrait tout en conservant la ligne Given précédente.
         db.update("""
-                insert into consents(consent_id,user_pid,consent_purpose,consent_status,given_at,withdrawn_at)
-                values (concat('T',nextval('test_consent_seq')),?,'Health data','Withdrawn',now(),now())
+                insert into consents(user_pid,consent_purpose,consent_status,given_at,withdrawn_at,consent_version,capture_method)
+                values (?, 'Health data','Withdrawn',now(),now(),'v1.0','In-app')
                 """, UUID.fromString(user));
         mvc.perform(get(path()).header("Authorization", renewed)).andExpect(status().isForbidden());
         mvc.perform(get("/api/kb").header("Authorization", renewed)).andExpect(status().isOk());
@@ -152,7 +167,7 @@ class ChatApiTest extends PostgresJwtTest {
         mvc.perform(auth(post(feedback),other).content("{\"rating\":2}")).andExpect(status().isNotFound());
         for (var route : List.of(post(ROOT),get(ROOT),get(path()),post(path()),post(feedback)))
             mvc.perform(route).andExpect(status().isUnauthorized());
-        db.update("update consents set consent_status='Withdrawn', withdrawn_at=now() where user_pid=?",UUID.fromString(user));
+        db.update("update consents set consent_status='Withdrawn', withdrawn_at=now() where user_pid=? and consent_purpose='Health data'",UUID.fromString(user));
         mvc.perform(auth(get(path()),user)).andExpect(status().isForbidden());
         mvc.perform(ask(user,"Alpha",null)).andExpect(status().isForbidden());
         mvc.perform(auth(post(feedback),user).content("{\"rating\":2}")).andExpect(status().isForbidden());

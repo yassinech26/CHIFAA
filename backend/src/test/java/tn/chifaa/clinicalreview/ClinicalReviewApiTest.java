@@ -43,7 +43,7 @@ class ClinicalReviewApiTest extends PostgresJwtTest {
                 on conflict (staff_id) do update set role=excluded.role,active=excluded.active
                 """);
         editor = token("CT-B2"); reviewer = token("CR-B2");
-        mobile = token("c96eca0c-b68b-4981-9652-b9a96efed9a5");
+        mobile = patientBearer(patient(false));
     }
 
     private String token(String staff) throws Exception { return bearer(staff,"chifaa-test"); }
@@ -184,13 +184,7 @@ class ClinicalReviewApiTest extends PostgresJwtTest {
     }
 
     @Test void chatUsesOnlyTheReviewedVersionAndMasksWithdrawnReferences() throws Exception {
-        var user = java.util.UUID.randomUUID();
-        String auth = token(user.toString());
-        db.update("insert into users values (?)",user);
-        db.update("""
-                insert into consents(consent_id,user_pid,consent_purpose,consent_status,given_at)
-                values ('B2TEST',?,'Health data','Given',now())
-                """,user);
+        String auth = patientBearer(patient(true));
         var session = read(request(post("/api/chat/sessions"),auth).andExpect(status().isCreated()));
         String messages = "/api/chat/sessions/"+session.get("sessionId").asText()+"/messages";
         String ask = "{\"text\":\"Atlas\"}";

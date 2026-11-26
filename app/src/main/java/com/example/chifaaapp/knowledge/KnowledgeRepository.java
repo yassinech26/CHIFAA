@@ -48,7 +48,11 @@ final class KnowledgeRepository {
 
     private void check(int code) throws Failure {
         if (revoked) throw new Failure(401);
-        if (code == 401 || code == 403) {
+        if (code == 403) {
+            cache.clear();
+            throw new Failure(403);
+        }
+        if (code == 401) {
             revoked = true;
             cache.clear();
             throw new Failure(401);
