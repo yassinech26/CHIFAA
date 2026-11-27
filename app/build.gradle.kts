@@ -24,22 +24,15 @@ android {
         versionCode = 1
         versionName = "1.0"
         val endpoint = providers.gradleProperty("chifaaApi").getOrElse("https://localhost:8443/api/")
-        require(endpoint.matches(Regex("https://[A-Za-z0-9.:-]+/[A-Za-z0-9/_-]*/")))
+        require(endpoint.matches(Regex("https://[A-Za-z0-9.:-]+/(?:[A-Za-z0-9_-]+/)*api/"))) {
+            "chifaaApi must be an HTTPS URL ending in /api/"
+        }
         buildConfigField("String", "PATIENT_API", "\"$endpoint\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        debug {
-            val localEndpoint = localSettings.getProperty("chifaa.debugApi")
-            if (localEndpoint != null) {
-                require(localEndpoint.matches(Regex("http://localhost:[0-9]{1,5}/api/"))) {
-                    "chifaa.debugApi must use http://localhost:<port>/api/"
-                }
-                buildConfigField("String", "PATIENT_API", "\"$localEndpoint\"")
-            }
-        }
         release {
             optimization {
                 enable = true

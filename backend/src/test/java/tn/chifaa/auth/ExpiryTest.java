@@ -15,6 +15,7 @@ class ExpiryTest {
         var sessions=new Sessions(clock);
         UUID pid=UUID.randomUUID();
         var session=sessions.open(pid);
+        assertEquals(pid,session.userPid());
         assertEquals(pid,sessions.resolve(session.token()));
         when(clock.instant()).thenReturn(session.expiresAt());
         assertNull(sessions.resolve(session.token()));

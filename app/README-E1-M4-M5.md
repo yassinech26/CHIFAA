@@ -33,13 +33,10 @@ Les trois phases instrumentées (`initialConsents`, `reconnectAndSwitchAccounts`
 
 Après fusion de `develop` au commit `903f90d`, le parcours HTTPS à trois phases et le contrôle SQL ont été rejoués avec succès sur l’APK fusionné. Les 14 tests d’écran de la bibliothèque et du chat ont réussi. Les huit suites backend totalisent 90 tests réussis, dont les trois tests optionnels du parcours E1 exécutés sur une autre base PostgreSQL éphémère. Le test JVM Android facultatif `LivePatientApiTest` a été ignoré faute de boîte OTP dédiée à ce test.
 
-## Raccordement restant sur la branche E1
+## Parcours depuis l’écran OTP
 
-1. Ajouter `userPid` (UUID du compte authentifié) à `AuthDtos.Session` et le remplir dans `Sessions.open`. Ajouter le champ à `Models.Session` côté Android. Pour le seul test, le lanceur récupère cet UUID dans le registre serveur après la vérification OTP.
-2. Dans le parcours de succès de `OtpVerificationActivity`, transmettre la session complète à `PatientRepository`. Appeler `KnowledgeSession.open(context, baseUrl, userPid, token, onUnauthorized)` après vérification OTP et lors de toute restauration d’une session valide. Fournir la racine HTTPS terminée par `/`, en amont de `/api/`.
-3. Relier `onUnauthorized` à la routine E1 qui efface le jeton, l’UUID et renvoie vers l’OTP. Appeler `KnowledgeSession.close()` lors de la déconnexion, d’un 401 reçu par le client E1 ou d’un retrait de Service. Un 403 santé doit laisser M4 accessible. Tester ces transitions depuis les écrans E1, y compris le changement de compte.
-4. La branche fusionnée contient les changements de `SecurityConfig` et `PatientAccess`. Dans `Accounts.authenticate`, aligner la vérification Service lors de la reconnexion sur la dernière preuve. La version E1 publiée recherche encore toute ligne `Given` à cet endroit.
+La vérification OTP renvoie `userPid` avec le jeton. Android ouvre la session M4/M5 avec ces valeurs et la racine HTTPS du serveur commun. Au retour dans l’espace patient, E1 vérifie la session auprès du serveur et rétablit la connexion M4/M5 si nécessaire. Le lanceur de recette lit aussi `userPid` dans la réponse OTP.
 
-Dans l’accueil patient assemblé, reprendre les deux actions de l’accueil E2, `LibraryLauncher.open(activity)` pour la bibliothèque et `LibraryLauncher.open(activity, ChatHistoryActivity.class)` pour le chat. L’URL de développement HTTP d’E1 doit également être remplacée par la racine HTTPS du serveur commun pour ces modules.
+Les boutons **Bibliothèque** et **Compagnon CHIFAA** sont disponibles dans l’accueil patient. Après un 401, E1 efface sa session et renvoie vers la connexion OTP. La déconnexion et le retrait de `Service use` ferment également la session M4/M5. Le retrait de `Health data` bloque le chat et laisse la bibliothèque accessible. À la reconnexion, E1 applique le même contrôle de la dernière preuve `Service use` que M4 et M5.
 
 Une consultation déjà affichée ou mise en cache sur un téléphone hors ligne ne reçoit pas le retrait distant avant communication avec le serveur. Le comportement produit pendant cette période reste à convenir.

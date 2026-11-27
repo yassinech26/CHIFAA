@@ -16,5 +16,5 @@ public final class AuthDtos {
     public record Login(@NotNull @Pattern(regexp="\\+[1-9][0-9]{7,14}") String phone) {}
     public record Verify(@NotNull UUID challengeId, @NotNull @Pattern(regexp="[0-9]{6}") String code) {}
     public record Challenge(UUID challengeId, Instant expiresAt) {}
-    public record Session(String token, Instant expiresAt) {}
+    public record Session(String token, Instant expiresAt, UUID userPid) {}
 }

@@ -52,7 +52,7 @@ Pour un dépôt synchronisé par OneDrive, si Gradle signale `AccessDeniedExcept
 
 Ouvrir **Accéder à mon espace**. L’URL par défaut est `https://localhost:8443/api/`. Une autre adresse HTTPS se configure avec la propriété Gradle `chifaaApi`. Le téléphone Android communique uniquement avec Spring Boot.
 
-Pour une démo locale avec un serveur HTTP déjà lancé sur le port 18080, ajouter `chifaa.debugApi=http://localhost:18080/api/` à `local.properties`, exécuter `adb reverse tcp:18080 tcp:18080`, puis relancer la variante debug depuis Android Studio. Cette option autorise HTTP vers localhost dans l’APK debug. Pour recevoir l’OTP, lancer Spring Boot dans un terminal interactif avec `CHIFAA_DEMO_OTP=true`.
+E1, M4 et M5 utilisent le même serveur HTTPS. Pour utiliser un autre port local, adapter `adb reverse` et transmettre par exemple `-PchifaaApi=https://localhost:9443/api/` à Gradle.
 
 ## Contrat HTTP
 
@@ -62,7 +62,7 @@ Les dates civiles utilisent AAAA-MM-JJ, les instants ISO 8601 UTC. Après vérif
 |---|---|
 | POST auth/register | Téléphone E.164, adult, service, health, survey, version et profile. Renvoie challengeId et expiresAt. |
 | POST auth/login | Objet avec phone. Même réponse de challenge. |
-| POST auth/verify | challengeId, code. Renvoie token et expiresAt. Un challenge accepté est consommé. |
+| POST auth/verify | challengeId, code. Renvoie token, expiresAt et userPid (UUID). Un challenge accepté est consommé. |
 | POST auth/logout | Révoque le jeton envoyé. |
 | GET / PUT users/me | Profil avec ageBand, governorate, preferredLanguage. |
 | GET consents | Preuves de l’utilisatrice, version, finalité, méthode et dates. |
@@ -111,7 +111,7 @@ Les tables d’association évitent les doublons et valident chaque valeur. Les 
 
 Sur une base de test dédiée et vide, activer `SPRING_PROFILES_ACTIVE=demo-seed` et `CHIFAA_DEMO_OTP=true` avant de lancer le serveur. Se connecter avec `+12025550100` (Service et Santé accordés) ou `+12025550101` (Service accordé, Santé absente). Le profil de démo crée ces comptes au premier démarrage. Les modifications de consentement sont conservées lors des démarrages suivants.
 
-Le serveur émet un jeton Bearer opaque de 30 minutes après `POST /api/auth/login` et `POST /api/auth/verify`. Une reconnexion OTP génère un nouveau jeton pour le même UUID. Les UUID sont propres à la base. La réponse de session contient `token` et `expiresAt`. Le serveur retrouve l’UUID dans son registre de sessions. Pour brancher `KnowledgeSession.open` sur Android, convenir d’un moyen de fournir le UUID dans le contrat, par exemple un champ `userPid` dans la réponse de vérification. Prévoir `KnowledgeSession.close` lors de la déconnexion et lorsque l’application efface la session après un 401.
+Le serveur émet un jeton Bearer opaque de 30 minutes après `POST /api/auth/verify`. Une reconnexion OTP génère un nouveau jeton pour le même `userPid`. Android transmet ce jeton et l’UUID à `KnowledgeSession.open` avec la racine HTTPS avant `api/`. La déconnexion, un 401 et le retrait de `Service use` ferment la session Android.
 
 Pour accorder la santé, envoyer `PUT /api/consents` avec le Bearer du compte et le JSON `{"purpose":"Health data","version":"v1.0","given":true}`. Pour retirer cet accord, renvoyer le même corps avec `given:false`. Le retrait santé conserve le jeton, et la prochaine opération protégée par le consentement santé doit répondre 403.
 

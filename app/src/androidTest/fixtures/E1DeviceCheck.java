@@ -74,10 +74,13 @@ public final class E1DeviceCheck extends DeviceCheck {
         return json.readTree(response.body());
     }
 
-    private String login(String phone) throws Exception {
+    private record LoginSession(String token, UUID userPid) {}
+
+    private LoginSession login(String phone) throws Exception {
         String id = call("POST", "api/auth/login", Map.of("phone",phone), null, 200).required("challengeId").asText();
         String code = Objects.requireNonNull(inbox.pending.remove(UUID.fromString(id)));
-        return call("POST", "api/auth/verify", Map.of("challengeId",id,"code",code), null, 200).required("token").asText();
+        JsonNode session = call("POST", "api/auth/verify", Map.of("challengeId",id,"code",code), null, 200);
+        return new LoginSession(session.required("token").asText(), UUID.fromString(session.required("userPid").asText()));
     }
 
     private void consent(String token, String purpose, boolean given) throws Exception {
@@ -93,11 +96,11 @@ public final class E1DeviceCheck extends DeviceCheck {
                 .execute(Objects.requireNonNull(db.getDataSource()));
         connect(url, certificate);
         inbox = context.getBean(Inbox.class);
-        Sessions registry = context.getBean(Sessions.class);
         Clock clock = context.getBean(Clock.class);
         String phoneA = "+12025550100", phoneB = "+12025550101";
-        String a1 = login(phoneA), b1 = login(phoneB);
-        UUID a = PatientTestSessions.resolve(registry, a1), b = PatientTestSessions.resolve(registry, b1);
+        LoginSession firstA = login(phoneA), firstB = login(phoneB);
+        String a1 = firstA.token(), b1 = firstB.token();
+        UUID a = firstA.userPid(), b = firstB.userPid();
         if (a.equals(b)) throw new AssertionError("Deux identités distinctes attendues");
         Map<String,String> fixture = new HashMap<>(Map.of("url", url, "certificate", certificate,
                 "a", a.toString(), "b", b.toString(), "a1", a1, "b1", b1));
@@ -111,9 +114,10 @@ public final class E1DeviceCheck extends DeviceCheck {
         when(clock.instant()).thenReturn(later);
         call("GET", "api/kb", null, a1, 401);
         call("GET", "api/chat/sessions", null, b1, 401);
-        String a2 = login(phoneA), b2 = login(phoneB);
-        if (a1.equals(a2) || !a.equals(PatientTestSessions.resolve(registry, a2))
-                || !b.equals(PatientTestSessions.resolve(registry, b2))) throw new AssertionError("Reconnexion OTP");
+        LoginSession secondA = login(phoneA), secondB = login(phoneB);
+        String a2 = secondA.token(), b2 = secondB.token();
+        if (a1.equals(a2) || b1.equals(b2) || !a.equals(secondA.userPid()) || !b.equals(secondB.userPid()))
+            throw new AssertionError("Reconnexion OTP");
         fixture.put("a2", a2);
         fixture.put("b2", b2);
         consent(b2, "Health data", true);

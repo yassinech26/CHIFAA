@@ -21,7 +21,7 @@ public final class Models {
         Verify(String id,String code) { this.challengeId=id; this.code=code; }
     }
     public static class Challenge { public String challengeId,expiresAt; }
-    public static class Session { public String token,expiresAt; }
+    public static class Session { public String token,expiresAt,userPid; }
     public static class Evidence { public String id,purpose,version,status,givenAt,withdrawnAt,method; }
     public static class Change {
         public String purpose,version="v1.0";

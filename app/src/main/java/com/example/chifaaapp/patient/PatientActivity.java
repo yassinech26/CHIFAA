@@ -71,6 +71,7 @@ abstract class PatientActivity extends AppCompatActivity {
     void busy(boolean active) { show(R.id.loading,active); }
     <T> void request(Call<T> call,Consumer<T> done) {
         if (pending!=null) return;
+        Models.Session session = repository.session();
         pending=call;
         busy(true); show(R.id.message,false); show(R.id.retry,false);
         call.enqueue(new Callback<T>() {
@@ -83,9 +84,8 @@ abstract class PatientActivity extends AppCompatActivity {
                 if (r.isSuccessful()) { done.accept(r.body()); return; }
                 if (r.errorBody()!=null) r.errorBody().close();
                 if (r.code()==401 && protectedPage()) {
-                    repository.authenticate(null);
-                    Toast.makeText(PatientActivity.this,R.string.expired,Toast.LENGTH_LONG).show();
-                    reset(LoginActivity.class); return;
+                    repository.unauthorized(PatientActivity.this,session);
+                    return;
                 }
                 if (r.code()==403 && PatientActivity.this instanceof HealthPage) {
                     reset(ProfileActivity.class); return;

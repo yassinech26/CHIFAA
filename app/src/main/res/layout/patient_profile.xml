@@ -6,6 +6,8 @@
         <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/edit_profile" android:text="@string/edit_profile" />
         <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/language_settings" android:text="@string/language_settings" />
         <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/health_home" android:text="@string/health_home" />
+        <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@id/open_library" android:text="@string/kb_library" />
+        <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@id/open_chat" android:text="@string/chat_title" />
         <com.google.android.material.button.MaterialButton style="@style/PatientButton" android:id="@+id/my_data" android:text="@string/my_data" />
         <com.google.android.material.button.MaterialButton style="@style/PatientSecondary" android:id="@+id/sign_out" android:text="@string/sign_out" />
         <include layout="@layout/patient_feedback" />
