@@ -135,6 +135,7 @@ public class ChatFlowTest {
     }
 
     private void rateVisibleAnswer(int position) {
+        visible(withId(R.id.chat_list));
         onView(withId(R.id.chat_list)).perform(swipeUp());
         Matcher<View> rate = allOf(withId(R.id.chat_rate), isEnabled(), isDisplayed());
         visible(rate);

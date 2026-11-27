@@ -40,3 +40,25 @@ La vérification OTP renvoie `userPid` avec le jeton. Android ouvre la session M
 Les boutons **Bibliothèque** et **Compagnon CHIFAA** sont disponibles dans l’accueil patient. Après un 401, E1 efface sa session et renvoie vers la connexion OTP. La déconnexion et le retrait de `Service use` ferment également la session M4/M5. Le retrait de `Health data` bloque le chat et laisse la bibliothèque accessible. À la reconnexion, E1 applique le même contrôle de la dernière preuve `Service use` que M4 et M5.
 
 Une consultation déjà affichée ou mise en cache sur un téléphone hors ligne ne reçoit pas le retrait distant avant communication avec le serveur. Le comportement produit pendant cette période reste à convenir.
+
+## Résultat du 27 novembre 2026 après raccordement E1
+
+Le commit `e9c9d9b` raccorde les cinq points E1. Les huit suites backend totalisent 91 tests réussis, dont les quatre tests de `PatientJourneyTest` exécutés sur une base dédiée. Le contrôle de dernière preuve `Service use` à la reconnexion est inclus.
+
+Sur l’émulateur API 37, un parcours instrumenté supplémentaire a utilisé les écrans d’accueil, de connexion et de saisie OTP, puis les vrais clients Retrofit et le backend HTTPS. A a consulté une fiche, créé une conversation et reçu une réponse. Après 31 minutes simulées, le 401 a renvoyé vers la connexion. La nouvelle vérification OTP a conservé `userPid`, délivré un nouveau jeton et retrouvé l’historique.
+
+Le retrait `Health data` a été effectué dans l’écran des consentements. Avec le même jeton, la liste et le détail M4 ont répondu 200 et sont restés consultables dans l’application. Les cinq opérations M5 ont répondu 403, avec le message de consentement requis et la création désactivée. Après déconnexion, B a obtenu un UUID distinct. Son accès M5 était refusé avant accord santé. Après accord, son historique était vide et la conversation d’A répondait 404.
+
+Les trois phases HTTPS du lanceur existant ont également réussi. Elles vérifient les fiches consultées hors ligne, l’isolation du cache et des conversations, les cinq refus M5 après retrait santé, le retrait `Service use` et les données SQL finales. Les 18 tests UI de `LibraryFlowTest`, `ChatFlowTest`, `PatientJourneyUiTest` et `ArabicLayoutTest` ont ensuite réussi ensemble.
+
+Le test de notation attend désormais l’affichage de `chat_list` avant de faire défiler la réponse. Une première exécution cherchait cette liste pendant la transition depuis le détail d’une fiche. Le scénario ciblé, puis les 18 tests UI, ont réussi après cette synchronisation.
+
+Cette recette utilise PostgreSQL 14.15 temporaire, des comptes et fiches fictifs, une livraison SMS simulée, une horloge de test et une règle de détresse fictive. Le parcours depuis OTP a utilisé une configuration locale de recette avec certificat localhost éphémère. Les trois phases du lanceur ci-dessus restent reproductibles avec les outils du dépôt.
+
+### Coordination restante
+
+- Restaurer et éprouver le dump assaini de la base locale E3 `chifaa_e3` sur PostgreSQL 18.3, avec son historique Flyway et son rapport des écarts depuis la démo. La préparation SQL se trouve dans la PR #5.
+- Valider les correspondances UUID vers codes du personnel et des fiches, les rôles actifs, les preuves de relecture, les relations des réponses et les événements datés des alertes. Les historiques incomplets nécessitent une décision de reprise.
+- Obtenir les valeurs officielles AT-022 et AT-044, les déclencheurs et ressources de détresse et la version de catalogue auprès de l’encadrant et de CHIFAA. E1 attend aussi AT-007 et AT-073.
+- Convenir du comportement des données déjà consultées sur un téléphone hors ligne après un retrait distant de consentement.
+- Rejouer la recette commune E1/E2/E3 sur le schéma et les données candidats avant la bascule.
