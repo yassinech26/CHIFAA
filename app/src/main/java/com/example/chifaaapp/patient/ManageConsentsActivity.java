@@ -24,7 +24,7 @@ public class ManageConsentsActivity extends PatientActivity {
                 b.setOnClickListener(v->new AlertDialog.Builder(this).setTitle(b.getText()).setMessage(description)
                     .setNegativeButton(android.R.string.cancel,null).setPositiveButton(android.R.string.ok,(dialog,which)->
                         request(api.change(new Models.Change(purpose,!given)),ignored->{
-                            if (given && "Service use".equals(purpose)) { repository.authenticate(null); reset(WelcomeActivity.class); }
+                            if (given && "Service use".equals(purpose)) { repository.close(); reset(WelcomeActivity.class); }
                             else refresh();
                         })).show());
                 rows.addView(b);

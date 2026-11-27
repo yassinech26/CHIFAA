@@ -20,7 +20,7 @@ public class Sessions {
         String token = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
         Instant end = now.plusSeconds(1800);
         entries.put(token,new Entry(pid,end));
-        return new AuthDtos.Session(token,end);
+        return new AuthDtos.Session(token,end,pid);
     }
     synchronized UUID resolve(String token) {
         Entry e = entries.get(token);

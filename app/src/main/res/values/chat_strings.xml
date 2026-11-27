@@ -1,0 +1,32 @@
+<resources>
+    <string name="chat_medical_limits">Ce compagnon ne pose pas de diagnostic et ne donne pas de posologie. Pour ces questions, adressez-vous à votre équipe soignante.</string>
+    <string name="chat_title">Compagnon CHIFAA</string>
+    <string name="chat_history">Mes conversations</string>
+    <string name="chat_new">Nouvelle conversation</string>
+    <string name="chat_session">Conversation du %1$s</string>
+    <string name="chat_closed">Conversation terminée</string>
+    <string name="chat_empty">Aucune conversation pour le moment.</string>
+    <string name="chat_first">Écrivez votre premier message.</string>
+    <string name="chat_consent">Le consentement aux données de santé est nécessaire pour accéder au chat.</string>
+    <string name="chat_missing">Cette conversation ou cette réponse est indisponible.</string>
+    <string name="chat_network">Connexion indisponible. Vérifiez le réseau et réessayez.</string>
+    <string name="chat_error">La demande a échoué. Réessayez.</string>
+    <string name="chat_retry">Réessayer</string>
+    <string name="chat_previous">Précédents</string>
+    <string name="chat_next">Suivants</string>
+    <string name="chat_hint">Votre message</string>
+    <string name="chat_send">Envoyer</string>
+    <string name="chat_user">Vous</string>
+    <string name="chat_ai">Compagnon</string>
+    <string name="chat_reviewer">Équipe de relecture</string>
+    <string name="chat_distress">Ressources d’aide</string>
+    <string name="chat_unavailable">La fiche de référence de cette réponse est indisponible.</string>
+    <string name="chat_ref">Fiche de référence · %1$s</string>
+    <string name="chat_rate">Noter la réponse</string>
+    <string name="chat_rating">Votre note · %1$d/5</string>
+    <string name="chat_pending">Envoi non confirmé. Réessayez pour vérifier cet envoi.</string>
+    <string name="chat_invalid">Le message a été refusé. Vérifiez le texte ou ouvrez une nouvelle conversation.</string>
+    <string name="chat_feedback_error">La note n’a pas été confirmée. Vous pouvez noter à nouveau la réponse.</string>
+    <string name="chat_loading">Chargement</string>
+    <string name="chat_no_reply">La réponse du compagnon est indisponible. Réessayez plus tard.</string>
+</resources>

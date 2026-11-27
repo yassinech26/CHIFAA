@@ -85,6 +85,7 @@ class PatientJourneyTest {
         var secondSession=call(post("/api/auth/verify"),null,Map.of("challengeId",login.get("challengeId").asText(),"code",code.get()),200);
         call(get("/api/users/me"),secondSession.get("token").asText(),null,200);
         UUID pid=UUID.fromString(exported.get("userPid").asText());
+        assertEquals(pid,UUID.fromString(secondSession.required("userPid").asText()));
         var identity=db.queryForMap("select phone_number_enc,phone_hash from identities where user_pid=?",pid);
         assertFalse(new String((byte[])identity.get("phone_number_enc"),java.nio.charset.StandardCharsets.UTF_8).contains(phone));
         assertEquals(64,identity.get("phone_hash").toString().length());
@@ -127,5 +128,17 @@ class PatientJourneyTest {
         call(get("/api/users/me"),a,null,401);
         call(post("/api/auth/logout"),b,null,200);
         call(get("/api/users/me"),b,null,401);
+    }
+
+    @Test void reconnectRequiresTheLatestServiceProofEvenWhenAnOlderGrantRemains() throws Exception {
+        String phone=phone(), token=register(phone,false);
+        UUID pid=UUID.fromString(call(get("/api/data/export"),token,null,200).required("userPid").asText());
+        db.update("""
+                insert into consents(user_pid,consent_purpose,consent_version,consent_status,given_at,capture_method)
+                select user_pid,consent_purpose,'v1.1','Expired',given_at,'In-app'
+                from consents where user_pid=? and consent_purpose='Service use'
+                """,pid);
+        var login=call(post("/api/auth/login"),null,Map.of("phone",phone),200);
+        call(post("/api/auth/verify"),null,Map.of("challengeId",login.required("challengeId").asText(),"code",code.get()),403);
     }
 }

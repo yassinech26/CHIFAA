@@ -1,0 +1,31 @@
+<resources>
+    <color name="primary">#0F766E</color>
+    <color name="primary_light">#E8F5F1</color>
+    <color name="background">#FAF8F5</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="text_primary">#263238</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="accent">#C76A8A</color>
+    <color name="error">#DC2626</color>
+    <color name="warning">#D97706</color>
+    <color name="success">#15803D</color>
+    <color name="e3_high">#C2410C</color>
+    <dimen name="e3_gap">8dp</dimen>
+    <dimen name="e3_padding">20dp</dimen>
+    <dimen name="e3_card_radius">16dp</dimen>
+    <dimen name="e3_button_radius">12dp</dimen>
+    <dimen name="e3_touch">48dp</dimen>
+    <dimen name="e3_body">16sp</dimen>
+    <dimen name="e3_title">24sp</dimen>
+    <dimen name="e3_subtitle">18sp</dimen>
+    <dimen name="e3_caption">14sp</dimen>
+    <style name="Theme.ChifaaE3" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+</resources>

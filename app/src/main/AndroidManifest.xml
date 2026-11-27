@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +14,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChifaaAPP">
+        <activity android:name=".chat.ChatActivity" android:exported="false" android:theme="@style/KbTheme" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".clinicalreview.ContentListActivity" android:exported="false" android:theme="@style/KbTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".clinicalreview.ClinicalReviewActivity" android:exported="false" android:theme="@style/KbTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".clinicalreview.ContentEditorActivity" android:exported="false" android:theme="@style/KbTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".clinicalreview.ContentVersionHistoryActivity" android:exported="false" android:theme="@style/KbTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".safety.SafetyQueueActivity" android:exported="false" android:theme="@style/KbTheme" />
+        <activity android:name=".safety.SafetyEventDetailsActivity" android:exported="false" android:theme="@style/KbTheme" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".chat.ChatHistoryActivity" android:exported="false" android:theme="@style/KbTheme"/>
+        <activity android:name=".knowledge.LibraryActivity" android:exported="false" android:theme="@style/KbTheme" />
+        <activity android:name=".knowledge.KnowledgeDetailActivity" android:exported="false" android:theme="@style/KbTheme" />
         <service android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
             android:enabled="false" android:exported="false">
             <meta-data android:name="autoStoreLocales" android:value="true" />

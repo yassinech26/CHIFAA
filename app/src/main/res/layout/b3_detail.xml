@@ -1,0 +1,169 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/b3_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/kb_bg">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/kb_margin"
+        android:paddingEnd="@dimen/kb_margin"
+        android:paddingTop="@dimen/kb_gap"
+        android:paddingBottom="@dimen/kb_gap">
+        <TextView
+            style="@style/KbTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/b3_detail" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/b3_back"
+                style="@style/KbButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/b3_back" />
+            <Button
+                android:id="@+id/b3_reload"
+                style="@style/KbButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/kb_retry" />
+        </LinearLayout>
+        <include
+            layout="@layout/b3_feedback" />
+        <ScrollView
+            android:id="@+id/b3_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:saveEnabled="false">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:focusableInTouchMode="true">
+                <TextView
+                    android:id="@+id/b3_trigger"
+                    style="@style/KbSubtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/b3_meta"
+                    style="@style/KbNotice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/b3_ids"
+                    style="@style/KbBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/b3_times"
+                    style="@style/KbBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/kb_gap" />
+                <TextView
+                    android:id="@+id/b3_delays"
+                    style="@style/KbSubtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/b3_summary"
+                    style="@style/KbBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:id="@+id/b3_form"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="@dimen/kb_gap">
+                    <TextView
+                        style="@style/KbBody"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/b3_status"
+                        android:labelFor="@+id/b3_status" />
+                    <Spinner
+                        android:id="@+id/b3_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/kb_target"
+                        android:saveEnabled="false" />
+                    <TextView
+                        style="@style/KbBody"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/b3_reviewer"
+                        android:labelFor="@+id/b3_reviewer" />
+                    <EditText
+                        android:id="@+id/b3_reviewer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/kb_target"
+                        android:inputType="textNoSuggestions"
+                        android:imeOptions="flagNoPersonalizedLearning"
+                        android:importantForAutofill="no"
+                        android:singleLine="true"
+                        android:saveEnabled="false"
+                        android:maxLength="10" />
+                    <TextView
+                        style="@style/KbBody"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/b3_action"
+                        android:labelFor="@+id/b3_action" />
+                    <Spinner
+                        android:id="@+id/b3_action"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/kb_target"
+                        android:saveEnabled="false" />
+                    <TextView
+                        style="@style/KbBody"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/b3_outcome"
+                        android:labelFor="@+id/b3_outcome" />
+                    <Spinner
+                        android:id="@+id/b3_outcome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/kb_target"
+                        android:saveEnabled="false" />
+                    <TextView
+                        style="@style/KbBody"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/b3_org"
+                        android:labelFor="@+id/b3_org" />
+                    <EditText
+                        android:id="@+id/b3_org"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/kb_target"
+                        android:inputType="textNoSuggestions"
+                        android:imeOptions="flagNoPersonalizedLearning"
+                        android:importantForAutofill="no"
+                        android:singleLine="true"
+                        android:saveEnabled="false"
+                        android:maxLength="7" />
+                    <Button
+                        android:id="@+id/b3_save"
+                        style="@style/KbButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/b3_save" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

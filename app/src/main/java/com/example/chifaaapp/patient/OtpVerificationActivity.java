@@ -13,7 +13,9 @@ public class OtpVerificationActivity extends PublicPage {
             String code=input(R.id.otp_code);
             if (!code.matches("[0-9]{6}")) { notice(R.string.invalid); return; }
             request(api.verify(new Models.Verify(getIntent().getStringExtra("challenge"),code)),session->{
-                repository.authenticate(session.token); reset(ProfileActivity.class);
+                if (!repository.authenticate(session)) { notice(R.string.unavailable); return; }
+                repository.restoreKnowledge(this);
+                reset(ProfileActivity.class);
             });
         });
     }

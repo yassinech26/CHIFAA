@@ -1,0 +1,16 @@
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/kb_root" android:fillViewport="true">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/kb_margin">
+        <TextView android:id="@+id/kb_heading" style="@style/KbTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/kb_library" />
+        <EditText android:id="@+id/kb_keyword" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="@dimen/kb_target"
+            android:hint="@string/kb_keyword" android:inputType="text" android:maxLength="200" android:singleLine="true" />
+        <EditText android:id="@+id/kb_topic" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="@dimen/kb_target"
+            android:hint="@string/kb_topic" android:inputType="text" android:maxLength="50" android:singleLine="true" />
+        <TextView android:id="@+id/kb_language_label" style="@style/KbBody" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/kb_language" android:labelFor="@id/kb_language"/>
+        <Spinner android:id="@+id/kb_language" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="@dimen/kb_target"
+            android:entries="@array/kb_languages" android:prompt="@string/kb_language" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/kb_apply" style="@style/KbButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/kb_apply" />
+        <TextView android:id="@+id/kb_status" style="@style/KbBody" android:layout_width="match_parent" android:layout_height="wrap_content" android:accessibilityLiveRegion="polite"/>
+        <androidx.recyclerview.widget.RecyclerView android:id="@+id/kb_list" android:layout_width="match_parent" android:layout_height="wrap_content" android:nestedScrollingEnabled="false" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/kb_more" style="@style/KbButton" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/kb_more" android:visibility="gone"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

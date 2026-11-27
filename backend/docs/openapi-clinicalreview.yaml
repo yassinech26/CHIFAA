@@ -1,0 +1,192 @@
+openapi: 3.0.3
+info:
+  title: CHIFAA · Validation des fiches B2
+  version: 1.0.0
+  description: >
+    API HTTPS du personnel. Le sujet du JWT validé identifie staff.staff_id. Les lectures sont
+    ouvertes aux comptes actifs Content team et Clinical reviewer. Les droits d’écriture sont distincts.
+security: [{bearerAuth: []}]
+paths:
+  /api/admin/kb:
+    get:
+      operationId: listEditorialVersions
+      summary: Lister les versions par identifiant croissant
+      parameters:
+        - {name: status, in: query, schema: {$ref: '#/components/schemas/Status'}}
+        - {$ref: '#/components/parameters/Offset'}
+        - {$ref: '#/components/parameters/Limit'}
+      responses:
+        '200': {$ref: '#/components/responses/List'}
+        '400': {$ref: '#/components/responses/Invalid'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '503': {$ref: '#/components/responses/Unavailable'}
+    post:
+      operationId: createEditorialDraft
+      summary: Créer un brouillon fictif v1.0 (Content team)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/Create'}
+      responses:
+        '201': {$ref: '#/components/responses/Written'}
+        '400': {$ref: '#/components/responses/Invalid'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/Unavailable'}
+  /api/admin/kb/{id}:
+    parameters:
+      - {$ref: '#/components/parameters/Id'}
+    get:
+      operationId: inspectEditorialVersion
+      summary: Lire le texte et les métadonnées de la version à relire
+      responses:
+        '200':
+          description: Détail de la version demandée.
+          content: {application/json: {schema: {$ref: '#/components/schemas/Item'}}}
+        '400': {$ref: '#/components/responses/Invalid'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/Missing'}
+        '503': {$ref: '#/components/responses/Unavailable'}
+    patch:
+      operationId: reviseApproveOrRetire
+      summary: Créer une révision éditoriale ou prendre une décision clinique
+      description: >
+        Content team modifie les champs éditoriaux. Une modification effective produit un nouvel
+        identifiant et un brouillon avec la version mineure suivante. Clinical reviewer peut approuver le
+        brouillon indiqué ou retirer une version. Le serveur enregistre le relecteur et le jour UTC
+        à l’approbation. Le retrait de la publication retire aussi son brouillon encore ouvert.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - {$ref: '#/components/schemas/Edit'}
+                - {$ref: '#/components/schemas/Approve'}
+                - {$ref: '#/components/schemas/Retire'}
+            examples:
+              edit: {value: {title: Titre fictif révisé}}
+              approve: {value: {approvalStatus: Clinically approved}}
+              retire: {value: {approvalStatus: Retired}}
+      responses:
+        '200': {$ref: '#/components/responses/Written'}
+        '400': {$ref: '#/components/responses/Invalid'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/Missing'}
+        '409': {$ref: '#/components/responses/Conflict'}
+        '503': {$ref: '#/components/responses/Unavailable'}
+  /api/admin/kb/{id}/versions:
+    parameters:
+      - {$ref: '#/components/parameters/Id'}
+    get:
+      operationId: listEditorialHistory
+      summary: Parcourir la chaîne de versions depuis la plus ancienne
+      parameters:
+        - {$ref: '#/components/parameters/Offset'}
+        - {$ref: '#/components/parameters/Limit'}
+      responses:
+        '200': {$ref: '#/components/responses/List'}
+        '400': {$ref: '#/components/responses/Invalid'}
+        '401': {$ref: '#/components/responses/Unauthorized'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/Missing'}
+        '503': {$ref: '#/components/responses/Unavailable'}
+components:
+  securitySchemes:
+    bearerAuth: {type: http, scheme: bearer, bearerFormat: JWT}
+  parameters:
+    Id: {name: id, in: path, required: true, schema: {$ref: '#/components/schemas/Id'}}
+    Offset: {name: offset, in: query, schema: {type: integer, minimum: 0, default: 0}}
+    Limit: {name: limit, in: query, schema: {type: integer, minimum: 1, maximum: 100, default: 50}}
+  responses:
+    Written:
+      description: Version résultante. Conserver son contentId pour la prochaine requête.
+      headers:
+        Location: {description: Chemin de la version résultante., schema: {type: string, format: uri-reference}}
+      content: {application/json: {schema: {$ref: '#/components/schemas/Item'}}}
+    List:
+      description: Page de résumés, éventuellement vide.
+      content:
+        application/json:
+          schema: {type: array, items: {$ref: '#/components/schemas/Summary'}}
+    Invalid: {description: 'Identifiant, pagination, donnée ou combinaison de champs invalide. Le catalogue AT-044 est contrôlé en base.'}
+    Unauthorized: {description: Jeton absent ou invalide.}
+    Forbidden: {description: Le compte actif et le rôle requis sont vérifiés en base.}
+    Missing: {description: Version introuvable.}
+    Conflict: {description: 'État incompatible, nouvelle révision déjà en cours ou espace de versions ou de codes épuisé.'}
+    Unavailable: {description: Base temporairement indisponible.}
+  schemas:
+    Id: {type: string, pattern: '^KB-[0-9]{4}$'}
+    Link: {type: string, nullable: true, pattern: '^KB-[0-9]{4}$'}
+    Status: {type: string, enum: [Draft, Clinically approved, Retired]}
+    Language: {type: string, enum: [French, Darija, MSA]}
+    Fields:
+      type: object
+      properties:
+        title: {type: string, minLength: 1, maxLength: 200}
+        topic: {type: string, minLength: 1, maxLength: 50}
+        language: {$ref: '#/components/schemas/Language'}
+        contentText: {type: string, minLength: 1}
+        sourceType: {type: string, minLength: 1, maxLength: 25, description: Libellé du catalogue AT-044 installé.}
+        sourceReference: {type: string, minLength: 1}
+        evidenceLevel: {type: string, nullable: true, enum: [High, Moderate, Low, Expert opinion, null]}
+        localApplicability: {type: string, nullable: true, enum: [Applies, Needs adaptation, Not applicable, null]}
+        expiryDate: {type: string, format: date, nullable: true, description: Premier jour de non-publication en UTC.}
+    Edit:
+      type: object
+      minProperties: 1
+      additionalProperties: false
+      properties:
+        title: {$ref: '#/components/schemas/Fields/properties/title'}
+        topic: {$ref: '#/components/schemas/Fields/properties/topic'}
+        language: {$ref: '#/components/schemas/Fields/properties/language'}
+        contentText: {$ref: '#/components/schemas/Fields/properties/contentText'}
+        sourceType: {$ref: '#/components/schemas/Fields/properties/sourceType'}
+        sourceReference: {$ref: '#/components/schemas/Fields/properties/sourceReference'}
+        evidenceLevel: {$ref: '#/components/schemas/Fields/properties/evidenceLevel'}
+        localApplicability: {$ref: '#/components/schemas/Fields/properties/localApplicability'}
+        expiryDate: {$ref: '#/components/schemas/Fields/properties/expiryDate'}
+    Create:
+      allOf:
+        - {$ref: '#/components/schemas/Edit'}
+        - {type: object, required: [title, topic, language, contentText, sourceType, sourceReference]}
+    Approve:
+      type: object
+      additionalProperties: false
+      required: [approvalStatus]
+      properties:
+        approvalStatus: {type: string, enum: [Clinically approved]}
+        expiryDate: {$ref: '#/components/schemas/Fields/properties/expiryDate'}
+    Retire:
+      type: object
+      additionalProperties: false
+      required: [approvalStatus]
+      properties:
+        approvalStatus: {type: string, enum: [Retired]}
+    Summary:
+      type: object
+      required: [contentId, title, language, contentVersion, approvalStatus, previousVersionId, fictional, notice]
+      properties:
+        contentId: {$ref: '#/components/schemas/Id'}
+        title: {$ref: '#/components/schemas/Fields/properties/title'}
+        language: {$ref: '#/components/schemas/Language'}
+        contentVersion: {type: string, pattern: '^v[0-9]+[.][0-9]+$', maxLength: 10}
+        approvalStatus: {$ref: '#/components/schemas/Status'}
+        previousVersionId: {$ref: '#/components/schemas/Link'}
+        fictional: {type: boolean}
+        notice: {type: string, nullable: true}
+    Item:
+      allOf:
+        - {$ref: '#/components/schemas/Summary'}
+        - {$ref: '#/components/schemas/Fields'}
+        - type: object
+          required: [topic, contentText, sourceType, sourceReference, evidenceLevel, localApplicability, expiryDate, clinicalReviewer, reviewDate, supersededBy]
+          properties:
+            clinicalReviewer: {type: string, maxLength: 10, nullable: true}
+            reviewDate: {type: string, format: date, nullable: true}
+            supersededBy: {$ref: '#/components/schemas/Link'}

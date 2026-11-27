@@ -27,7 +27,7 @@ public class LivePatientApiTest {
         while (!Files.exists(sms) && System.nanoTime() < deadline) Thread.sleep(250);
         var verified = api.verify(new Models.Verify(id, Files.readString(sms).trim())).execute();
         assertEquals(200, verified.code());
-        repository.authenticate(verified.body().token);
+        assertTrue(repository.authenticate(verified.body()));
         try {
             assertEquals("TN-11", api.profile().execute().body().governorate);
             var catalog = api.catalog().execute().body();
@@ -44,7 +44,7 @@ public class LivePatientApiTest {
             assertTrue(api.logout().execute().isSuccessful());
             assertEquals(401, api.profile().execute().code());
         } finally {
-            repository.authenticate(null);
+            repository.close();
         }
     }
 }

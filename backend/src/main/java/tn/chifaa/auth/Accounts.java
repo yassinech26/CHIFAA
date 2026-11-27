@@ -13,7 +13,12 @@ import tn.chifaa.users.*;
 public class Accounts {
     private final Patients patients;
     private final JdbcTemplate db;
-    public Accounts(Patients patients, JdbcTemplate db) { this.patients = patients; this.db = db; }
+    private final PatientAccess access;
+    public Accounts(Patients patients, JdbcTemplate db, PatientAccess access) {
+        this.patients = patients;
+        this.db = db;
+        this.access = access;
+    }
 
     @Transactional
     public UUID authenticate(OtpService.Ticket ticket) {
@@ -22,8 +27,7 @@ public class Accounts {
         if (ticket.registration() == null) {
             if (ids.isEmpty()) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
             var pid = ids.get(0);
-            if (db.update("update users set last_active_date=? where user_pid=? and exists (select 1 from consents where user_pid=? and consent_purpose='Service use' and consent_status='Given')",today,pid,pid) != 1)
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            access.lock(pid);
             return pid;
         }
         if (!ids.isEmpty()) throw new ResponseStatusException(HttpStatus.CONFLICT);

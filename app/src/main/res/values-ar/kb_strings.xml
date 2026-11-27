@@ -1,0 +1,32 @@
+<resources>
+    <string name="kb_high">مرتفع</string>
+    <string name="kb_moderate">متوسط</string>
+    <string name="kb_low">منخفض</string>
+    <string name="kb_expert">رأي خبير</string>
+    <string name="kb_library">المكتبة</string>
+    <string name="kb_keyword">كلمة مفتاحية</string>
+    <string name="kb_topic">الموضوع</string>
+    <string name="kb_language">لغة المحتوى</string>
+    <string name="kb_all">كل اللغات</string>
+    <string name="kb_french">الفرنسية</string>
+    <string name="kb_msa">العربية الفصحى</string>
+    <string name="kb_darija">الدارجة</string>
+    <string name="kb_apply">بحث</string>
+    <string name="kb_more">عرض المزيد</string>
+    <string name="kb_notice">محتوى افتراضي – غير معتمد</string>
+    <string name="kb_row_meta">%1$s · %2$s</string>
+    <string name="kb_metadata">الموضوع: %1$s\nاللغة: %2$s\nالمصدر: %3$s · %4$s\nتاريخ المراجعة: %5$s\nانتهاء الصلاحية: %6$s\nمستوى الدليل: %7$s\nالإصدار: %8$s</string>
+    <string name="kb_unspecified">غير محدد</string>
+    <string name="kb_loading">جارٍ التحميل…</string>
+    <string name="kb_empty">لا توجد بطاقات تطابق هذا البحث.</string>
+    <string name="kb_offline">الخادم غير متاح. هذه البطاقات قُرئت سابقًا على هذا الجهاز.</string>
+    <string name="kb_cached_detail">نسخة محفوظة على هذا الجهاز.</string>
+    <string name="kb_offline_empty">الخادم غير متاح. لا توجد بطاقة محفوظة تطابق معايير البحث.</string>
+    <string name="kb_not_saved">هذه البطاقة غير متاحة دون اتصال.</string>
+    <string name="kb_auth">سجّل الدخول لفتح المكتبة.</string>
+    <string name="kb_hidden">لم تعد هذه البطاقة متاحة.</string>
+    <string name="kb_error">تعذّر تحميل البطاقات. أعد المحاولة.</string>
+    <string name="kb_back">العودة إلى المكتبة</string>
+    <string name="kb_retry">تحديث</string>
+    <string name="kb_consent">تتطلب قراءة البطاقات الموافقة على استخدام الخدمة.</string>
+</resources>
